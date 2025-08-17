@@ -28,92 +28,44 @@ public class BaseRobot {
 
 
     //motor powers
-    private final double INTAKE_SLIDES_POWER = 0.3;
-    private final double OUTTAKE_SLIDES_POWER = 0.9;
+    //private final double MotorExamplePower = 0.9;
+
 
     //end motor powers
 
     // Arm Position fields
-    private int leftIntakeSlidePos = 0;
-    private int rightIntakeSlidePos = 0;
+    //private int MotorExamplePos = 0;
 
-    private int rightOuttakeSlidePos = 0;
-    private int leftOuttakeSlidePos = 0;
 
-    private double gimbalPos = 0;
-    private double intakeGrasperPos = 0;
-    private double outtakeGrasperPos = 0;
-    private double outtakeWristPos = 0;
-    private double outtakeAxlePos = 0;
-    private double v4bPos = 0;
-    private double trayPos = 0;
+    //private double ServoExamplePos = 0;
+
 
     //servo constants
-    private final double V4B_IN_ROBOT = .7638;
-    private final double V4B_UP = .45;
-    private final double V4B_RESTING_POS = .6544;
-    private final double V4B_INTAKE_POS = .1;
-    private final double V4B_HOVER_OVER_GROUND = .2397;
-    private final double GIMBAL_RESTING_POS = .1862;
-    private final double INTAKE_GRASPER_OPEN = .710;
-    private final double INTAKE_GRASPER_CLOSED = .875;
-    private final double OUTTAKE_GRASPER_CLOSED = .573;
-    private final double OUTTAKE_GRASPER_OPEN = .8656;
 
-    public boolean outtakeReset = false;
+    //private final double ServoMax = .7638;
 
-
-    private final double WRIST_TO_WALL = 0;//change
-    private final double WRIST_STRAIGHT = 0;//change
-    private final double WRIST_SCORING = 0;//change
-
-    private final double AXLE_TO_WALL = .1961;
-    private final double AXLE_HB = .3949;
-    private final double AXLE_DOWN = .9773;
-    //private final double AXLE_IN_ROBOT = .5;
-    private final double AXLE_PASS_THROUGH = .6799;//change
-
-    private final double WRIST_TO_TRAY = 0;//change
-    private final double TRAY_CLOSED = .7;//moves the tray servo to bring the sample in
-    private final double TRAY_HALF_CLOSED = .5;
-    private final double TRAY_OPEN = .83;
 
     //end servo constants
 
     //motor constants
-    private int INTAKE_SLIDES_MAX = 1661;
-    private final int OUTTAKE_SLIDES_MAX = 3100;
-    private final int OUTTAKE_SLIDES_TO_HB = 3070;
-    private final int OUTTAKE_SLIDES_TRANSFER = 390;
-    private final int OUTTAKE_SLIDES_ABOVE_HIGH_CHAMBER = 1685;
-    private final int OUTTAKE_SLIDES_PASS_THROUGH_BELOW_CHAMBER = 1685;
-    private final int OUTTAKE_SLIDES_PASS_THROUGH_ON_HIGH_CHAMBER = 2552;
-    private final int OUTTAKE_SLIDES_ON_HIGH_CHAMBER = 890;
-    private final int OUTTAKE_SLIDES_UPSIDE_DOWN_HIGH_CHAMBER = 1151;
+
+    //private final int MotorExampleMax = 3100;
+
 
     //end motor constants
 
-    private int realIntakeSlidesPos = 0;
+    //private int realIntakeSlidesPos = 0; //TODO: figure out what this was
 
 
     public MecanumDrive drive;
 
-    DcMotor leftIntakeSlider;//from the perspective of the robot
-    DcMotor rightIntakeSlider;//from the perspective of the robot
+    //DcMotor ExampleMotor;
 
 
-    DcMotor leftOuttakeSlider;//from the perspective of the robot
-    DcMotor rightOuttakeSlider;//from the perspective of the robot
+    //Servo ExampleServo;
 
-    Servo intakeGrasper;
-    Servo outtakeGrasper;
-    Servo outtakeWrist;
-    Servo v4b;
-    Servo intakeGimbal;
-    Servo outtakeAxle;
-    Servo tray;
-    DigitalChannel touchIntake;
-    DigitalChannel touchOuttake;
+    DigitalChannel touchSensor1;
+
 
     public RevColorSensorV3 colorSensor;
 
@@ -129,105 +81,45 @@ public class BaseRobot {
         colorSensor = hwMap.get(RevColorSensorV3.class, "colorSensor");
         colorSensor.enableLed(true);
 
-        this.touchIntake = hwMap.digitalChannel.get("touchIntake");
-        this.touchOuttake = hwMap.digitalChannel.get("touchOuttake");
+        this.touchSensor1 = hwMap.digitalChannel.get("touchSensor1");
 
-        leftIntakeSlider = hwMap.dcMotor.get("leftIntakeSlider");
-        rightIntakeSlider = hwMap.dcMotor.get("rightIntakeSlider");
-        //rightIntakeSlider.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //ExampleMotor = hwMap.dcMotor.get("ExampleMotor");
+        //ExampleMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set to run with encoders and grab current Position
-        leftIntakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftIntakeSlider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //ExampleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //ExampleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        rightIntakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightIntakeSlider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightIntakeSlider.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        leftIntakeSlidePos = leftIntakeSlider.getCurrentPosition();
-        rightIntakeSlidePos = rightIntakeSlider.getCurrentPosition();
+        //ExampleMotorPos = leftIntakeSlider.getCurrentPosition();
 
 
-        //outtake
-        leftOuttakeSlider = hwMap.dcMotor.get("leftOuttakeSlider");
-        leftOuttakeSlider.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        rightOuttakeSlider = hwMap.dcMotor.get("rightOuttakeSlider");
-
-        leftOuttakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftOuttakeSlider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftOuttakeSlidePos = leftOuttakeSlider.getCurrentPosition();
-        rightOuttakeSlidePos = rightOuttakeSlider.getCurrentPosition();
-
-        rightOuttakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightOuttakeSlider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        tray = hwMap.servo.get("tray");
-        //tray.setPosition(Constants.trayConstants.open);
-        trayPos = tray.getPosition();
 
-        intakeGrasper = hwMap.servo.get("intakeGrasper");
-        //intakeGrasper.setPosition(Constants.LoonyClawConstants.closed);
-        intakeGrasperPos = intakeGrasper.getPosition();
-
-        outtakeGrasper = hwMap.servo.get("outtakeGrasper");
-        outtakeGrasper.setPosition(Constants.outtakeClawConstants.closed);
-        outtakeGrasperPos = outtakeGrasper.getPosition();
-
-        outtakeWrist = hwMap.servo.get("outtakeWrist");
-
-        outtakeWristPos = outtakeWrist.getPosition();
-
-        v4b = hwMap.servo.get("v4b");
-        v4b.setPosition(Constants.v4bConstants.up);
-        v4bPos = v4b.getPosition();
-
-        intakeGimbal = hwMap.servo.get("intakeGimbal");
-        intakeGimbal.setPosition(Constants.intakeClawConstants.gimbalReset);
-        gimbalPos = intakeGimbal.getPosition();
-
-        outtakeAxle = hwMap.servo.get("outtakeAxle");
-        outtakeAxle.setPosition(Constants.outtakeAxleConstants.specScoring);
-        outtakeAxlePos = outtakeAxle.getPosition();
-        //end servos
+        //ExampleServo = hwMap.servo.get("ExampleServo");
+        //ExampleServo.setPosition(Constants.Constants.open);
+        //ExampleServoPos = ExampleServo.getPosition();
 
 
     }
 
-    public void resetIntakeEncoders() {
-        rightIntakeSlidePos = 0;
-        leftIntakeSlidePos = 0;
-        leftIntakeSlider.setPower(0);
-        rightIntakeSlider.setPower(0);
+    public void resetExampleEncoders() {
+        //ExampleMotorPos = 0;
+        //ExampleMotor.setPower(0);
 
-        rightIntakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftIntakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightIntakeSlider.setTargetPosition(0);
-        leftIntakeSlider.setTargetPosition(0);
-    }
-
-    public void resetOuttakeEncoders() {
-        rightOuttakeSlidePos = 0;
-        leftOuttakeSlidePos = 0;
-        leftOuttakeSlider.setPower(0);
-        rightOuttakeSlider.setPower(0);
-
-        rightOuttakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftOuttakeSlider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightOuttakeSlider.setTargetPosition(0);
-        leftOuttakeSlider.setTargetPosition(0);
+        //ExampleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //ExampleMotor.setTargetPosition(0);
 
     }
 
-    public boolean areOuttakeSlidesDown() {
-        return !touchOuttake.getState();
+
+
+    public boolean touchSensorCheck() {
+        //return !TouchSensor1.getState();
     }
 
-    public boolean areIntakeSlidesDown() {
-        return !touchIntake.getState();
-    }
 
     public String detectColor() {
         // Get the RGB values from the color sensor
@@ -262,59 +154,17 @@ public class BaseRobot {
     //what would cause a camera video t
 
 
-    public void resetAll() {
-        setIntakeSlidesPos(0);
-        setOuttakeSlidesPos(0);
-        v4b.setPosition(Constants.v4bConstants.up);
-        //outtakeAxle.setPosition();
 
-    }
-
-    public void SpecimenScoring() {
-        //if below chamber go on chamber
-        if (leftOuttakeSlidePos == Constants.outtakeSlideConstants.passThroughScoringBelowChamber) {
-            setOuttakeSlidesPos(Constants.outtakeSlideConstants.passThroughScoringOnChamber);
-        } else {
-            setOuttakeSlidesPos(Constants.outtakeSlideConstants.passThroughScoringBelowChamber);
-        }
-        outtakeAxle.setPosition(Constants.outtakeAxleConstants.specScoring);
-        outtakeGrasper.setPosition(Constants.outtakeClawConstants.closed);
-    }
-
-    public void HighBucketScoring() {
-        setOuttakeSlidesPos(Constants.outtakeSlideConstants.HighBucket);
-        setAxlePos(Constants.outtakeAxleConstants.HBScoring);
-    }
-
-    public void passThroughPrep() {
-        setOuttakeSlidesPos(0);
-        setAxlePos(Constants.outtakeAxleConstants.passThrough);
-        setOuttakeGrasperPos(Constants.outtakeClawConstants.open);
-    }
-
-    public void resetIntake() {
-        setV4bPos(Constants.v4bConstants.up);
-        setIntakeSlidesPos(0);
-        //setTrayPos(Constants.trayConstants.open);
-        setIntakeGrasperPos(Constants.intakeClawConstants.closed);
-        setGimbalPos(Constants.intakeClawConstants.gimbalReset);
-    }
 
 
     public void update() {
         //motors
 
-        updateIntakeSlidesPos();
-        updateOuttakeSlidesPos();
+        //update all motors
 
         //servos
-        updateAxlePos();
-        updateTrayPos();
-        updateGimbalPos();
-        updateIntakeGrasperPos();
-        updateOuttakeGrasperPos();
-        updateWristPos();
-        updateV4bPos();
+
+        //update all servos
     }
 
     public void TeleopUpdate() {
