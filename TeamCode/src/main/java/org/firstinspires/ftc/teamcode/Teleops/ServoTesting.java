@@ -44,28 +44,20 @@ public class ServoTesting extends LinearOpMode {
             double stickSpeed = .01;
             double speed = .005;
             robot.update();
-            robot.updateOuttakeSlidesPos();
+            //robot.updateOuttakeSlidesPos();
             //end
 
 
             //axle down: .9773
             //HB axle: .35
             //axle out: .181
-            if (gamepad2.a){
-                robot.setV4bPos(Constants.v4bConstants.up);
-            }
-            if(gamepad2.y){
-                robot.setV4bPos(Constants.v4bConstants.hover);
-            }
+
 
             //open: .4887
             //closed: .2951
             //gimbal reset: .4825
 
-            robot.changeAxlePos(gamepad2.right_stick_y * stickSpeed);
-            robot.changeV4bPos(gamepad2.left_stick_y * stickSpeed);
-            robot.changeIntakeGrasperPos(gamepad1.left_stick_y * stickSpeed);
-            robot.changeGimbalPos(gamepad1.right_stick_y * stickSpeed);
+            //robot.changeAxlePos(gamepad2.right_stick_y * stickSpeed);
 
             if(gamepad2.y){
             }
@@ -79,18 +71,13 @@ public class ServoTesting extends LinearOpMode {
 
             //tray open: .4743
             //tray closed: .0461
-            if (gamepad1.y){
-                robot.changeWristPos(speed);
-            }
-            if (gamepad1.a){
-                robot.changeWristPos(-speed);
-            }
 
 
-            telemetry.addData("1 - Intake Grasper - left Stick: ", robot.getIntakeGrasperPos());
+
+            //telemetry.addData("1 - Intake Grasper - left Stick: ", robot.getIntakeGrasperPos());
             telemetry.addLine();
 
-            telemetry.addData("1 - Outtake Grasper - right stick", robot.getOuttakeGrasperPos());
+            /*telemetry.addData("1 - Outtake Grasper - right stick", robot.getOuttakeGrasperPos());
             telemetry.addLine();
             telemetry.addData("2 - V4b - left stick", robot.getV4bPos());
             telemetry.addLine();
@@ -100,6 +87,8 @@ public class ServoTesting extends LinearOpMode {
             telemetry.addData("2 - wrist - y/a", robot.getOuttakeWristPos());
             telemetry.addData("intake Gimbal - 2y and a", robot.getGimbalPos());
             telemetry.addData("tray pos", robot.getTrayPos());
+
+             */
 
             //intake claw open: .29
             //intake claw closed: .54

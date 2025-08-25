@@ -54,231 +54,11 @@ public class LastYear extends LinearOpMode {//leagues last year
 
             robot.TeleopUpdate();
 
-            //drive speeds
 
 
-            if(gamepad1.right_bumper){
-                Actions.runBlocking(new TestAction(robot));
-            }
-            // if(gamepad1.left_bumper && gamepad1.right_bumper){
-            //robot.resetOuttakeEncoders();
-            //robot.outtakeReset = true;
-            //}
 
 
-
-
-
-            //end drive speeds
-            //end drive
-
-
-
-
-
-
-            //OUTTAKE_____________________________________________________________________________
-            //outtake slides-------------------------
-            double outtakePower = (gamepad2.right_trigger - gamepad2.left_trigger) ;
-            if (Math.abs(outtakePower) > 0.1) {
-                robot.setOuttakePower(outtakePower);
-            } else {
-                robot.updateOuttakeSlidesPos();
-            }
-            //end outtake slides----------------------------
-
-
-
-
-            //SPECIMEN______________________________________________________________
-            //presets
-
-            if (gamepad2.dpad_left) {
-                robot.HighBucketScoring();//high bucket
-            }
-
-            if (gamepad2.dpad_up){
-
-
-                robot.setAxlePos(Constants.outtakeAxleConstants.specScoring);
-                robot.setOuttakeSlidesPos(Constants.outtakeSlideConstants.passThroughScoringBelowChamber);
-
-
-                robot.setOuttakeGrasperPos(Constants.outtakeClawConstants.closed);
-
-
-            }
-
-
-
-            if (gamepad2.dpad_down) {
-
-                robot.setOuttakeSlidesPos(0);
-                robot.setGimbalPos(Constants.intakeClawConstants.gimbalReset);
-                robot.setV4bPos(Constants.v4bConstants.up);
-                robot.setIntakeGrasperPos(Constants.intakeClawConstants.closed);
-                robot.setAxlePos(Constants.outtakeAxleConstants.passThrough);
-                robot.setIntakeSlidesPos(0);
-
-            }
-
-//END OUTTAKE_________________________________________________________________________________________________-
-
-            //INTAKE____________________________________________________________________
-            //intake slides----------------------------
-            double intakePower = gamepad2.right_stick_y - gamepad2.left_stick_y * .2;
-            if (Math.abs(intakePower) > 0.1) {
-                robot.setIntakePower(intakePower);
-            } else {
-                robot.updateIntakeSlidesPos();
-
-            }//end intake slides---------------------------
-
-            //intakeAxle-----------------------------
-            if(gamepad2.y){
-                robot.setV4bPos(Constants.v4bConstants.half);
-                robot.setIntakeSlidesPos(Constants.intakeSlideConstants.minFromGround);
-            }
-            if(gamepad2.x){
-                robot.setV4bPos(Constants.v4bConstants.hover);
-            }
-            if(gamepad2.a){
-                robot.setV4bPos(Constants.v4bConstants.ground);
-            }
-            prevY = gamepad2.y;
-
-
-            //end intake axle------------------------
-
-            //claw---------------------------
-            //gimbal
-            /*if (gamepad2.back) {
-                robot.changeGimbalPos(.005);
-            }
-            if (gamepad2.start) {
-                robot.changeGimbalPos(-.005);
-            }
-
-             */
-
-            if (gamepad2.right_stick_button) {
-                robot.setGimbalPos(Constants.intakeClawConstants.gimbalReset);
-            }
-            if(gamepad2.left_stick_button){
-                robot.setGimbalPos(Constants.intakeClawConstants.turn90);
-            }
-            //end gimbal
-            if(gamepad2.b && gamepad2.b!=prevB){
-
-                robot.intakeGrasperToggle();
-
-            }
-            prevB = gamepad2.b;
-            //end claw-----------------
-
-
-
-            if(gamepad2.dpad_right){
-                robot.setOuttakeSlidesPos(0);
-                robot.setAxlePos(Constants.outtakeAxleConstants.specScoring);
-                robot.setV4bPos(Constants.v4bConstants.half);
-                robot.setGimbalPos(Constants.intakeClawConstants.gimbalReset);
-            }
-
-
-
-            if(gamepad2.left_stick_y>.5){
-                robot.setV4bPos(Constants.v4bConstants.half);
-            }
-            if (gamepad2.left_stick_y<-.5){
-                robot.setV4bPos(Constants.v4bConstants.half);
-                //robot.setIntakeSlidesPos(Constants.intakeSlideConstants.minFromGround);
-            }
-
-            if(gamepad2.right_bumper){
-                robot.setOuttakeGrasperPos(Constants.outtakeClawConstants.closed);
-            }
-            if(gamepad2.left_bumper){
-                robot.setOuttakeGrasperPos(Constants.outtakeClawConstants.open);
-            }
-            prevDpadRight = gamepad2.dpad_right;
-            //if(gamepad2.dpad_up && gamepad2.dpad_up!=prevDpadUp){
-
-            //      robot.SpecimenScoring();
-
-
-            //}
-            prevDpadUp = gamepad2.dpad_up;
-            if(gamepad2.start){
-                if(gamepad2.start && gamepad2.start!=prevStart){
-                    robot.changeGimbalPos(Constants.intakeClawConstants.gap45);
-                }
-            }
-            prevStart = gamepad2.start;
-
-            if(gamepad2.back){
-                if(gamepad2.back && gamepad2.back!=prevBack){
-                    robot.changeGimbalPos(-Constants.intakeClawConstants.gap45);
-                }
-            }
-            prevBack = gamepad2.back;
-
-
-            if(robot.areOuttakeSlidesDown()){
-                if(robot.areOuttakeSlidesDown() && robot.areOuttakeSlidesDown()!=prevTouchOuttake){
-                    robot.resetOuttakeEncoders();
-                }
-            }
-            prevTouchOuttake = robot.areOuttakeSlidesDown();
-
-            if(robot.areIntakeSlidesDown()){
-                if(robot.areIntakeSlidesDown() && robot.areIntakeSlidesDown()!=prevTouchIntake){
-                    robot.resetIntakeEncoders();
-                }
-            }
-            prevTouchIntake = robot.areIntakeSlidesDown();
-
-
-
-
-
-
-
-
-
-
-
-
-
-            telemetry.addLine("robot position (starting at x: 0, y: 0, heading: 0)");
-            //telemetry.addData("x:", drive.pose.position.x);
-            //telemetry.addData("y:", drive.pose.position.y);
-            //telemetry.addData("heading (deg):", Math.toDegrees(drive.pose.heading.toDouble()));
-            telemetry.addLine();
-            telemetry.addLine();
-
-
-            telemetry.addLine("Motors: ");
-            telemetry.addLine();
-
-            telemetry.addLine("Slides: ");
-            telemetry.addData("right outtake slide: ", robot.getRightOuttakeSlidePos());
-            telemetry.addData("left outtake slide: ", robot.getLeftOuttakeSlidePos());
-            //telemetry.addData("outtake slides power: ", robot.getOUTTAKE_SLIDES_POWER());
-            telemetry.addLine();
-
-            telemetry.addData("right intake slide position: ", robot.getRightIntakeSlidePos());
-            telemetry.addData("left intake slide position: ", robot.getLeftIntakeSlidePos());
-
-            //telemetry.addData("intake slides power: ", robot.getINTAKE_SLIDES_POWER());
-            telemetry.addLine();
-            telemetry.addLine();
-
-            //telemetry.addData("hang arm position: ", robot.getHangArmPos());
-
-
-
-
+/*
             telemetry.addLine();
             telemetry.addLine("Servos: ");
             telemetry.addLine();
@@ -318,6 +98,7 @@ public class LastYear extends LinearOpMode {//leagues last year
             telemetry.addLine("b/x: intake claw open/closed");
             telemetry.addLine("y: intake action");
             telemetry.addLine("a: v4b intake pos");
+            */
 
 
             telemetry.update();
@@ -335,10 +116,12 @@ public class LastYear extends LinearOpMode {//leagues last year
 
         }
 
-    }
 
 
 
+
+
+        }
     public void driveLoop(){
         while(!endTeleop){
 
