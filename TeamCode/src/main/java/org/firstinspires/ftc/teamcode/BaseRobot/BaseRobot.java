@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.BaseRobot;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+
 
 
 import org.firstinspires.ftc.robotcore.external.Const;
@@ -64,10 +66,12 @@ public class BaseRobot {
 
     //Servo ExampleServo;
 
-    DigitalChannel touchSensor1;
+    //DigitalChannel touchSensor1;
 
 
     public RevColorSensorV3 colorSensor;
+
+    public HuskyLens huskyLens;
 
 
     public BaseRobot(HardwareMap hwMap) {
@@ -81,8 +85,10 @@ public class BaseRobot {
         colorSensor = hwMap.get(RevColorSensorV3.class, "colorSensor");
         colorSensor.enableLed(true);
 
-        this.touchSensor1 = hwMap.digitalChannel.get("touchSensor1");
+        //this.touchSensor1 = hwMap.digitalChannel.get("touchSensor1");
 
+        huskyLens = hwMap.get(HuskyLens.class, "huskyLens");
+        huskyLens.initialize();
 
         //ExampleMotor = hwMap.dcMotor.get("ExampleMotor");
         //ExampleMotor.setDirection(DcMotorSimple.Direction.REVERSE);
