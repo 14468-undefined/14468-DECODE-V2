@@ -13,17 +13,10 @@ public class HuskyLensTest extends LinearOpMode {
 
     BaseRobot robot;
 
-    // PID coefficients
-    double kPX = 0.005;
-    double kPY = 0.005;
-    double kPRot = 0.003;
 
-    // Integrals
-    double integralX = 0;
-    double integralY = 0;
-    double integralRot = 0;
 
-    int targetID = 1;
+
+    boolean dismissTelemInstructions = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -38,6 +31,17 @@ public class HuskyLensTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            if (!dismissTelemInstructions) {
+                telemetry.addLine("press 'a' for april tag detection");
+                telemetry.addLine("press 'b' for color detection");
+                telemetry.addLine("press 'x' to dismiss");
+            }
+
+            if (gamepad1.x) {
+                dismissTelemInstructions = true;
+            }
+
+
 
 
             if (gamepad1.a) {
@@ -45,7 +49,7 @@ public class HuskyLensTest extends LinearOpMode {
 
             }
             else if (gamepad1.b) {
-                robot.colorPID(telemetry);
+                robot.colorProportionalController(telemetry);
             }
 
             else {

@@ -183,7 +183,7 @@ public class BaseRobot {
         telemetry.update();
     }
 
-    public void colorPID(Telemetry telemetry) {
+    public void colorProportionalController(Telemetry telemetry) {
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
         HuskyLens.Block[] blocks = huskyLens.blocks();
         HuskyLens.Block target = null;
@@ -198,7 +198,7 @@ public class BaseRobot {
         }
 
         if (target != null) {
-            // PID calculations for X and Y only
+            // Proportional Controller calculations for X and Y only
             double errorX = target.x - 320; // camera width midpoint
             double errorY = target.y - 240; // camera height midpoint
 
