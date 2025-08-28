@@ -28,7 +28,7 @@ public class BaseRobot {
 
     //PID constants
     int targetID = 1;
-    double kPX = 0.005, kPY = 0.005, kPRot = 0.003;
+    double kPX = 0.005, kPY = 0.005, kPRot = 0.003, kPForward = kPForward = 0.01;
     double integralX = 0, integralY = 0, integralRot = 0;
     //end PID constants
 
@@ -157,31 +157,40 @@ public class BaseRobot {
         }
 
         if (target != null) {
-            double errorX = target.x - 320;
-            double errorY = target.y - 240;
-            integralX += errorX;
-            integralY += errorY;
+            // Pixel error relative to image center
+            double errorX = target.x - 320;  // horizontal offset
+            double errorY = target.y - 240;  // vertical offset (not used now)
 
-            double errorRot = -errorX;
-            integralRot += errorRot;
+            // Forward error based on size of tag
+            double desiredHeight = 100;  // tune this for your desired distance
+            double errorForward = desiredHeight - target.height;
 
-            double powerX = kPX * errorX;
-            double powerY = kPY * errorY;
-            double powerRot = kPRot * errorRot;
+            // Rotation error proportional to X offset
+            double errorRot = errorX;
 
-            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(powerY, powerX), powerRot));
+            // Convert to drive powers (tune kP constants!)
+            double powerStrafe = kPX * errorX;          // left/right (RR y-axis)
+            double powerForward = kPForward * errorForward; // forward/backward (RR x-axis)
+            double powerRot = kPRot * errorRot;         // heading correction
+
+            drive.setDrivePowers(new PoseVelocity2d(
+                    new Vector2d(powerForward, powerStrafe),
+                    powerRot
+            ));
 
             telemetry.addData("Tag ID", target.id);
             telemetry.addData("X error", errorX);
-            telemetry.addData("Y error", errorY);
+            telemetry.addData("Forward error", errorForward);
             telemetry.addData("Rotation error", errorRot);
+            telemetry.addData("Tag Height", target.height);
         } else {
-            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(0,0),0));
+            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
             telemetry.addData("Status", "No Tag Detected");
         }
 
         telemetry.update();
     }
+
 
     public void colorProportionalController(Telemetry telemetry) {
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
