@@ -1,76 +1,60 @@
 package org.firstinspires.ftc.teamcode.Teleops;
 
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.BaseRobot.BaseRobot;
-
-import java.util.List;
 
 @TeleOp(name="HuskyLens Test", group="Test")
 public class HuskyLensTest extends LinearOpMode {
 
-
-    private com.qualcomm.robotcore.hardware.HardwareMap HardwareMap;
     BaseRobot robot;
 
+    // PID coefficients
+    double kPX = 0.005;
+    double kPY = 0.005;
+    double kPRot = 0.003;
 
+    // Integrals
+    double integralX = 0;
+    double integralY = 0;
+    double integralRot = 0;
 
+    int targetID = 1;
 
-    ;
     @Override
     public void runOpMode() throws InterruptedException {
-        // Get HuskyLens from hardware map
+
         robot = new BaseRobot(hardwareMap);
         robot.huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
-        robot.huskyLens.initialize();  // only if your library requires it
-        robot.huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
-        telemetry.addLine("HuskyLens ready — waiting for start");
+        robot.huskyLens.initialize();
+
+        telemetry.addLine("Waiting for start");
         telemetry.update();
-
-
         waitForStart();
 
         while (opModeIsActive()) {
-            // Ask the sensor for the list of recognized blocks
 
 
 
-// Get all detected blocks
-            HuskyLens.Block[] blocks = robot.huskyLens.blocks();
+            if (gamepad1.a) {
+               robot.aprilTagDetection(telemetry);
 
+            }
+            else if (gamepad1.b) {
+                robot.colorPID(telemetry);
+            }
 
-
-            if (blocks != null && blocks.length > 0) {
-                for (int i = 0; i < blocks.length; i++) {
-                    HuskyLens.Block b = blocks[i];
-
-                    // Color ID (always 1 for COLOR_RECOGNITION)
-                    int colorID = b.id;
-
-                    // Center location
-                    int centerX = b.x;
-                    int centerY = b.y;
-
-                    // Size
-                    int width = b.width;
-                    int height = b.height;
-
-                    // Send to telemetry
-                    telemetry.addData("Block " + i,
-                            "ColorID=%d, Center=(%d,%d), Size=(%d,%d)",
-                            colorID, centerX, centerY, width, height);
+            else {
+                    robot.drive.setDrivePowers(new PoseVelocity2d(
+                            new Vector2d(gamepad1.left_stick_y, gamepad1.left_stick_x), -gamepad1.right_stick_x));
+                    telemetry.addData("Status", "No Color Detected");
                 }
-            } else {
-                telemetry.addData("Blocks", "No blocks detected yet");
             }
 
             telemetry.update();
-
-
-
         }
     }
-}

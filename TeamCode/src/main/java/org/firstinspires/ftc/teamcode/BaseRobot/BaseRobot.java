@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.BaseRobot;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,6 +16,7 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 
 
 import org.firstinspires.ftc.robotcore.external.Const;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.Constants;
 
 
@@ -22,6 +25,12 @@ import org.firstinspires.ftc.teamcode.Drive.MecanumDrive;
 
 public class BaseRobot {
 
+
+    //PID constants
+    int targetID = 1;
+    double kPX = 0.005, kPY = 0.005, kPRot = 0.003;
+    double integralX = 0, integralY = 0, integralRot = 0;
+    //end PID constants
 
     //color sensor
 
@@ -124,6 +133,103 @@ public class BaseRobot {
     }
 
      */
+
+
+
+    //HuskyLens
+
+
+
+
+
+    public void aprilTagDetection(Telemetry telemetry) {
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.TAG_RECOGNITION);
+        HuskyLens.Block[] blocks = huskyLens.blocks();
+        HuskyLens.Block target = null;
+
+        if (blocks != null && blocks.length > 0) {
+            for (HuskyLens.Block b : blocks) {
+                if (b.id == targetID) {
+                    target = b;
+                    break;
+                }
+            }
+        }
+
+        if (target != null) {
+            double errorX = target.x - 320;
+            double errorY = target.y - 240;
+            integralX += errorX;
+            integralY += errorY;
+
+            double errorRot = -errorX;
+            integralRot += errorRot;
+
+            double powerX = kPX * errorX;
+            double powerY = kPY * errorY;
+            double powerRot = kPRot * errorRot;
+
+            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(powerY, powerX), powerRot));
+
+            telemetry.addData("Tag ID", target.id);
+            telemetry.addData("X error", errorX);
+            telemetry.addData("Y error", errorY);
+            telemetry.addData("Rotation error", errorRot);
+        } else {
+            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(0,0),0));
+            telemetry.addData("Status", "No Tag Detected");
+        }
+
+        telemetry.update();
+    }
+
+    public void colorPID(Telemetry telemetry) {
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
+        HuskyLens.Block[] blocks = huskyLens.blocks();
+        HuskyLens.Block target = null;
+
+        if (blocks != null && blocks.length > 0) {
+            for (HuskyLens.Block b : blocks) {
+                if (b.id == targetID) {  // targetID is the color you want
+                    target = b;
+                    break;
+                }
+            }
+        }
+
+        if (target != null) {
+            // PID calculations for X and Y only
+            double errorX = target.x - 320; // camera width midpoint
+            double errorY = target.y - 240; // camera height midpoint
+
+            integralX += errorX;
+            integralY += errorY;
+
+            double powerX = kPX * errorX;
+            double powerY = kPY * errorY;
+            double powerRot = 0;  // no rotation for color PID
+
+            // Drive robot toward color
+            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(powerY, powerX), powerRot));
+
+            // Telemetry
+            telemetry.addData("Color ID", target.id);
+            telemetry.addData("X error", errorX);
+            telemetry.addData("Y error", errorY);
+        } else {
+            // fallback manual stop
+            drive.setDrivePowers(new PoseVelocity2d(new Vector2d(0,0),0));
+            telemetry.addData("Status", "No Color Detected");
+        }
+
+        telemetry.update();
+    }
+
+
+
+    //End husky lens
+
+
 
 
     public String detectColor() {
