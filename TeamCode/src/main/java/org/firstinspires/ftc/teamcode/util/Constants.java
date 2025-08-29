@@ -88,5 +88,24 @@ public final class Constants{
 
     }
 
+    public static final class AprilTagConstants {
+        // tag size (meters)
+        public static double TAG_SIZE = 0.166;
+
+        // Camera intrinsics (your webcam’s calibration)
+        public static double FX = 578.272;
+        public static double FY = 578.272;
+        public static double CX = 402.145;
+        public static double CY = 221.506;
+
+        // Desired stopping distance (m)
+        public static double DESIRED_DISTANCE = 0.30;
+
+        // PID gains
+        public static double kP_FORWARD = 0.5;
+        public static double kP_STRAFE  = 0.5;
+        public static double kP_ROT     = 0.5;
+    }
+
 
 }

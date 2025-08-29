@@ -162,7 +162,7 @@ public class BaseRobot {
             double errorY = target.y - 240;  // vertical offset (not used now)
 
             // Forward error based on size of tag
-            double desiredHeight = 100;  // tune this for your desired distance
+            double desiredHeight = 100;  // tune this for desired distance
             double errorForward = desiredHeight - target.height;
 
             // Rotation error proportional to X offset
