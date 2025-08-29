@@ -84,4 +84,26 @@ public class AprilTagVision {
     public void close() {
         if (visionPortal != null) visionPortal.close();
     }
+
+    //for teleop
+    // Returns true if a tag is currently detected
+    public boolean hasTarget() {
+        return desiredTag != null;
+    }
+
+    // Returns the X position (inches) of the detected tag, or NaN if none
+    public double getTagX() {
+        if (hasTarget()) {
+            return desiredTag.ftcPose.x;
+        }
+        return Double.NaN;
+    }
+
+    // Returns the Y position (inches) of the detected tag, or NaN if none
+    public double getTagY() {
+        if (hasTarget()) {
+            return desiredTag.ftcPose.y;
+        }
+        return Double.NaN;
+    }
 }

@@ -50,7 +50,7 @@ public class DriveToAprilTagAction implements Action {
 
                 // Update pose estimate once if finalPose is provided
                 if (finalPose != null && !poseUpdated) {
-                    //drive.setPoseEstimate(finalPose);
+                    drive.setPoseEstimate(finalPose);
                     poseUpdated = true;
                 }
 

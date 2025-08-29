@@ -478,6 +478,12 @@ public final class MecanumDrive {
         return vel;
     }
 
+
+
+    public void setPoseEstimate(Pose2d pose) {//JS UPDATES
+        localizer.setPose(pose); // tell the localizer to reset to this pose //JS UPDATES
+    }//JS UPDATES
+
     private void drawPoseHistory(Canvas c) {
         double[] xPoints = new double[poseHistory.size()];
         double[] yPoints = new double[poseHistory.size()];
