@@ -29,7 +29,14 @@ public class AprilTagTestTeleop extends LinearOpMode {
     private double MAX_AUTO_STRAFE = 0.5;
     private double MAX_AUTO_TURN = 0.3;
 
+    private static final double SMOOTHING = 0.2;
+
     BaseRobot robot;
+
+    // smoothing variables
+    private double prevForward = 0;
+    private double prevStrafe = 0;
+    private double prevTurn = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -41,10 +48,12 @@ public class AprilTagTestTeleop extends LinearOpMode {
                 .addProcessor(aprilTag)
                 .build();
 
-        // --- Initialize drive (replace with your drive class) ---
+        // --- Initialize drive ---
         robot = new BaseRobot(hardwareMap);
 
         waitForStart();
+
+        AprilTagDetection lastTag = null; // store last seen tag
 
         while (opModeIsActive()) {
 
@@ -55,21 +64,28 @@ public class AprilTagTestTeleop extends LinearOpMode {
             // --- Assist mode: drive to tag while holding Y ---
             if (gamepad1.y) {
                 List<AprilTagDetection> detections = aprilTag.getDetections();
-                if (!detections.isEmpty()) {
-                    // pick first detected tag
-                    AprilTagDetection tag = detections.get(0);
 
-                    double rangeError = tag.ftcPose.range - DESIRED_DISTANCE;
-                    double headingError = tag.ftcPose.bearing;
-                    double yawError = tag.ftcPose.yaw;
+                if (!detections.isEmpty()) {
+                    lastTag = detections.get(0); // update last seen tag
+                }
+
+                if (lastTag != null) {
+                    double rangeError = lastTag.ftcPose.range - DESIRED_DISTANCE;
+                    double headingError = lastTag.ftcPose.bearing;
+                    double yawError = lastTag.ftcPose.yaw;
 
                     double autoForward = clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
                     double autoStrafe = clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
                     double autoTurn = clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
 
-                    forward = autoForward;
-                    strafe = autoStrafe;
-                    turn = autoTurn;
+                    // apply smoothing
+                    forward = autoForward * SMOOTHING + prevForward * (1 - SMOOTHING);
+                    strafe  = autoStrafe * SMOOTHING + prevStrafe * (1 - SMOOTHING);
+                    turn    = autoTurn * SMOOTHING + prevTurn * (1 - SMOOTHING);
+
+                    prevForward = forward;
+                    prevStrafe = strafe;
+                    prevTurn = turn;
                 }
             }
 
