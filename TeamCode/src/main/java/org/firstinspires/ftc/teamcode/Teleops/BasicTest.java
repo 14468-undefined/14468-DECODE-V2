@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.BaseRobot.BaseRobot;
 import org.firstinspires.ftc.teamcode.BaseRobot.Subsystems.AprilTagVision;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 @TeleOp
 public class BasicTest extends LinearOpMode {
@@ -32,7 +33,9 @@ public class BasicTest extends LinearOpMode {
         driveThread.start();
 
         while (!isStopRequested() && opModeIsActive()) {
-            robot.TeleopUpdate();
+
+
+            
 
             telemetry.addLine("AprilTag Assist (hold Y)");
             if (vision.hasTarget()) {
