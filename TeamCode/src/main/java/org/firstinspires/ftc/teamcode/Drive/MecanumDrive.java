@@ -527,5 +527,27 @@ public final class MecanumDrive {
     }
     //end new imu stuff
 
+    public void driveFieldCentric(double xPow, double yPow, double rotPow, double speed, Telemetry telemetry) {
+        if (Math.abs(xPow) < .05 && Math.abs(yPow) < .05) {
+            setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), rotPow * speed));
+            return;
+        }
 
+        double targetTheta = Math.atan2(Math.toRadians(yPow), Math.toRadians(xPow));
+        double robotTheta = getHeading();
+        double diffTheta = Math.toDegrees(targetTheta) - Math.toDegrees(robotTheta);
+        if (telemetry != null)
+            telemetry.addLine("Target " + Math.toDegrees(targetTheta) + " Robot " + Math.toDegrees(robotTheta) + " Difference " + diffTheta);
+        xPow = Math.cos(Math.toRadians(diffTheta)) * speed;
+        yPow = Math.sin(Math.toRadians(diffTheta)) * speed;
+        rotPow = rotPow * speed;
+        rotPow = rotPow * speed;
+        if (telemetry != null) {
+            telemetry.addLine("XPOW: " + xPow);
+            telemetry.addLine("YPOW" + yPow);
+            telemetry.addLine("ROT POW" + rotPow);
+            telemetry.addLine("DIFF " + Math.toDegrees(diffTheta));
+        }
+        setDrivePowers(new PoseVelocity2d(new Vector2d(xPow, yPow), rotPow));
+    }
 }

@@ -22,8 +22,8 @@ public class AprilTagHeadingAdjust extends LinearOpMode {
     private AprilTagProcessor aprilTag;
 
     // turning gain
-    private static final double TURN_GAIN = 0.01;
-    private static final double MAX_AUTO_TURN = 0.3;
+    private static final double TURN_GAIN = 0.02;
+    private static final double MAX_AUTO_TURN = 0.6;
 
     BaseRobot robot;
 
@@ -41,6 +41,11 @@ public class AprilTagHeadingAdjust extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+
+
+            if (gamepad1.a){
+                robot.drive.resetHeading();
+            }
 
             double forward = -gamepad1.left_stick_y;
             double strafe  = -gamepad1.left_stick_x;
@@ -63,7 +68,8 @@ public class AprilTagHeadingAdjust extends LinearOpMode {
             // --- Use your field-centric drive ---
             robot.drive.driveFieldCentric(-strafe, forward, turn, 1.0, telemetry);
 
-            telemetry.addLine("Drive with joysticks. Release right stick to auto-face tag.");
+            telemetry.addLine("Drive with joysticks. Release right stick to auto face the april tag.");
+            telemetry.addLine("Reset heading: gamepad1.a");
             telemetry.update();
         }
     }
