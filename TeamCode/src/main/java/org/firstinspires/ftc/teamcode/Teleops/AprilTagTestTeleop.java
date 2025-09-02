@@ -14,6 +14,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
+
 @TeleOp
 public class AprilTagTestTeleop extends LinearOpMode {
 
@@ -29,31 +30,26 @@ public class AprilTagTestTeleop extends LinearOpMode {
     private double MAX_AUTO_STRAFE = 0.5;
     private double MAX_AUTO_TURN = 0.3;
 
+    // smoothing factor
     private static final double SMOOTHING = 0.2;
-
-    BaseRobot robot;
-
-    // smoothing variables
     private double prevForward = 0;
     private double prevStrafe = 0;
     private double prevTurn = 0;
 
+    BaseRobot robot;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // --- Initialize Webcam & AprilTag Processor ---
         aprilTag = new AprilTagProcessor.Builder().build();
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .addProcessor(aprilTag)
                 .build();
 
-        // --- Initialize drive ---
         robot = new BaseRobot(hardwareMap);
 
         waitForStart();
-
-        AprilTagDetection lastTag = null; // store last seen tag
 
         while (opModeIsActive()) {
 
@@ -64,29 +60,31 @@ public class AprilTagTestTeleop extends LinearOpMode {
             // --- Assist mode: drive to tag while holding Y ---
             if (gamepad1.y) {
                 List<AprilTagDetection> detections = aprilTag.getDetections();
-
                 if (!detections.isEmpty()) {
-                    lastTag = detections.get(0); // update last seen tag
-                }
+                    AprilTagDetection tag = detections.get(0);
 
-                if (lastTag != null) {
-                    double rangeError = lastTag.ftcPose.range - DESIRED_DISTANCE;
-                    double headingError = lastTag.ftcPose.bearing;
-                    double yawError = lastTag.ftcPose.yaw;
+                    double rangeError = tag.ftcPose.range - DESIRED_DISTANCE;
+                    double headingError = tag.ftcPose.bearing;
+                    double yawError = tag.ftcPose.yaw;
 
-                    double autoForward = clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-                    double autoStrafe = clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
-                    double autoTurn = clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+                    double targetForward = clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+                    double targetStrafe  = clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+                    double targetTurn    = clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
 
-                    // apply smoothing
-                    forward = autoForward * SMOOTHING + prevForward * (1 - SMOOTHING);
-                    strafe  = autoStrafe * SMOOTHING + prevStrafe * (1 - SMOOTHING);
-                    turn    = autoTurn * SMOOTHING + prevTurn * (1 - SMOOTHING);
+                    // --- apply smoothing ---
+                    forward = targetForward * SMOOTHING + prevForward * (1 - SMOOTHING);
+                    strafe  = targetStrafe  * SMOOTHING + prevStrafe  * (1 - SMOOTHING);
+                    turn    = targetTurn    * SMOOTHING + prevTurn    * (1 - SMOOTHING);
 
                     prevForward = forward;
                     prevStrafe = strafe;
                     prevTurn = turn;
                 }
+            } else {
+                // reset previous values when not in assist mode to avoid jumps
+                prevForward = 0;
+                prevStrafe = 0;
+                prevTurn = 0;
             }
 
             robot.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(forward, strafe), turn));
