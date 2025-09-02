@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.BaseRobot.BaseRobot;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -59,7 +60,8 @@ public class AprilTagHeadingAdjust extends LinearOpMode {
                 }
             }
 
-            robot.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(forward, strafe), turn));
+            // --- Use your field-centric drive ---
+            robot.drive.driveFieldCentric(-strafe, forward, turn, 1.0, telemetry);
 
             telemetry.addLine("Drive with joysticks. Release right stick to auto-face tag.");
             telemetry.update();
