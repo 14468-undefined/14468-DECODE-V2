@@ -1,12 +1,8 @@
 package org.firstinspires.ftc.teamcode.Teleops;
 
-import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.Vector2d;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.BaseRobot.BaseRobot;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -21,7 +17,7 @@ public class AprilTagHeadingAdjust extends LinearOpMode {
     private VisionPortal visionPortal;
     private AprilTagProcessor aprilTag;
 
-    // turning gain
+    // turning assist parameters
     private static final double TURN_GAIN = 0.02;
     private static final double MAX_AUTO_TURN = 0.6;
 
@@ -42,34 +38,40 @@ public class AprilTagHeadingAdjust extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-
-            if (gamepad1.a){
+            // --- reset heading when A is pressed ---
+            if (gamepad1.a) {
                 robot.drive.resetHeading();
             }
 
+            // raw joystick input
             double forward = -gamepad1.left_stick_y;
-            double strafe  = -gamepad1.left_stick_x;
-            double turn    = -gamepad1.right_stick_x; // default manual turn
+            double strafe  =  gamepad1.left_stick_x;   // non-inverted
+            double turn    = -gamepad1.right_stick_x;
 
-            // --- Auto-heading assist if a tag is visible ---
+            // check for tags
             List<AprilTagDetection> detections = aprilTag.getDetections();
-            if (!detections.isEmpty()) {
-                AprilTagDetection tag = detections.get(0);
+            double speedFactor = 1.0; // normal speed
 
-                // heading error from tag (bearing in degrees)
+            if (!detections.isEmpty()) {
+                // slow down movement when tag is seen
+                speedFactor = 0.3;
+
+                // heading correction
+                AprilTagDetection tag = detections.get(0);
                 double headingError = tag.ftcPose.bearing;
 
-                // override turn with correction if right stick is NOT being used
-                if (Math.abs(turn) < 0.05) { // small deadband
+                if (Math.abs(turn) < 0.05) { // deadband for manual stick
                     turn = clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
                 }
             }
 
-            // --- Use your field-centric drive ---
-            robot.drive.driveFieldCentric(-strafe, forward, turn, 1.0, telemetry);
+            // --- field-centric drive ---
+            robot.drive.driveFieldCentric(strafe, forward, turn, speedFactor, telemetry);
 
-            telemetry.addLine("Drive with joysticks. Release right stick to auto face the april tag.");
-            telemetry.addLine("Reset heading: gamepad1.a");
+            telemetry.addLine("Drive with joysticks.");
+            telemetry.addLine("Auto-face tag when visible (release right stick).");
+            telemetry.addLine("Reset heading with A.");
+            telemetry.addLine("Speed factor: " + speedFactor);
             telemetry.update();
         }
     }
