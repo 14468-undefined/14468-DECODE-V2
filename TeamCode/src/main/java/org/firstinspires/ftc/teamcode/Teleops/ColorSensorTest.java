@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.BaseRobot.BaseRobot;
+import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
 
 @TeleOp

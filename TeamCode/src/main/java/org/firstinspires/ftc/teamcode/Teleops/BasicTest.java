@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode.Teleops;
 
-import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.BaseRobot.BaseRobot;
-import org.firstinspires.ftc.teamcode.BaseRobot.Subsystems.AprilTagVision;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
+import org.firstinspires.ftc.teamcode.subsystem.AprilTagVision;
 
 @TeleOp
 public class BasicTest extends LinearOpMode {

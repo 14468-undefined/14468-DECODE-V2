@@ -1,23 +1,16 @@
-package org.firstinspires.ftc.teamcode.BaseRobot;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 
 
-
-import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.Constants;
 
 
 import org.firstinspires.ftc.teamcode.Drive.MecanumDrive;
@@ -51,6 +44,8 @@ public class BaseRobot {
     //private double ServoExamplePos = 0;
 
 
+
+
     //servo constants
 
     //private final double ServoMax = .7638;
@@ -74,6 +69,7 @@ public class BaseRobot {
 
 
     //Servo ExampleServo;
+    Servo Carousel;
 
     //DigitalChannel touchSensor1;
 
@@ -108,6 +104,9 @@ public class BaseRobot {
 
 
         //ExampleMotorPos = leftIntakeSlider.getCurrentPosition();
+
+        Carousel = hwMap.servo.get("carousel");
+        Carousel.setPosition(0);
 
 
         //ExampleServo = hwMap.servo.get("ExampleServo");

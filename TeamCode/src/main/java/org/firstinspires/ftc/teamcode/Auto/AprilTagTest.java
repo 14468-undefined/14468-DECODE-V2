@@ -7,9 +7,9 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.BaseRobot.BaseRobot;
-import org.firstinspires.ftc.teamcode.BaseRobot.Subsystems.AprilTagVision;
-import org.firstinspires.ftc.teamcode.BaseRobot.Actions.DriveToAprilTagAction;
+import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
+import org.firstinspires.ftc.teamcode.subsystem.AprilTagVision;
+import org.firstinspires.ftc.teamcode.subsystem.Actions.DriveToAprilTagAction;
 
 @Autonomous(name = "AprilTagTest")
 public final class AprilTagTest extends LinearOpMode {

@@ -8,16 +8,11 @@ public final class Constants{
 
     }
     @Config
-    public static final class outtakeSlideConstants{
-        public static int HighBucket = 3100;//
-        public static int passThroughScoringBelowChamber = 1780;
-        public static int passThroughScoringOnChamber = 2552;
-        public static int transfer = 910;
-        public static int onChamber = 890;
-        public static int aboveChamber = 1685;
-        public static int prepForHang = 0;
-        public static int MAX = 3100;
-        public static double power = .9;
+    public static final class CarouselConstants{
+        public static double slot1 = 0;
+        public static double slot2 = 0;
+        public static double slot3 = 0;
+
 
 
     }
