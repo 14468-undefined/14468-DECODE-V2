@@ -4,15 +4,18 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 
-public class Shooter extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase {
     private final MotorEx topMotor;
     private final MotorEx bottomMotor;
-    private final Telemetry telemetry;
+
     private final double targetRPM = 2500;  //TODO: Tune this
 
-    public Shooter(HardwareMap hardwareMap, Telemetry telemetry) {
-        this.telemetry = telemetry;
+    private ColorfulTelemetry cTelemetry;
+    private HardwareMap hardwareMap;
+    public ShooterSubsystem(HardwareMap hardwareMap, ColorfulTelemetry telemetry) {
+        this.cTelemetry = telemetry;
 
         topMotor = new MotorEx(hardwareMap, "topShooter");
         bottomMotor = new MotorEx(hardwareMap, "bottomShooter");
@@ -46,12 +49,29 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        telemetry.addData("SHOOTER SUBSYSTEM", "");
-        telemetry.addData("Top Velocity (tps)", topMotor.getVelocity());
-        telemetry.addData("Bottom Velocity (tps)", bottomMotor.getVelocity());
-        telemetry.addData("Target (tps)", rpmToTicksPerSecond(targetRPM));
-        telemetry.addData("At Speed?", atSpeed());
-        telemetry.update();
+
+
+            cTelemetry.reset(); // reset any previous styles
+
+            cTelemetry
+                    .setColor(ColorfulTelemetry.Black).bold()
+                    .addLine("SHOOTER SUBSYSTEM")  // header
+                    .reset()
+                    .addData("Top Velocity (tps)", topMotor.getVelocity())
+                    .addData("Bottom Velocity (tps)", bottomMotor.getVelocity())
+                    .addData("Target (tps)", rpmToTicksPerSecond(targetRPM));
+
+            //set green if at speed
+            if (atSpeed()) {
+                cTelemetry.setColor(ColorfulTelemetry.Green);
+            } else {
+                cTelemetry.setColor(ColorfulTelemetry.Red);
+            }
+            cTelemetry.addData("At Speed?", atSpeed());
+
+
+            cTelemetry.update();
+
     }
 
     // convert rpm to tps
