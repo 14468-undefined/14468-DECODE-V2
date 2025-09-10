@@ -1,18 +1,22 @@
 package org.firstinspires.ftc.teamcode.teleop.helper;
 
-//import com.google.blocks.ftcrobotcontroller.runtime.CRServoAccess;
-import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.roadrunner.drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
+import java.util.List;
 
-@TeleOp
+
+@TeleOp(name = "Servo Tester", group = "helper")
 public class ServoTesting extends LinearOpMode {
+    int curServo = 0;
+    Servo cur = null;
+    double curServoPosition = 0;
+    private boolean prevDUP;
+    private boolean prevDDOWN;
+    List<Servo> servos;
 
-    private com.qualcomm.robotcore.hardware.HardwareMap HardwareMap;
-    BaseRobot robot;
 
 
 
@@ -22,84 +26,85 @@ public class ServoTesting extends LinearOpMode {
 
 
 
+        servos = hardwareMap.getAll(Servo.class);
+        for (Servo s:servos){
+            telemetry.addLine("Name:"  + s.getDeviceName() + " Port: " + s.getPortNumber()  + " Position: " + round(s.getPosition()));
+        }
+        telemetry.update();
         waitForStart();
-        //robot.setV4bPos(robot.getV4B_INTAKE_POS());
-        //robot.setAxlePos(robot.getAXLE_HB());
 
 
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        robot = new BaseRobot(hardwareMap);
+
 
         while(!isStopRequested() && opModeIsActive()){
+            //get all the servos from the control hub
+            servos = hardwareMap.getAll(Servo.class);
+            telemetry.addLine("Use the Dpad Up and Down arrows, to select the servo you want to turn");
+            telemetry.addLine("Use the left stick y to turn the selected servo; \nThe respective 'position' of the servo will be displayed via telemetry. \nUse this to help you define servo set positions, or to determine whether  a servo needs to be reprogrammed");
+
+            //if there are no servos
+            if(servos.size()==0){
+                telemetry.addLine("NO SERVOS FOUND");
+            }
+            else{//otherwise
+                //Print out Info about all the servos
+                for (int i = 0; i < servos.size(); i++){
+                    Servo s = servos.get(i);
+                    telemetry.addLine((i==curServo?"!ENABLED! ":"disabled ")+ "---Name:"  + s.getDeviceName() + "---Port: " + s.getPortNumber() + "---Position: " + s.getPosition());
+                }
 
 
-            //robot.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x), -gamepad1.right_stick_x));
+                //SELECTING SERVO
+                if(gamepad1.dpad_up || gamepad1.dpad_down){
+                    if(gamepad1.dpad_up && gamepad1.dpad_up !=prevDUP){
+                        curServo -=1;
+                    }
+                    if(gamepad1.dpad_down && gamepad1.dpad_down !=prevDDOWN){
+                        curServo+=1;
+                    }
 
 
-            //.1482 axle straight out
-
-            double stickSpeed = .01;
-            double speed = .005;
-            robot.update();
-            //robot.updateOuttakeSlidesPos();
-            //end
+                    if(curServo > servos.size()-1 && curServo!=0){curServo=0;}
+                    else if(curServo < 0){curServo =servos.size()-1;}
 
 
-            //axle down: .9773
-            //HB axle: .35
-            //axle out: .181
+                    if(curServo <servos.size() && curServo >=0 && servos.get(curServo)!=null){
+                        cur = servos.get(curServo);
+                        curServoPosition = cur.getPosition();
+                    }
 
 
-            //open: .4887
-            //closed: .2951
-            //gimbal reset: .4825
+                }
+                prevDUP = gamepad1.dpad_up;
+                prevDDOWN = gamepad1.dpad_down;
 
-            //robot.changeAxlePos(gamepad2.right_stick_y * stickSpeed);
 
-            if(gamepad2.y){
+                //MOVING SERVO
+                curServoPosition += gamepad1.left_stick_y*.0005;
+                curServoPosition = Range.clip(curServoPosition, 0, 1);
+                if(cur != null){cur.setPosition(curServoPosition);}
+                telemetry.addLine("TARGET: " + curServoPosition);
+                telemetry.update();
+
+
             }
 
-            if(gamepad2.y){
 
-            }if(gamepad2.a){
-
-            }
-
-
-            //tray open: .4743
-            //tray closed: .0461
-
-
-
-            //telemetry.addData("1 - Intake Grasper - left Stick: ", robot.getIntakeGrasperPos());
-            telemetry.addLine();
-
-            /*telemetry.addData("1 - Outtake Grasper - right stick", robot.getOuttakeGrasperPos());
-            telemetry.addLine();
-            telemetry.addData("2 - V4b - left stick", robot.getV4bPos());
-            telemetry.addLine();
-            telemetry.addData("2 - axle - right stick", robot.getOuttakeAxlePos());
-            //telemetry.addData("outtake slides pos", robot.getOuttakeSlidesPos());
-            telemetry.addLine();
-            telemetry.addData("2 - wrist - y/a", robot.getOuttakeWristPos());
-            telemetry.addData("intake Gimbal - 2y and a", robot.getGimbalPos());
-            telemetry.addData("tray pos", robot.getTrayPos());
-
-             */
-
-            //intake claw open: .29
-            //intake claw closed: .54
-
-            //intake gimbal reset" .2
-            //v4b down: 0
-            //v4b to tray: .6186
-
-            telemetry.update();
-            //end telemetry
-
-
-
-            //_____________________________________________________________________________________
         }
     }
+
+    public double round(double input){
+        return ((int)(input*100.0))/100.0;
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
