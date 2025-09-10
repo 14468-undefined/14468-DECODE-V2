@@ -13,6 +13,8 @@ import org.firstinspires.ftc.teamcode.util.Constants;
 
 public class BaseRobot extends UndefinedSubsystemBase {
 
+
+    public WebcamAprilTagVisionSubsystem webcamVision;
     public AutoUtil autoGenerator;
     public ShooterSubsystem shooter;
     public DriveSubsystem drive;
@@ -25,6 +27,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         shooter = new ShooterSubsystem(hwMap, cTelemetry);
         intake = new IntakeSubsystem(hwMap, cTelemetry);
         autoGenerator = new AutoUtil(drive);
+        webcamVision = new WebcamAprilTagVisionSubsystem(hwMap);
     }
 
 
@@ -33,6 +36,8 @@ public class BaseRobot extends UndefinedSubsystemBase {
         drive.printTelemetry(t);
         intake.printTelemetry(t);
         shooter.printTelemetry(t);
+        webcamVision.printTelemetry(t);
+
     }
 
     @Override
@@ -40,6 +45,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         drive.periodic();
         intake.periodic();
         shooter.periodic();
+        webcamVision.periodic();
 
     }
 

@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.helper;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -12,7 +12,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 
 @TeleOp
-public class AprilTagHeadingAdjust extends LinearOpMode {
+public class AprilTagHeadingAdjust extends SampleCommandTeleop {
 
     private VisionPortal visionPortal;
     private AprilTagProcessor aprilTag;
