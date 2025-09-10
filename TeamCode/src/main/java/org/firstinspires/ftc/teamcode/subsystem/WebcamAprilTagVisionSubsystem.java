@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
@@ -19,49 +17,110 @@ public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
     private VisionPortal visionPortal;
     private AprilTagProcessor aprilTag;
     private AprilTagDetection desiredTag;
+    private final HardwareMap hardwareMap;
 
-    // PID-ish constants
-    public static final double DESIRED_DISTANCE = 12.0; // inches
-    private static final double SPEED_GAIN = 0.02;
-    private static final double STRAFE_GAIN = 0.015;
-    private static final double TURN_GAIN = 0.01;
+    // PID constants
+    private static final double DESIRED_DISTANCE = 12.0; // inches
+    private static final double P_DIST = 0.04, I_DIST = 0.001, D_DIST = 0.01;
+    private static final double P_HEADING = 0.02, I_HEADING = 0.0005, D_HEADING = 0.005;
+    private static final double P_STRAFE = 0.03, I_STRAFE = 0.001, D_STRAFE = 0.01;
+    private static final double MAX_SPEED = 0.5, MAX_TURN = 0.3, MAX_STRAFE = 0.5;
 
-    private static final double MAX_AUTO_SPEED = 0.5;
-    private static final double MAX_AUTO_STRAFE = 0.5;
-    private static final double MAX_AUTO_TURN = 0.3;
+    // PID state
+    private double distIntegral = 0, lastDistError = 0;
+    private double headingIntegral = 0, lastHeadingError = 0;
+    private double strafeIntegral = 0, lastStrafeError = 0;
 
     public WebcamAprilTagVisionSubsystem(HardwareMap hardwareMap) {
+        this.hardwareMap = hardwareMap;
         aprilTag = new AprilTagProcessor.Builder().build();
+        buildVisionPortal();
+    }
+
+    private void buildVisionPortal() {
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .addProcessor(aprilTag)
                 .build();
+        desiredTag = null;
+        resetPID();
     }
 
-    // ---- Command-based drive to tag ----
+    /** Start the vision camera */
+    public void startVision() {
+        if (visionPortal == null) buildVisionPortal();
+        desiredTag = null;
+        resetPID();
+    }
+
+    /** Stop the vision camera */
+    public void stopVision() {
+        if (visionPortal != null) {
+            visionPortal.close();
+            visionPortal = null;
+            desiredTag = null;
+        }
+    }
+
+    public boolean isAtTarget() {
+        if (!hasTarget()) return false;
+        double error = Math.abs(desiredTag.ftcPose.range - DESIRED_DISTANCE);
+        return error < 0.5; // or whatever tolerance you want
+    }
+
+    /** Command that drives the robot to the detected tag using PID */
     public CommandBase getDriveToTagCommand(DriveSubsystem drive) {
         return this.runEnd(() -> {
-            // update detections
+            if (visionPortal == null) {
+                drive.rest();
+                return;
+            }
+
             List<AprilTagDetection> detections = aprilTag.getDetections();
             desiredTag = detections.isEmpty() ? null : detections.get(0);
 
             if (!hasTarget()) {
                 drive.rest();
+                resetPID();
                 return;
             }
 
-            // PID-ish movement
-            double rangeError = desiredTag.ftcPose.range - DESIRED_DISTANCE;
+            double distError = desiredTag.ftcPose.range - DESIRED_DISTANCE;
             double headingError = desiredTag.ftcPose.bearing;
-            double yawError = desiredTag.ftcPose.yaw;
+            double strafeError = -desiredTag.ftcPose.yaw;
 
-            double forward  = clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-            double strafe   = clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
-            double turn     = clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+            // PID calculations
+            double forward = pid(distError, distIntegral, lastDistError, P_DIST, I_DIST, D_DIST);
+            double turn = pid(headingError, headingIntegral, lastHeadingError, P_HEADING, I_HEADING, D_HEADING);
+            double strafe = pid(strafeError, strafeIntegral, lastStrafeError, P_STRAFE, I_STRAFE, D_STRAFE);
 
-            drive.driveFieldcentric(strafe, forward, turn, 0.3);
+            // Clip outputs
+            forward = clip(forward, -MAX_SPEED, MAX_SPEED);
+            turn = clip(turn, -MAX_TURN, MAX_TURN);
+            strafe = clip(strafe, -MAX_STRAFE, MAX_STRAFE);
+
+            drive.driveFieldcentric(strafe, forward, turn, 0.5);
+
+            // Update integrals and last errors
+            distIntegral += distError;
+            lastDistError = distError;
+
+            headingIntegral += headingError;
+            lastHeadingError = headingError;
+
+            strafeIntegral += strafeError;
+            lastStrafeError = strafeError;
 
         }, drive::rest);
+    }
+
+    private double pid(double error, double integral, double lastError, double p, double i, double d) {
+        return p * error + i * integral + d * (error - lastError);
+    }
+
+    private void resetPID() {
+        distIntegral = headingIntegral = strafeIntegral = 0;
+        lastDistError = lastHeadingError = lastStrafeError = 0;
     }
 
     public boolean hasTarget() {
@@ -89,6 +148,6 @@ public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
 
     @Override
     public void periodic() {
-        // optional: you can process detections here if you want
+        // optional: automatic processing if needed
     }
 }
