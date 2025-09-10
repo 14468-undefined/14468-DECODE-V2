@@ -7,44 +7,46 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private final MotorEx topMotor;
-    private final MotorEx bottomMotor;
+    private final MotorEx shooter;
 
-    private final double targetRPM = 2500;  //TODO: Tune this
+    private final double targetRPM = 6000;  //TODO: Tune this
 
     private ColorfulTelemetry cTelemetry;
     private HardwareMap hardwareMap;
     public ShooterSubsystem(HardwareMap hardwareMap, ColorfulTelemetry telemetry) {
         this.cTelemetry = telemetry;
 
-        topMotor = new MotorEx(hardwareMap, "topShooter");
-        bottomMotor = new MotorEx(hardwareMap, "bottomShooter");
+        shooter = new MotorEx(hardwareMap, "shooter");
+
 
         //set to vel control so its constant instead of just power
-        topMotor.setRunMode(MotorEx.RunMode.VelocityControl);
-        bottomMotor.setRunMode(MotorEx.RunMode.VelocityControl);
+        shooter.setRunMode(MotorEx.RunMode.VelocityControl);
 
-        //reverse one
-        bottomMotor.setInverted(true);
+        //reverse
+        shooter.setInverted(false);
     }
 
-    // Spin both wheels up to speed
+    // Spin up to speed
     public void spinUp() {
         double velocity = rpmToTicksPerSecond(targetRPM);
-        topMotor.setVelocity(velocity);
-        bottomMotor.setVelocity(velocity);
+        shooter.setVelocity(velocity);
+
+    }
+
+    public void spinUpReverse(){
+        double velocity = rpmToTicksPerSecond(targetRPM);
+        shooter.setVelocity(-velocity);
     }
 
     // Stop both wheels
     public void stop() {
-        topMotor.set(0);
-        bottomMotor.set(0);
+        shooter.set(0);
+
     }
 
     //make sure they are close to right speed
     public boolean atSpeed() {
-        return Math.abs(topMotor.getVelocity() - rpmToTicksPerSecond(targetRPM)) < 50 &&
-                Math.abs(bottomMotor.getVelocity() - rpmToTicksPerSecond(targetRPM)) < 50;
+        return Math.abs(shooter.getVelocity() - rpmToTicksPerSecond(targetRPM)) < 50;
     }
 
     public void printTelemetry(ColorfulTelemetry t) {
@@ -55,8 +57,8 @@ public class ShooterSubsystem extends SubsystemBase {
         t.setColor(ColorfulTelemetry.Black).bold();
         t.addLine("SHOOTER SUBSYSTEM");  // header
         t.reset();
-        t.addData("Top Velocity (tps)", topMotor.getVelocity());
-        t.addData("Bottom Velocity (tps)", bottomMotor.getVelocity());
+        t.addData("Velocity (tps)", shooter.getVelocity());
+
         t.addData("Target (tps)", rpmToTicksPerSecond(targetRPM));
 
         //set green if at speed
