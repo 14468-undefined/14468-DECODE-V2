@@ -26,6 +26,12 @@ public final class Constants{
         public static int minFromGround = 718;//change
 
     }
+
+    public static class Util{
+        public static double round(double in, int places){
+            return ((int)(in * Math.pow(10,places)))/(double)Math.pow(10,places);
+        }
+    }
     @Config
     public static final class intakeClawConstants{
 

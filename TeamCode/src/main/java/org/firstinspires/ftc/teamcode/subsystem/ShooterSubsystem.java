@@ -47,30 +47,36 @@ public class ShooterSubsystem extends SubsystemBase {
                 Math.abs(bottomMotor.getVelocity() - rpmToTicksPerSecond(targetRPM)) < 50;
     }
 
+    public void printTelemetry(ColorfulTelemetry t) {
+
+        t.reset(); // reset any previous styles
+
+
+        t.setColor(ColorfulTelemetry.Black).bold();
+        t.addLine("SHOOTER SUBSYSTEM");  // header
+        t.reset();
+        t.addData("Top Velocity (tps)", topMotor.getVelocity());
+        t.addData("Bottom Velocity (tps)", bottomMotor.getVelocity());
+        t.addData("Target (tps)", rpmToTicksPerSecond(targetRPM));
+
+        //set green if at speed
+        if (atSpeed()) {
+            t.setColor(ColorfulTelemetry.Green);
+        } else {
+            t.setColor(ColorfulTelemetry.Red);
+        }
+        t.addData("At Speed?", atSpeed());
+
+
+        t.update();
+
+    }
+
     @Override
     public void periodic() {
 
 
-            cTelemetry.reset(); // reset any previous styles
 
-            cTelemetry
-                    .setColor(ColorfulTelemetry.Black).bold()
-                    .addLine("SHOOTER SUBSYSTEM")  // header
-                    .reset()
-                    .addData("Top Velocity (tps)", topMotor.getVelocity())
-                    .addData("Bottom Velocity (tps)", bottomMotor.getVelocity())
-                    .addData("Target (tps)", rpmToTicksPerSecond(targetRPM));
-
-            //set green if at speed
-            if (atSpeed()) {
-                cTelemetry.setColor(ColorfulTelemetry.Green);
-            } else {
-                cTelemetry.setColor(ColorfulTelemetry.Red);
-            }
-            cTelemetry.addData("At Speed?", atSpeed());
-
-
-            cTelemetry.update();
 
     }
 

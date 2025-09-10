@@ -131,7 +131,7 @@ public final class MecanumDrive {
 
 
     double headingOffset = 0;//imu updates
-    double initialHeading = 0;//imu updates
+
     public class DriveLocalizer implements Localizer {
         public final Encoder leftFront, leftBack, rightBack, rightFront;
         public final IMU imu;
@@ -228,10 +228,13 @@ public final class MecanumDrive {
         }
     }
 
+    public double initialHeading = 0;//JS Updates
+
+
     public MecanumDrive(HardwareMap hardwareMap, Pose2d pose) {
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 
-        initialHeading = Math.toDegrees( pose.heading.log());//new IMU updates
+
 
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
@@ -257,6 +260,14 @@ public final class MecanumDrive {
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
         lazyImu = new LazyHardwareMapImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
                 PARAMS.logoFacingDirection, PARAMS.usbFacingDirection));
+
+
+        //reset absolute imut position
+        resetImuAbsolute();
+
+        //reset initial heading value
+        initialHeading = Math.toDegrees(pose.heading.log());
+
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
@@ -516,15 +527,22 @@ public final class MecanumDrive {
         );
     }
 
-    //new imu stuff
+    //JS Updates
     public double getHeading(){
-        return lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)+Math.toRadians(initialHeading)-Math.toRadians(headingOffset);
+        return lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)+Math.toRadians(initialHeading);
+    }
+    public void resetHeadingRelative(double setFrontOfRobotToFacingHeading){
+        resetImuAbsolute();
+        initialHeading = setFrontOfRobotToFacingHeading;
+    }
+    public void resetHeadingRelative(){
+        resetHeadingRelative(0);
     }
 
-    public void resetHeading(){
-        headingOffset = Math.toDegrees(lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+    public void resetImuAbsolute(){
+        lazyImu.get().resetYaw();
     }
-    //end new imu stuff
+    //end JS Updates
 
     public void driveFieldCentric(double xPow, double yPow, double rotPow, double speed, Telemetry telemetry) {
         if (Math.abs(xPow) < .05 && Math.abs(yPow) < .05) {

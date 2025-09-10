@@ -5,7 +5,9 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
+import org.firstinspires.ftc.teamcode.util.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
@@ -43,36 +45,40 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotor.set(0);
     }
 
+    public void printTelemetry(ColorfulTelemetry t) {
+        t.reset(); // reset any previous styles
+
+
+        t.setColor(ColorfulTelemetry.Blue).bold().addLine("INTAKE SUBSYSTEM").reset();
+
+        String status;
+        if (intakeMotor.get() > 0) {
+            status = "Intaking";
+            t.setColor(ColorfulTelemetry.Green);
+        } else if (intakeMotor.get() < 0) {
+            status = "Reversing";
+            t.setColor(ColorfulTelemetry.Orange);
+        } else {
+            status = "Stopped";
+            t.setColor(ColorfulTelemetry.Red);
+        }
+        t.addData("Status", status);
+
+
+        t.update();
+
+
+        //return power
+        t.addData("Motor Power", intakeMotor.get());
+        t.update();
+
+    }
 
     @Override
     public void periodic() {
 
 
-        cTelemetry.reset(); // reset any previous styles
 
-
-        cTelemetry.setColor(ColorfulTelemetry.Blue).bold().addLine("INTAKE SUBSYSTEM").reset();
-
-        String status;
-        if (intakeMotor.get() > 0) {
-            status = "Intaking";
-            cTelemetry.setColor(ColorfulTelemetry.Green);
-        } else if (intakeMotor.get() < 0) {
-            status = "Reversing";
-            cTelemetry.setColor(ColorfulTelemetry.Orange);
-        } else {
-            status = "Stopped";
-            cTelemetry.setColor(ColorfulTelemetry.Red);
-        }
-        cTelemetry.addData("Status", status);
-
-
-        cTelemetry.update();
-
-
-        //return power
-        cTelemetry.addData("Motor Power", intakeMotor.get());
-        cTelemetry.update();
 
     }
 
