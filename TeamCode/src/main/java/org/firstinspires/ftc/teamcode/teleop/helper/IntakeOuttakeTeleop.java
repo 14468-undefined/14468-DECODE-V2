@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.subsystem.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystem.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystem.ShooterSubsystem;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
@@ -15,6 +16,7 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
     private IntakeSubsystem intake;
     private ShooterSubsystem shooter;
     private FtcDashboard dash;
+    private DriveSubsystem drive;
 
 
     private double intakePower = 0.0;
@@ -27,6 +29,7 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
     public void onInit() {
         intake = robot.intake;
         shooter = robot.shooter;
+        drive = robot.drive;
 
         // inside loop
         double rightStickY = - g1.getRightY(); // up = positive
@@ -35,6 +38,15 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
             intakePower = Math.max(minPower, Math.min(maxPower, intakePower));
         }
 
+
+        robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g2.getLeftX(),()->g2.getLeftY(), ()->-g1.getRightX(), .75));
+        //Speed Controls, slowmode * fastmode
+
+
+        //trigger
+        //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>.05).whileActiveOnce();
+        //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>.05).whileActiveOnce();
+        g2.getGamepadButton(GamepadKeys.Button.A).whenActive(()->robot.drive.drive.resetHeadingRelative());
 
 
 
