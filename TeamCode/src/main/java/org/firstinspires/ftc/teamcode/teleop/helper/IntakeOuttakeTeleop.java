@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.teleop.helper;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -32,28 +35,29 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
         drive = robot.drive;
 
         // inside loop
-        double rightStickY = - g1.getRightY(); // up = positive
+        /*double rightStickY = - g1.getRightY(); // up = positive
         if (Math.abs(rightStickY) > 0.1) { // deadzone
             intakePower += rightStickY * adjustSpeed;
             intakePower = Math.max(minPower, Math.min(maxPower, intakePower));
         }
 
+         */
 
-        robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g2.getLeftX(),()->g2.getLeftY(), ()->-g1.getRightX(), .75));
-        //Speed Controls, slowmode * fastmode
+
+        robot.drive.setDefaultCommand(new RunCommand(() -> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
 
         //trigger
         //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)>.05).whileActiveOnce();
         //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>.05).whileActiveOnce();
-        g2.getGamepadButton(GamepadKeys.Button.A).whenActive(()->robot.drive.drive.resetHeadingRelative());
+        //g2.getGamepadButton(GamepadKeys.Button.A).whenActive(()->robot.drive.drive.resetHeadingRelative());
 
 
 
 
 
         // Increase intake power with Y
-        g1.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
+        /*g1.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
             double newPower = Math.min(maxPower, intake.getIntakePower() + step);
             intake.setIntakePower(newPower);
             pen.addLine("Intake Power increased: " + newPower);
@@ -67,6 +71,8 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
             pen.addLine("Intake Power decreased: " + newPower);
         });
 
+
+         */
         // Run intake forward with Right Bumper
         g1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whileHeld(intake::intake);
 
@@ -81,12 +87,12 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
         g1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenReleased(intake::stop);
 
 //______________________________________
-        g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(shooter::spinUp);
-        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(shooter::spinUpReverse);
+        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(shooter::spinUp);
+        g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(shooter::spinUpReverse);
 
         //stop shooter when released
-        g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(shooter::stop);
         g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(shooter::stop);
+        g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(shooter::stop);
 
     }
 
