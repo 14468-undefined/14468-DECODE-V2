@@ -53,7 +53,6 @@ import org.firstinspires.ftc.teamcode.roadrunner.messages.MecanumLocalizerInputs
 import org.firstinspires.ftc.teamcode.roadrunner.messages.PoseMessage;
 import org.firstinspires.ftc.teamcode.roadrunner.Drawing;
 import org.firstinspires.ftc.teamcode.roadrunner.Localizer;
-import org.firstinspires.ftc.teamcode.roadrunner.PinpointLocalizer;
 
 import java.lang.Math;
 import java.util.Arrays;
