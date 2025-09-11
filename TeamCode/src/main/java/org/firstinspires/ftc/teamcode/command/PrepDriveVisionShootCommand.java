@@ -7,9 +7,9 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.subsystem.DriveSubsystem;
 
-public class PrepDriveShootCommand extends SequentialCommandGroup {
+public class PrepDriveVisionShootCommand extends SequentialCommandGroup {
 
-    public PrepDriveShootCommand(BaseRobot robot) {
+    public PrepDriveVisionShootCommand(BaseRobot robot) {
         DriveSubsystem drive = robot.drive;
 
         //start flywheel up to speed

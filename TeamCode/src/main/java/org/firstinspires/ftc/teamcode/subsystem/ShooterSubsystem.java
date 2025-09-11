@@ -38,6 +38,10 @@ public class ShooterSubsystem extends SubsystemBase {
         shooter.setVelocity(-velocity);
     }
 
+    public void shoot(){
+        //shoot with mechanism to push into flywheel
+    }
+
     // Stop both wheels
     public void stop() {
         shooter.set(0);
