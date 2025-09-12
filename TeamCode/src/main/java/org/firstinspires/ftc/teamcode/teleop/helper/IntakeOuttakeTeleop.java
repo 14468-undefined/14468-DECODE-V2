@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -54,6 +55,12 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
 
 
 
+        //right trigger = shooter forwards
+        //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.05).whileActiveContinuous(new RunCommand(() -> robot.shooter.spinUp(), robot.shooter));
+
+        //left trigger = shooter backwards
+        //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.05).whileActiveContinuous(new RunCommand(() -> robot.shooter.spinUpReverse(), robot.shooter));
+
 
 
         // Increase intake power with Y
@@ -88,11 +95,11 @@ public class IntakeOuttakeTeleop extends SampleCommandTeleop {
 
 //______________________________________
         g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(shooter::spinUp);
-        g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(shooter::spinUpReverse);
+        //g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(shooter::spinUpReverse);
 
         //stop shooter when released
         g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(shooter::stop);
-        g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(shooter::stop);
+        //g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(shooter::stop);
 
     }
 
