@@ -6,36 +6,35 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class MeepMeepFarSide {
+
+public class ExtraMeep {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
-        RoadRunnerBotEntity redBot = new DefaultBotBuilder(meepMeep)
+        int startX = 0;
+        int startY = 0;
+        int startHeading = 0;
+
+
+        RoadRunnerBotEntity botTest = new DefaultBotBuilder(meepMeep)
                 .setDimensions(Constants.ROBOT_WIDTH, Constants.ROBOT_HEIGHT)
                 .setConstraints(Constants.MAX_VEL, Constants.MAX_ACCEL, Constants.MAX_ANG_VEL, Constants.MAX_ANG_ACCEL, Constants.TRACK_WIDTH)
                 .build();
 
 
 
-        redBot.runAction(redBot.getDrive().actionBuilder(new Pose2d(56, 9, Math.toRadians(145)))
+        botTest.runAction(botTest.getDrive().actionBuilder(new Pose2d(startX, startY, Math.toRadians(startHeading)))
 
+                //pathing here
 
-                //.strafeToLinearHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
-                //.strafeToConstantHeading(new Vector2d(35.8, 52.5))
-                        .strafeToLinearHeading(new Vector2d(38.5, 35), Math.toRadians(105))
-                        .strafeToLinearHeading(new Vector2d(35.8, 52.5), Math.toRadians(90))
-
-                .strafeToLinearHeading(new Vector2d(56, 9), Math.toRadians(145))
                 .build());
 
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(redBot)
-                //.addEntity(botMotif1)
-                //.addEntity(botMotif2)
-                //.addEntity(botMotif3)
+                .addEntity(botTest)
+
                 .start();
     }
 }
