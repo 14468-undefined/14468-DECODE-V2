@@ -3,18 +3,29 @@ package org.firstinspires.ftc.teamcode.subsystem;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 
 public class ShooterSubsystem extends SubsystemBase {
+    //===========MOTORS==========\\
     private final MotorEx shooterRight;
     private final MotorEx shooterLeft;
+
+
+    //============Servos===========\\
+    private final Servo hood;
+    private final Servo feeder;
 
     private final double targetRPM = 6000;  //TODO: Tune this
 
     private ColorfulTelemetry cTelemetry;
     private HardwareMap hardwareMap;
     public ShooterSubsystem(HardwareMap hardwareMap, ColorfulTelemetry telemetry) {
+
+        // ================== MOTORS ================== \\
         this.cTelemetry = telemetry;
 
         shooterRight = new MotorEx(hardwareMap, "shooterRight");
@@ -27,6 +38,16 @@ public class ShooterSubsystem extends SubsystemBase {
         //reverse
         shooterRight.setInverted(false);
         shooterLeft.setInverted(false);
+
+
+
+        // ================== SERVOS ================== \\
+        hood = hardwareMap.get(Servo.class, "hood");
+        feeder = hardwareMap.get(Servo.class, "feeder");
+
+        hood.scaleRange(0, 1);
+        feeder.scaleRange(0, 1);
+
     }
 
     // Spin up to speed
@@ -69,10 +90,14 @@ public class ShooterSubsystem extends SubsystemBase {
         t.setColor(ColorfulTelemetry.Black).bold();
         t.addLine("SHOOTER SUBSYSTEM");  // header
         t.reset();
-        t.addData("RightVelocity (tps)", shooterRight.getVelocity());
-        t.addData("leftVelocity (tps)", shooterLeft.getVelocity());
 
-        t.addData("Target (tps)", rpmToTicksPerSecond(targetRPM));
+
+        // Display both motors
+        t.addData("Target RPM",targetRPM);
+        t.addData("Right RPM", tpstoRPM(shooterRight.getVelocity()));
+        t.addData("Left RPM", tpstoRPM(shooterLeft.getVelocity()));
+
+
 
         //set green if at speed
         if (atSpeed()) {
@@ -92,12 +117,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
-
     }
 
     // convert rpm to tps
-    private static final double TICKS_PER_REV = 537.7; //TODO: Tune
+    private static final double TICKS_PER_REV = 28; //TODO: Tune
     private double rpmToTicksPerSecond(double rpm) {
         return (rpm * TICKS_PER_REV) / 60.0;
+    }
+    private double tpstoRPM(double tps){
+        return (tps * 60) / TICKS_PER_REV;
     }
 }
