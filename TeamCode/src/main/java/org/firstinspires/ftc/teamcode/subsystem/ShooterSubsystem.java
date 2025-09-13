@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,8 +29,8 @@ public class ShooterSubsystem extends SubsystemBase {
         // ================== MOTORS ================== \\
         this.cTelemetry = telemetry;
 
-        shooterRight = new MotorEx(hardwareMap, "shooterRight");
-        shooterLeft = new MotorEx(hardwareMap, "shooterLeft");
+        shooterRight = new MotorEx(hardwareMap, "shooterRight", Motor.GoBILDA.BARE);
+        shooterLeft = new MotorEx(hardwareMap, "shooterLeft", Motor.GoBILDA.BARE);
 
         //set to vel control so its constant instead of just power
         shooterRight.setRunMode(MotorEx.RunMode.VelocityControl);
