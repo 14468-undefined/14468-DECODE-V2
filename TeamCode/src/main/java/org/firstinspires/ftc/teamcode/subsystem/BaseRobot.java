@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
-import org.firstinspires.ftc.teamcode.util.Constants;
 
 public class BaseRobot extends UndefinedSubsystemBase {
 
