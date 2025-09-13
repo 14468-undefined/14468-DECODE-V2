@@ -18,10 +18,15 @@ public class MeepMeepFarSide {
 
 
 
-        bot1.runAction(bot1.getDrive().actionBuilder(new Pose2d(-48.5, 48.8, 135))
-                .strafeToLinearHeading(new Vector2d(-11.2, 22.4), Math.toRadians(90))
-                .strafeToConstantHeading(new Vector2d(-11.2, 52.5))
-                .strafeToLinearHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+        bot1.runAction(bot1.getDrive().actionBuilder(new Pose2d(56, 9, Math.toRadians(145)))
+
+
+                //.strafeToLinearHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
+                //.strafeToConstantHeading(new Vector2d(35.8, 52.5))
+                        .strafeToLinearHeading(new Vector2d(38.5, 35), Math.toRadians(105))
+                        .strafeToLinearHeading(new Vector2d(35.8, 52.5), Math.toRadians(90))
+
+                .strafeToLinearHeading(new Vector2d(56, 9), Math.toRadians(145))
                 .build());
 
 
