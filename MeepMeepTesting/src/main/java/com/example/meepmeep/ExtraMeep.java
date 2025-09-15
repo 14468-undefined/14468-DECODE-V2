@@ -18,7 +18,9 @@ public class ExtraMeep {
 
         RoadRunnerBotEntity botTest = new DefaultBotBuilder(meepMeep)
                 .setDimensions(Constants.ROBOT_WIDTH, Constants.ROBOT_HEIGHT)
-                .setConstraints(Constants.MAX_VEL, Constants.MAX_ACCEL, Constants.MAX_ANG_VEL, Constants.MAX_ANG_ACCEL, Constants.TRACK_WIDTH)
+                //.setConstraints(Constants.MAX_VEL, Constants.MAX_ACCEL, Constants.MAX_ANG_VEL, Constants.MAX_ANG_ACCEL, Constants.TRACK_WIDTH)
+                .setConstraints(200, 200, Constants.MAX_ANG_VEL, Constants.MAX_ANG_ACCEL, Constants.TRACK_WIDTH)
+
                 .build();
 
 
@@ -26,6 +28,12 @@ public class ExtraMeep {
         botTest.runAction(botTest.getDrive().actionBuilder(new Pose2d(startX, startY, Math.toRadians(startHeading)))
 
                 //pathing here
+                        .splineTo(new Vector2d(50,50), Math.toRadians(270))
+                .splineTo(new Vector2d(50,-50), Math.toRadians(90))
+                .splineTo(new Vector2d(-50,-50), Math.toRadians(90))
+                .splineTo(new Vector2d(-50,40), Math.toRadians(270))
+                .splineTo(new Vector2d(50,-50), Math.toRadians(180))
+
 
                 .build());
 

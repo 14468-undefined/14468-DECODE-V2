@@ -16,6 +16,22 @@ public class MeepMeepFarSide {
                 .build();
 
 
+        RoadRunnerBotEntity blueBot = new DefaultBotBuilder(meepMeep)
+                .setDimensions(Constants.ROBOT_WIDTH, Constants.ROBOT_HEIGHT)
+                .setConstraints(Constants.MAX_VEL, Constants.MAX_ACCEL, Constants.MAX_ANG_VEL, Constants.MAX_ANG_ACCEL, Constants.TRACK_WIDTH)
+                .build();
+
+
+        blueBot.runAction(blueBot.getDrive().actionBuilder(new Pose2d(56, -9, Math.toRadians(215)))
+
+
+                //.strafeToLinearHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
+                //.strafeToConstantHeading(new Vector2d(35.8, 52.5))
+                .strafeToLinearHeading(new Vector2d(38.5, -35), Math.toRadians(255))
+                .strafeToLinearHeading(new Vector2d(35.8, -52.5), Math.toRadians(270))
+
+                .strafeToLinearHeading(new Vector2d(56, -9), Math.toRadians(225))
+                .build());
 
         redBot.runAction(redBot.getDrive().actionBuilder(new Pose2d(56, 9, Math.toRadians(145)))
 
@@ -33,6 +49,7 @@ public class MeepMeepFarSide {
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(redBot)
+                .addEntity(blueBot)
                 //.addEntity(botMotif1)
                 //.addEntity(botMotif2)
                 //.addEntity(botMotif3)
