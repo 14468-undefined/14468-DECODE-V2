@@ -4,7 +4,7 @@ package com.example.meepmeep;
 
 public class Constants {
     // Robot physical size
-    public static final double ROBOT_WIDTH = 9;
+    public static final double ROBOT_WIDTH = 10.85;
     public static final double ROBOT_HEIGHT = 18.0;
 
     // Motion constraints

@@ -20,6 +20,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
     public IntakeSubsystem intake;
     public ColorfulTelemetry cTelemetry;
     public HuskyLensSubsystem huskyLensVision;
+    public TransferSubsystem transfer;
 
 
     public BaseRobot(HardwareMap hwMap, Pose2d startPos){
@@ -29,6 +30,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         autoGenerator = new AutoUtil(drive);
         webcamVision = new WebcamAprilTagVisionSubsystem(hwMap);
         huskyLensVision = new HuskyLensSubsystem(hwMap, cTelemetry);
+        transfer = new TransferSubsystem(hwMap, cTelemetry);
     }
 
 
@@ -39,6 +41,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         shooter.printTelemetry(t);
         webcamVision.printTelemetry(t);
         huskyLensVision.printTelemetry(t);
+        transfer.printTelemetry(t);
 
     }
 
@@ -49,6 +52,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         shooter.periodic();
         webcamVision.periodic();
         huskyLensVision.periodic();
+        transfer.periodic();
 
     }
 

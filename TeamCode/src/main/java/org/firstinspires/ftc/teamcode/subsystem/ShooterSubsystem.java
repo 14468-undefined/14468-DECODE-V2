@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
+import org.firstinspires.ftc.teamcode.util.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
     //===========MOTORS==========\\
@@ -17,10 +18,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     //============Servos===========\\
-    private final Servo hood;
-    private final Servo feeder;
+    //private final Servo hood;
 
-    private final double targetRPM = 6000;  //TODO: Tune this
+
+    double targetRPM = Constants.shooterConstants.FAR_ZONE_SHOT_POWER;
 
     private ColorfulTelemetry cTelemetry;
     private HardwareMap hardwareMap;
@@ -43,11 +44,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
         // ================== SERVOS ================== \\
-        hood = hardwareMap.get(Servo.class, "hood");
-        feeder = hardwareMap.get(Servo.class, "feeder");
+        //hood = hardwareMap.get(Servo.class, "hood");
 
-        hood.scaleRange(0, 1);
-        feeder.scaleRange(0, 1);
 
     }
 
@@ -65,8 +63,10 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterLeft.setVelocity(-velocity);
     }
 
-    public void shoot(){
-        //shoot with mechanism to push into flywheel
+
+
+    public void setTargetRPM(int RPM){
+        targetRPM = RPM;
     }
 
     // Stop both wheels

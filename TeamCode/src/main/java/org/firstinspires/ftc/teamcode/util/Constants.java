@@ -8,85 +8,30 @@ public final class Constants{
 
     }
     @Config
-    public static final class CarouselConstants{
-        public static double slot1 = 0;
-        public static double slot2 = 0;
-        public static double slot3 = 0;
+    public static final class intakeConstants{
+        public static double INTAKE_POWER = 1;
+        public static double REVERSE_INTAKE_POWER = 1;
+    }
 
+    @Config
+    public static final class shooterConstants{
+        public static double FAR_ZONE_SHOT_POWER = .8;
+        public static double MID_SHOT_POWER = 0.5;
+        public static double CLOSE_SHOT_POWER = 0.4;
+    }
 
-
+    @Config
+    public static final class transferConstants{
+        public static double SPIN_REVERSE_POWER = -1;
+        public static double SPIN_POWER = 1;
+        public static int TRANSFER_TIME = 500; //in milliseconds
     }
     @Config
-    public static final class intakeSlideConstants{
-
-        public static int MAX = 2000;
-        public static double power = .4;
-        public static int transfer = 1000;
-        public static int transfer2 = 750;
-        public static int minFromGround = 718;//change
-
-    }
 
     public static class Util{
         public static double round(double in, int places){
             return ((int)(in * Math.pow(10,places)))/(double)Math.pow(10,places);
         }
-    }
-    @Config
-    public static final class intakeClawConstants{
-
-        //open: .4887
-        //closed: .2951
-        //gimbal reset: .4825
-        public static double gap45 = -.16765;//change
-        public static double open = .4887;
-        public static double closed = .2951;
-        public static double looseGrab = .3515;
-        //public static double wayOpen = 0;
-        public static double gimbalReset = .4825;
-
-        public static double turn90 = .808;
-
-        //90 .132
-        //.8026
-        // 4 increments
-
-
-    }
-    @Config
-    public static final class v4bConstants{
-        public static double ground = 0.055;
-        public static double hover = .15;
-        public static double up = .805;
-        public static double half = .4519;
-        public static double transfer = .8499;
-        //public static double farInTrayForPassThrough = .7781;
-    }
-    @Config
-    public static final class outtakeAxleConstants{
-        public static double passThrough = .7774;
-        public static double specScoring = .2677;
-        public static double HBScoring =.3949;
-        public static double straightUp = .58;
-        public static double down = .9439;
-        public static double transfer = .7298;
-        public static double autoStart = .6482;
-
-
-
-    }
-    @Config
-    public static final class outtakeClawConstants{
-        public static double open = .8656;
-        public static double closed = .59;
-
-    }
-    @Config
-    public static final class trayConstants{
-        public static double open = .8854;
-        public static double halfClosed = 0;
-        public static double closed = 0.4862;
-
     }
 
     public static final class AprilTagConstants {

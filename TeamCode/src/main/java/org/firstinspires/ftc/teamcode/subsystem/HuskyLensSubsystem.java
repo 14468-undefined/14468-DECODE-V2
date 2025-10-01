@@ -20,7 +20,7 @@ public class HuskyLensSubsystem extends UndefinedSubsystemBase {
     }
 
     /** Check for a tag, deactivate after found */
-    public HuskyLens.Block waitForTag(int targetID) {
+    public HuskyLens.Block detectTag(int targetID) {
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.TAG_RECOGNITION);
 
         HuskyLens.Block target = null;

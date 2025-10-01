@@ -14,7 +14,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     //power - adjusted in teleop but this is default
     private double intakePower = 1;
-    private double outtakePower = 1;
+    private double reverseIntakePower = 1;
 
     public IntakeSubsystem(HardwareMap hardwareMap, ColorfulTelemetry telemetry) {
         this.cTelemetry = telemetry;
@@ -31,16 +31,16 @@ public class IntakeSubsystem extends SubsystemBase {
         intakePower = p;
     }
 
-    public void setOuttakePower(double p) {
-        outtakePower = p;
+    public void setReverseIntakePower(double p) {
+        reverseIntakePower = p;
     }
 
     public double getIntakePower() {
         return intakePower;
     }
 
-    public double getOuttakePower() {
-        return outtakePower;
+    public double getReverseIntakePower() {
+        return reverseIntakePower;
     }
 
     public void intake() {
@@ -49,7 +49,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     //send balls out through intake
     public void intakeReverse() {
-        intakeMotor.set(-outtakePower);
+        intakeMotor.set(-reverseIntakePower);
     }
 
     public void stop() {
@@ -79,7 +79,7 @@ public class IntakeSubsystem extends SubsystemBase {
         //return power
         t.addData("Motor Power", intakeMotor.get());
         t.addData("Intake Power Setting", intakePower);
-        t.addData("Outtake Power Setting", outtakePower);
+        t.addData("Outtake Power Setting", reverseIntakePower);
         t.update();
     }
 
