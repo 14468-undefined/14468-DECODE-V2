@@ -65,36 +65,64 @@ public class MeepMeepNearSide {
 
 
 
-                redBot3Piles.runAction(redBot3Piles.getDrive().actionBuilder(new Pose2d(-48.5, 48.8, 135))
+                blueBot3Piles.runAction(blueBot3Piles.getDrive().actionBuilder(new Pose2d(-48.5, -48.8, 225))
 
                         // ==============Motif 1============== \\
-                        .strafeToSplineHeading(new Vector2d(-11.2, 22.4), Math.toRadians(90))
-                        .strafeToConstantHeading(new Vector2d(-11.2, 52.5))
+                        .strafeToSplineHeading(new Vector2d(-11.2, -22.4), Math.toRadians(270))
+                        .strafeToConstantHeading(new Vector2d(-11.2, -52.5))
 
                         // ==============Gate Open============== \\
-                        .strafeToSplineHeading(new Vector2d(1.4, 57.5),Math.toRadians(180))
+                        .strafeToSplineHeading(new Vector2d(1.4, -57.5),Math.toRadians(180))
 
                         // ==============return============== \\
-                        .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+                        .strafeToSplineHeading(new Vector2d(-48.5,-48.8),Math.toRadians(225))
 
 
                         // ==============Motif 2============== \\
-                        .strafeToSplineHeading(new Vector2d(12, 22.4), Math.toRadians(90))//go to motif
-                        .strafeToConstantHeading(new Vector2d(12, 52.5))//intake
+                        .strafeToSplineHeading(new Vector2d(12, -22.4), Math.toRadians(270))//go to motif
+                        .strafeToConstantHeading(new Vector2d(12, -52.5))//intake
 
                         // ==============return============== \\
-                        .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+                        .strafeToSplineHeading(new Vector2d(-48.5,-48.8),Math.toRadians(225))
 
                         // ==============Motif 3============== \\
-                        .strafeToSplineHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
-                        .strafeToConstantHeading(new Vector2d(35.8, 52.5))
+                        .strafeToSplineHeading(new Vector2d(35.8, -22.4), Math.toRadians(270))
+                        .strafeToConstantHeading(new Vector2d(35.8, -52.5))
 
                         // ==============return============== \\
-                        .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+                        .strafeToSplineHeading(new Vector2d(-48.5,-48.8),Math.toRadians(225))
 
                         .build());
 
 
+        redBot3Piles.runAction(redBot3Piles.getDrive().actionBuilder(new Pose2d(-48.5, 48.8, 135))
+
+                // ==============Motif 1============== \\
+                .strafeToSplineHeading(new Vector2d(-11.2, 22.4), Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(-11.2, 52.5))
+
+                // ==============Gate Open============== \\
+                .strafeToSplineHeading(new Vector2d(1.4, 57.5),Math.toRadians(180))
+
+                // ==============return============== \\
+                .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+
+
+                // ==============Motif 2============== \\
+                .strafeToSplineHeading(new Vector2d(12, 22.4), Math.toRadians(90))//go to motif
+                .strafeToConstantHeading(new Vector2d(12, 52.5))//intake
+
+                // ==============return============== \\
+                .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+
+                // ==============Motif 3============== \\
+                .strafeToSplineHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(35.8, 52.5))
+
+                // ==============return============== \\
+                .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+
+                .build());
 
         blueBot2Piles.runAction(blueBot2Piles.getDrive().actionBuilder(new Pose2d(-48.5, -48.8, Math.toRadians(225)))
                 // ==============Motif 1============== \\
@@ -127,8 +155,8 @@ public class MeepMeepNearSide {
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(blueBot2Piles)
-                .addEntity(redBot2Piles)
+                .addEntity(blueBot3Piles)
+                .addEntity(redBot3Piles)
                 //.addEntity(botMotif1)
                 //.addEntity(botMotif2)
                 //.addEntity(botMotif3)

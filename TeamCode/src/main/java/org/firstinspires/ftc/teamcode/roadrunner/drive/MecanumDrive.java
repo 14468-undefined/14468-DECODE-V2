@@ -232,9 +232,9 @@ public final class MecanumDrive {
 
     public double initialHeading = 0;//JS Updates
 
-
     public MecanumDrive(HardwareMap hardwareMap, Pose2d pose) {
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
+
 
 
 
