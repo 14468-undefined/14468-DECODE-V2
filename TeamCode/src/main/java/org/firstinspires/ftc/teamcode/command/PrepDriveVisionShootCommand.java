@@ -54,6 +54,8 @@ public class PrepDriveVisionShootCommand extends SequentialCommandGroup {
         //CommandBase shoot = robot.shooter.runOnce(robot.shooter::shoot);
 
         // --- Sequence everything ---
+
+        addRequirements(robot.webcamVision, robot.drive, robot.shooter);
         addCommands(
                 startVision,
                 driveAndSpin,

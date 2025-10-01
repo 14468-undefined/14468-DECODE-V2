@@ -16,9 +16,18 @@ import org.firstinspires.ftc.teamcode.subsystem.ShooterSubsystem;
 
 public class Shoot3Command extends SequentialCommandGroup {
 
-    public Shoot3Command(BaseRobot robot, int numShots) {
+    public Shoot3Command(BaseRobot robot, int numShots, int pose) {
         DriveSubsystem drive = robot.drive;
 
+        if (pose == 1){
+            robot.shooter.setTargetRPM(Constants.shooterConstants.CLOSE_SHOT_RPM);
+        }
+        if (pose == 2){
+            robot.shooter.setTargetRPM(Constants.shooterConstants.MID_SHOT_RPM);
+        }
+        if (pose == 3){
+            robot.shooter.setTargetRPM(Constants.shooterConstants.FAR_ZONE_SHOT_RPM);
+        }
         // Define commands
         CommandBase spinUpShooter = new RunCommand(robot.shooter::spinUp, robot.shooter);
         CommandBase stopShooter = new InstantCommand(robot.shooter::stop, robot.shooter);

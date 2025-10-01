@@ -43,7 +43,9 @@ public class TransferSubsystem extends SubsystemBase {
         transfer.setPower(Constants.transferConstants.SPIN_REVERSE_POWER);
     }
 
-
+    public void stop(){
+        transfer.setPower(0);
+    }
     public void printTelemetry(ColorfulTelemetry t) {
 
         t.reset(); // reset any previous styles

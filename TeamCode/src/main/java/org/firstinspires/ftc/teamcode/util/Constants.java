@@ -15,9 +15,9 @@ public final class Constants{
 
     @Config
     public static final class shooterConstants{
-        public static double FAR_ZONE_SHOT_POWER = .8;
-        public static double MID_SHOT_POWER = 0.5;
-        public static double CLOSE_SHOT_POWER = 0.4;
+        public static int FAR_ZONE_SHOT_RPM = 5000;
+        public static int MID_SHOT_RPM = 4000;
+        public static int CLOSE_SHOT_RPM= 2000;
     }
 
     @Config
