@@ -11,10 +11,11 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
 
-    private VisionPortal visionPortal;
+    private VisionPortal webcam;
     private AprilTagProcessor aprilTag;
     private AprilTagDetection desiredTag;
     private final HardwareMap hardwareMap;
@@ -38,7 +39,7 @@ public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
     }
 
     private void buildVisionPortal() {
-        visionPortal = new VisionPortal.Builder()
+        webcam = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .addProcessor(aprilTag)
                 .build();
@@ -48,16 +49,16 @@ public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
 
     /** Start the vision camera */
     public void startVision() {
-        if (visionPortal == null) buildVisionPortal();
+        if (webcam == null) buildVisionPortal();
         desiredTag = null;
         resetPID();
     }
 
     /** Stop the vision camera */
     public void stopVision() {
-        if (visionPortal != null) {
-            visionPortal.close();
-            visionPortal = null;
+        if (webcam != null) {
+            webcam.close();
+            webcam = null;
             desiredTag = null;
         }
     }
@@ -71,7 +72,7 @@ public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
     /** Command that drives the robot to the detected tag using PID */
     public CommandBase getDriveToTagCommand(DriveSubsystem drive) {
         return this.runEnd(() -> {
-            if (visionPortal == null) {
+            if (webcam == null) {
                 drive.rest();
                 return;
             }
