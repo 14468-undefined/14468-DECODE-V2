@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.command.Shoot3Command;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="TwoPileAutoNearV1")
-public class TwoPileAutoNearV1 extends SampleAuto {
+@Autonomous(name="R_9+0 near")
+public class Red9ArtifactNear extends SampleAuto {
     private BaseRobot robot;
     private Shoot3Command shoot3;
     private IntakeCommand intake;
@@ -21,7 +21,7 @@ public class TwoPileAutoNearV1 extends SampleAuto {
     @Override
     public void onInit() {
         robot = new BaseRobot(hardwareMap, new Pose2d(-48.5, 48.8, Math.toRadians(135)));
-        shoot3 = new Shoot3Command(robot, 3);
+        shoot3 = new Shoot3Command(robot, 3, 2);//3 artifacts mid range shot
         intake = new IntakeCommand(robot);
         //set pos of hood and transfer servo
 
