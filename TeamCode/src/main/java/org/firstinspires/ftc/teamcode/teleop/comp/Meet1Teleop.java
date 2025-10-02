@@ -1,21 +1,37 @@
 package org.firstinspires.ftc.teamcode.teleop.comp;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.command.IntakeCommand;
 import org.firstinspires.ftc.teamcode.command.SpinUpShooterCommand;
-import org.firstinspires.ftc.teamcode.subsystem.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.subsystem.IntakeSubsystem;
+
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
 
 @TeleOp
 public class Meet1Teleop extends SampleCommandTeleop {
+
+
     @Override
     public void onInit() {
+        robot = new BaseRobot(hardwareMap, new Pose2d(0,0,0));
+
+        waitForStart();
+
+        // Schedule the command
+
+
+        //spinup shooter
+        new Trigger(()->g2.getButton(GamepadKeys.Button.Y)).whenActive(new SpinUpShooterCommand(robot.shooter));
+
+
+        new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>.05).whileActiveOnce(new IntakeCommand(robot));
 
 
         robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g1.getLeftX(),()->g1.getLeftY(), ()->-g1.getRightX(), .75));
