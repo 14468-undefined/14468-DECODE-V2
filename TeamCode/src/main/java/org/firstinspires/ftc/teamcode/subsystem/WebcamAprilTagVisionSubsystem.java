@@ -6,15 +6,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
+import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-
+import com.qualcomm.robotcore.hardware.Servo;
 import java.util.List;
 import java.util.Optional;
 
 public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
 
+    private Servo rotation;
     private VisionPortal webcam;
     private AprilTagProcessor aprilTag;
     private AprilTagDetection desiredTag;
@@ -36,6 +38,10 @@ public class WebcamAprilTagVisionSubsystem extends UndefinedSubsystemBase {
         this.hardwareMap = hardwareMap;
         aprilTag = new AprilTagProcessor.Builder().build();
         buildVisionPortal();
+
+        rotation = hardwareMap.get(Servo.class, "hood");
+        rotation.scaleRange(Constants.WebcamConstants.rotationMin, Constants.WebcamConstants.rotationMax);
+        rotation.setPosition(Constants.WebcamConstants.rotationGoal);
     }
 
     private void buildVisionPortal() {

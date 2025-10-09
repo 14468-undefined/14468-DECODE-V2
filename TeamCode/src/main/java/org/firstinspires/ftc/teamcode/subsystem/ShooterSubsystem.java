@@ -21,7 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
     //private final Servo hood;
 
 
-    double targetRPM = Constants.shooterConstants.FAR_ZONE_SHOT_POWER;
+    double targetRPM = Constants.shooterConstants.FAR_ZONE_SHOT_RPM;
 
     private ColorfulTelemetry cTelemetry;
     private HardwareMap hardwareMap;
