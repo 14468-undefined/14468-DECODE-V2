@@ -57,7 +57,8 @@ public class Shoot3Command extends SequentialCommandGroup {
                                     firstWait,
                                     shoot2,
                                     secondWait,
-                                    shoot3
+                                    shoot3,
+                                    stopShooter
                             )
                     )
 
@@ -75,7 +76,8 @@ public class Shoot3Command extends SequentialCommandGroup {
                             new SequentialCommandGroup(
                                     shoot1,
                                     firstWait,
-                                    shoot2
+                                    shoot2,
+                                    stopShooter
                             )
                     )
 
@@ -90,7 +92,8 @@ public class Shoot3Command extends SequentialCommandGroup {
                     new ParallelCommandGroup(spinUpShooter,
                             // Sequential transfer pulses
                             new SequentialCommandGroup(
-                                    shoot1
+                                    shoot1,
+                                    stopShooter
                             )
                     )
 

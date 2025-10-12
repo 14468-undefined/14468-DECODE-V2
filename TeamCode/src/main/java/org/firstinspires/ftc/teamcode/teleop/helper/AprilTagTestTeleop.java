@@ -14,7 +14,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 
 // Your subsystems
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
-import org.firstinspires.ftc.teamcode.subsystem.WebcamAprilTagVisionSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.WebcamVisionSubsystem;
 import org.firstinspires.ftc.teamcode.subsystem.DriveSubsystem;
 
 // Utilities

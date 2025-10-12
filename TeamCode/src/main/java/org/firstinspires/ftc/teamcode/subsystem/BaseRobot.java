@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 public class BaseRobot extends UndefinedSubsystemBase {
 
 
-    public WebcamAprilTagVisionSubsystem webcamVision;
+    public WebcamVisionSubsystem webcamVision;
     public AutoUtil autoGenerator;
     public ShooterSubsystem shooter;
     public DriveSubsystem drive;
@@ -28,7 +28,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         shooter = new ShooterSubsystem(hwMap, cTelemetry);
         intake = new IntakeSubsystem(hwMap, cTelemetry);
         autoGenerator = new AutoUtil(drive);
-        webcamVision = new WebcamAprilTagVisionSubsystem(hwMap);
+        webcamVision = new WebcamVisionSubsystem(hwMap);
         huskyLensVision = new HuskyLensSubsystem(hwMap, cTelemetry);
         transfer = new TransferSubsystem(hwMap, cTelemetry);
     }
@@ -54,6 +54,13 @@ public class BaseRobot extends UndefinedSubsystemBase {
         huskyLensVision.periodic();
         transfer.periodic();
 
+    }
+
+    public void stopAll(){
+        intake.stop();
+        shooter.stop();
+        webcamVision.stopVision();
+        transfer.stop();
     }
 
     class ExampleAction implements Action {

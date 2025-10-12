@@ -21,7 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
     //private final Servo hood;
 
 
-    double targetRPM = Constants.shooterConstants.FAR_ZONE_SHOT_RPM;
+    int targetRPM = Constants.shooterConstants.FAR_ZONE_SHOT_RPM;
 
     private ColorfulTelemetry cTelemetry;
     private HardwareMap hardwareMap;
@@ -49,6 +49,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
+
+    public void spinUpRight(){
+        double velocity = rpmToTicksPerSecond(targetRPM);
+        shooterRight.setVelocity(velocity);
+    }
+    public void spinUpLeft(){
+        double velocity = rpmToTicksPerSecond(targetRPM);
+        shooterLeft.setVelocity(velocity);
+    }
     // Spin up to speed
     public void spinUp() {
         double velocity = rpmToTicksPerSecond(targetRPM);
@@ -68,6 +77,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setTargetRPM(int RPM){
         targetRPM = RPM;
     }
+
 
     // Stop both wheels
     public void stop() {
@@ -127,5 +137,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     private double tpstoRPM(double tps){
         return (tps * 60) / TICKS_PER_REV;
+    }
+
+
+    public int getCurrentRPM() {
+        return targetRPM;
     }
 }

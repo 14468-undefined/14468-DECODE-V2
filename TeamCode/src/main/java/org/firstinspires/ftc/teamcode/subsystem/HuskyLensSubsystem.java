@@ -48,6 +48,7 @@ public class HuskyLensSubsystem extends UndefinedSubsystemBase {
         return target;
     }
 
+
     public void enable() {
         active = true;
         huskyLens.initialize();

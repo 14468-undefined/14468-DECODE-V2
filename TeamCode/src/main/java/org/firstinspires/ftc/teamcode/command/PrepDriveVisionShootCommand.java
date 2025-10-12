@@ -48,7 +48,7 @@ public class PrepDriveVisionShootCommand extends SequentialCommandGroup {
         ParallelCommandGroup driveAndSpin = new ParallelCommandGroup(spinUpShooter, driveToTagWhenSeen);
 
         //stop vision
-        CommandBase stopVision = robot.webcamVision.runOnce(robot.webcamVision::stopVision);
+        //CommandBase stopVision = robot.webcamVision.runOnce(robot.webcamVision::stopVision);
 
         //shoot
         //CommandBase shoot = robot.shooter.runOnce(robot.shooter::shoot);

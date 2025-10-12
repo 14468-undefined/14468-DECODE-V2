@@ -37,10 +37,10 @@ public final class Constants{
     public static final class WebcamConstants {
         // tag size (meters)
 
-        public static double rotationMax = 1;
-        public static double rotationMin = 0;
-        public static double rotationGround = .5;
-        public static double rotationGoal = 1;
+        public static double ROTATION_MAX = 1;
+        public static double ROTATION_MIN = 0;
+        public static double ROTATION_GROUND = .5;
+        public static double ROTATION_GOAL = 1;
         public static double TAG_SIZE = 0.166;
 
         // Camera intrinsics (your webcam’s calibration)
