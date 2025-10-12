@@ -51,16 +51,27 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     public void spinUpRight(){
+        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
+        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
+
         double velocity = rpmToTicksPerSecond(targetRPM);
         shooterRight.setVelocity(velocity);
     }
     public void spinUpLeft(){
+
+        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
+        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
+
         double velocity = rpmToTicksPerSecond(targetRPM);
         shooterLeft.setVelocity(velocity);
     }
     // Spin up to speed
     public void spinUp() {
         double velocity = rpmToTicksPerSecond(targetRPM);
+
+        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
+        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
+
         shooterRight.setVelocity(velocity);
         shooterLeft.setVelocity(velocity);
 
@@ -68,6 +79,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void spinUpReverse(){
         double velocity = rpmToTicksPerSecond(targetRPM);
+
+        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
+        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
+
         shooterRight.setVelocity(-velocity);
         shooterLeft.setVelocity(-velocity);
     }
@@ -81,8 +96,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // Stop both wheels
     public void stop() {
-        shooterRight.setVelocity(0);
-        shooterLeft.setVelocity(0);
+
+        shooterLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);//coast if power is 0
+        shooterRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+
+        shooterLeft.setRunMode(Motor.RunMode.RawPower);
+        shooterRight.setRunMode(Motor.RunMode.RawPower);
+
+        shooterLeft.set(0);
+        shooterRight.set(0);
+
 
     }
 
