@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.command;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
@@ -58,8 +59,8 @@ public class PrepDriveVisionShootCommand extends SequentialCommandGroup {
         addRequirements(robot.webcamVision, robot.drive, robot.shooter);
         addCommands(
                 startVision,
-                driveAndSpin,
-                stopVision
+                driveAndSpin
+
                 //shoot
         );
     }
