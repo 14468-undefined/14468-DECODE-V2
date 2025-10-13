@@ -5,43 +5,38 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.VisionProcessor;
-
+import org.opencv.core.Mat;
 
 import java.util.List;
 
 public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
 
-    /** Vision Components **/
     private Servo rotation;
     private VisionPortal webcam;
     private final HardwareMap hardwareMap;
 
-    // Two processors: one for AprilTag, one for artifact (empty for now)
     private AprilTagProcessor aprilTagProcessor;
-    private ObjectDetectionProcessor artifactProcessor; // placeholder
+    private ObjectDetectionProcessor artifactProcessor;
 
-    /** AprilTag State **/
     private AprilTagDetection desiredTag;
 
-    /** PID Constants **/
-    private static final double DESIRED_DISTANCE = 12.0; // inches
+    private static final double DESIRED_DISTANCE = 12.0;
     private static final double P_DIST = 0.04, I_DIST = 0.001, D_DIST = 0.01;
     private static final double P_HEADING = 0.02, I_HEADING = 0.0005, D_HEADING = 0.005;
     private static final double P_STRAFE = 0.03, I_STRAFE = 0.001, D_STRAFE = 0.01;
     private static final double MAX_SPEED = 0.5, MAX_TURN = 0.3, MAX_STRAFE = 0.5;
 
-    /** PID State **/
     private double distIntegral = 0, lastDistError = 0;
     private double headingIntegral = 0, lastHeadingError = 0;
     private double strafeIntegral = 0, lastStrafeError = 0;
 
-    /** Vision Modes **/
     public enum VisionMode {
         APRILTAG,
         ARTIFACT
@@ -52,11 +47,19 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
     public WebcamVisionSubsystem(HardwareMap hwMap) {
         this.hardwareMap = hwMap;
 
-        // Initialize processors
         aprilTagProcessor = new AprilTagProcessor.Builder().build();
-        artifactProcessor = new ObjectDetectionProcessor(); // currently empty
+        artifactProcessor = new ObjectDetectionProcessor() {
+            @Override
+            public void init(int width, int height, CameraCalibration calibration) {
 
-        // Build vision portal with both processors
+            }
+
+            @Override
+            public Object processFrame(Mat frame, long captureTimeNanos) {
+                return null;
+            }
+        };
+
         buildVisionPortal();
 
         rotation = hardwareMap.get(Servo.class, "hood");
@@ -64,7 +67,6 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
         rotation.setPosition(Constants.WebcamConstants.ROTATION_GOAL);
     }
 
-    /** Builds the webcam vision system */
     private void buildVisionPortal() {
         webcam = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
@@ -76,7 +78,6 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
         resetPID();
     }
 
-    /** Switches between artifact and AprilTag mode */
     public void setVisionMode(VisionMode mode) {
         if (mode == currentMode) return;
 
@@ -87,26 +88,24 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
         switch (mode) {
             case APRILTAG:
                 rotation.setPosition(Constants.WebcamConstants.ROTATION_GOAL);
-                aprilTagProcessor.setActive(true);
-                artifactProcessor.setActive(false);
+                webcam.setProcessorEnabled(aprilTagProcessor, true);
+                webcam.setProcessorEnabled(artifactProcessor, false);
                 break;
 
             case ARTIFACT:
                 rotation.setPosition(Constants.WebcamConstants.ROTATION_GROUND);
-                aprilTagProcessor.setActive(false);
-                artifactProcessor.setActive(true);
+                webcam.setProcessorEnabled(aprilTagProcessor, false);
+                webcam.setProcessorEnabled(artifactProcessor, true);
                 break;
         }
     }
 
-    /** Start the vision camera */
     public void startVision() {
         if (webcam == null) buildVisionPortal();
         desiredTag = null;
         resetPID();
     }
 
-    /** Stop the vision camera */
     public void stopVision() {
         if (webcam != null) {
             webcam.close();
@@ -115,7 +114,6 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
         }
     }
 
-    /** Whether an AprilTag is detected */
     public boolean hasTarget() {
         return desiredTag != null;
     }
@@ -126,10 +124,9 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
         return error < 0.5;
     }
 
-    /** Command that drives to detected AprilTag using PID */
     public CommandBase getDriveToTagCommand(DriveSubsystem drive) {
         return this.runEnd(() -> {
-            if (currentMode != VisionMode.APRILTAG) return; // Only run in tag mode
+            if (currentMode != VisionMode.APRILTAG) return;
 
             List<AprilTagDetection> detections = aprilTagProcessor.getDetections();
             desiredTag = detections.isEmpty() ? null : detections.get(0);
@@ -164,25 +161,20 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
         }, drive::rest);
     }
 
-    //Empty processor placeholder for artifact detection
-    /** Empty processor placeholder for artifact detection */
-    private static class ObjectDetectionProcessor implements VisionProcessor {
+    private static abstract class ObjectDetectionProcessor implements VisionProcessor {
 
         private boolean active = false;
 
-        public void setActive(boolean active) {
-            this.active = active;
+        public void setEnabled(boolean enabled) {
+            this.active = enabled;
         }
 
-        @Override
-        public void init(int width, int height, org.firstinspires.ftc.robotcore.external.Telemetry telemetry) {
-            // Called when vision starts
-        }
 
-        @Override
+        public void init(int width, int height, org.firstinspires.ftc.robotcore.external.Telemetry telemetry) {}
+
+
         public Object processFrame(android.graphics.Bitmap bitmap, long captureTimeNanos) {
             if (!active) return null;
-            // TODO: Add artifact detection here later
             return null;
         }
 
@@ -192,16 +184,9 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
                                 int onscreenHeight,
                                 float scaleBmpPxToCanvasPx,
                                 float scaleCanvasDensity,
-                                Object userContext) {
-            // Optional: draw bounding boxes or annotations
-        }
+                                Object userContext) {}
     }
 
-
-
-
-
-    /** Helper Methods **/
     private double pid(double error, double integral, double lastError, double p, double i, double d) {
         return p * error + i * integral + d * (error - lastError);
     }
@@ -232,7 +217,5 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
     }
 
     @Override
-    public void periodic() {
-        // could automatically switch based on servo position, if desired
-    }
+    public void periodic() {}
 }
