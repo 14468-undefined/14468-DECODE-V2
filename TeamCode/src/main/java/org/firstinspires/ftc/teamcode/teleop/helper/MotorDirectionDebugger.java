@@ -25,6 +25,8 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
     
     HardwareMap hwMap;
 
+    int shooterRPM = 300;
+
 
     @Override
     public void onInit() {
@@ -43,25 +45,48 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
     public void onStart() {
 
 
+
         //robot.drive.setDefaultCommand(new RunCommand(() -> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
 
         robot.shooter.setTargetRPM(312);
         //X = SPIN UP SHOOTER
 
-        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(robot.shooter::spinUp);
-        g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(robot.shooter::stop);
+
 
         //RIGHT BUMPER = intake; LEFT BUMPER = Intake reverse;
         g1.getGamepadButton(GamepadKeys.Button.A).whileHeld(robot.intake::intake);
         g1.getGamepadButton(GamepadKeys.Button.A).whenReleased(robot.intake::stop);
 
 
+
+        //SHOOTER
+        //DPAD_UP = power + 100; DPAD_DOWN = power - 100;
+        g1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
+            shooterRPM += 100;
+            shooterRPM = Math.max(0, Math.min(6000, shooterRPM));
+            robot.shooter.setTargetRPM(shooterRPM);
+        });
+
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
+            shooterRPM -= 100;
+            shooterRPM = Math.max(0, Math.min(6000, shooterRPM));
+            robot.shooter.setTargetRPM(shooterRPM);
+        });
+
+        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(robot.shooter::spinUp);
+        g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(robot.shooter::stop);
+
+
+
         pen.addLine("CONTROLS");
         pen.addLine();
         pen.addLine("Intake: A");
-        pen.addLine("Shooter Right: X");
-        pen.addLine("Shooter Left: B");
+        pen.addLine("Shooter: X");
+        pen.addLine("Power Up: DPAD_UP");
+        pen.addLine("Power Down: DPAD_DOWN");
+
+
     }
 
     @Override
