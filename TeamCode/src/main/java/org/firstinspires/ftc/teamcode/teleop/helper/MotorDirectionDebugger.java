@@ -20,15 +20,17 @@ import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 @TeleOp(name = "MotorDirectionDebugger" , group = "TeleOp")
 public class MotorDirectionDebugger extends SampleCommandTeleop {
 
-    private BaseRobot robot;
-    private FtcDashboard dash;
-    private HardwareMap hwMap;
-
+    //BaseRobot robot;
+    FtcDashboard dash;
+    
+    HardwareMap hwMap;
 
 
     @Override
     public void onInit() {
-        robot = new BaseRobot(hwMap, new Pose2d(new Vector2d(0,0), 0));
+
+
+
 
 
 
@@ -41,18 +43,18 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
     public void onStart() {
 
 
-        robot.drive.setDefaultCommand(new RunCommand(() -> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
+        //robot.drive.setDefaultCommand(new RunCommand(() -> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
 
-        robot.shooter.setTargetRPM(60);
+        robot.shooter.setTargetRPM(312);
         //X = SPIN UP SHOOTER
-        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(robot.shooter::spinUpRight);
-        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(robot.shooter::spinUpLeft);
 
+        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(robot.shooter::spinUp);
+        g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(robot.shooter::stop);
 
         //RIGHT BUMPER = intake; LEFT BUMPER = Intake reverse;
         g1.getGamepadButton(GamepadKeys.Button.A).whileHeld(robot.intake::intake);
-
+        g1.getGamepadButton(GamepadKeys.Button.A).whenReleased(robot.intake::stop);
 
 
         pen.addLine("CONTROLS");

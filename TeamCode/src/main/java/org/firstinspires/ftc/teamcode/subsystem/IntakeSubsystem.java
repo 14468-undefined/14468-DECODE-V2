@@ -23,7 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         //power instead of vel control
         intakeMotor.setRunMode(MotorEx.RunMode.RawPower);
-        intakeMotor.setInverted(false);//run forwards
+        intakeMotor.setInverted(true);//run forwards
     }
 
     //setters for tuning power

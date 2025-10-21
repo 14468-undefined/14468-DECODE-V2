@@ -69,7 +69,7 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
 
     private void buildVisionPortal() {
         webcam = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                //.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .addProcessor(aprilTagProcessor)
                 .addProcessor(artifactProcessor)
                 .build();
