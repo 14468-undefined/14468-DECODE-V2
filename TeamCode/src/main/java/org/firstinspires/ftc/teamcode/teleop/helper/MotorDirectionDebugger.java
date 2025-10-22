@@ -49,7 +49,7 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
         //robot.drive.setDefaultCommand(new RunCommand(() -> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
 
-        robot.shooter.setTargetRPM(312);
+        robot.shooter.setTargetRPM(shooterRPM);
         //X = SPIN UP SHOOTER
 
 
@@ -87,12 +87,14 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
         pen.addLine("Power Down: DPAD_DOWN");
 
 
+
     }
 
     @Override
     public void onLoop() {
         // Print intake telemetry every loop
         robot.shooter.printTelemetry(pen);
+        //pen.addLine("shooter RPM set:", shooterRPM);
     }
 
     @Override

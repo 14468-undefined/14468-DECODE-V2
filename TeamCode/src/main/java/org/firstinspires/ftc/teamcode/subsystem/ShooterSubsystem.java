@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         //reverse
         shooterRight.setInverted(false);
-        shooterLeft.setInverted(false);
+        shooterLeft.setInverted(true);
 
 
 
