@@ -54,8 +54,8 @@ public final class Constants{
 
         // PID gains
         public static double kP_FORWARD = 0.5;
-        public static double kP_STRAFE  = 0.5;
-        public static double kP_ROT     = 0.5;
+        public static double kP_STRAFE = 0.5;
+        public static double kP_ROT = 0.5;
     }
 
 
