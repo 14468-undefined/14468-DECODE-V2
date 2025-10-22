@@ -25,7 +25,7 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
     
     HardwareMap hwMap;
 
-    int shooterRPM = 300;
+    int shooterRPM = 6000;
 
 
     @Override
@@ -68,7 +68,7 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
             robot.shooter.setTargetRPM(shooterRPM);
         });
 
-        g2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
+        g1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
             shooterRPM -= 100;
             shooterRPM = Math.max(0, Math.min(6000, shooterRPM));
             robot.shooter.setTargetRPM(shooterRPM);
