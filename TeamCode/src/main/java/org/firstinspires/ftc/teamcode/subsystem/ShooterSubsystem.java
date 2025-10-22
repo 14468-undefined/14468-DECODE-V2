@@ -50,21 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
 
-    public void spinUpRight(){
-        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
-        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
 
-        double velocity = rpmToTicksPerSecond(targetRPM);
-        shooterRight.setVelocity(velocity);
-    }
-    public void spinUpLeft(){
-
-        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
-        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
-
-        double velocity = rpmToTicksPerSecond(targetRPM);
-        shooterLeft.setVelocity(velocity);
-    }
     // Spin up to speed
     public void spinUp() {
         double velocity = rpmToTicksPerSecond(targetRPM);
@@ -128,8 +114,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // Display both motors
         t.addData("Target RPM",targetRPM);
-        t.addData("Right RPM", tpstoRPM(shooterRight.getVelocity()));
-        t.addData("Left RPM", tpstoRPM(shooterLeft.getVelocity()));
+        t.addData("Right RPM", tpsToRPM(shooterRight.getVelocity()));
+        t.addData("Left RPM", tpsToRPM(shooterLeft.getVelocity()));
 
 
 
@@ -158,7 +144,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private double rpmToTicksPerSecond(double rpm) {
         return (rpm * TICKS_PER_REV) / 60.0;
     }
-    private double tpstoRPM(double tps){
+    private double tpsToRPM(double tps){
         return (tps * 60) / TICKS_PER_REV;
     }
 
