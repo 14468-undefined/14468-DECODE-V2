@@ -1,160 +1,112 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.CRServo;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
+import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 import org.firstinspires.ftc.teamcode.util.Constants;
 
+import com.acmerobotics.dashboard.config.Config;
+
+
+@Config
 public class ShooterSubsystem extends SubsystemBase {
-    //===========MOTORS==========\\
+    //=========== MOTORS ===========\\
     private final MotorEx shooterRight;
     private final MotorEx shooterLeft;
 
+    //=========== PIDF CONTROL ===========\\
+    private final PIDFController shooterPID;
+    private double targetRPM = 0;
+    private double currentRPM = 0;
 
+    // PIDF constants (tune these)
+    private final double kP = 0.0008;
+    private final double kI = 0.0001;
+    private final double kD = 0.0001;
+    private final double kF = 0.0002;
 
+    private final double TICKS_PER_REV = 28.0; //for 6k rpm
 
+    //=========== TELEMETRY ===========\\
+    private final ColorfulTelemetry cTelemetry;
 
-    //============Servos===========\\
-    //private final Servo hood;
-
-
-    int targetRPM = Constants.shooterConstants.FAR_ZONE_SHOT_RPM;
-
-    private ColorfulTelemetry cTelemetry;
-    private HardwareMap hardwareMap;
     public ShooterSubsystem(HardwareMap hardwareMap, ColorfulTelemetry telemetry) {
-
-        // ================== MOTORS ================== \\
         this.cTelemetry = telemetry;
 
         shooterRight = new MotorEx(hardwareMap, "shooterRight", Motor.GoBILDA.BARE);
         shooterLeft = new MotorEx(hardwareMap, "shooterLeft", Motor.GoBILDA.BARE);
 
-        //set to vel control so its constant instead of just power
-        shooterRight.setRunMode(MotorEx.RunMode.VelocityControl);
-        shooterLeft.setRunMode(MotorEx.RunMode.VelocityControl);
-
-        //reverse
         shooterRight.setInverted(false);
         shooterLeft.setInverted(true);
 
-
-
-        // ================== SERVOS ================== \\
-        //hood = hardwareMap.get(Servo.class, "hood");
-
-
+        // Initialize PIDF
+        shooterPID = new PIDFController(kP, kI, kD, kF);
+        shooterPID.setTolerance(50);
     }
 
+    //============== CONTROL METHODS ==============\\
 
+    public void setTargetRPM(double rpm) {
+        targetRPM = rpm;
+    }
 
-    // Spin up to speed
+    // called repeatedly to spin up and regulate shooter speed
     public void spinUp() {
-        double velocity = rpmToTicksPerSecond(targetRPM);
+        //get current velocity
+        currentRPM = ((shooterLeft.getVelocity() + shooterRight.getVelocity()) / 2.0) * (60.0 / TICKS_PER_REV);
 
-        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
-        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
+        //compute feedforward
+        double ff = kF * targetRPM;
+        double pidOutput = shooterPID.calculate(currentRPM, targetRPM);
 
-        shooterRight.setVelocity(velocity);
-        shooterLeft.setVelocity(velocity);
+        // 0<power<1
+        double totalOutput = Range.clip(ff + pidOutput, 0, 1);
 
+        //set power
+        shooterLeft.set(totalOutput);
+        shooterRight.set(totalOutput);
     }
 
-    public void spinUpReverse(){
-        double velocity = rpmToTicksPerSecond(targetRPM);
-
-        shooterRight.setRunMode(Motor.RunMode.VelocityControl);
-        shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
-
-        shooterRight.setVelocity(-velocity);
-        shooterLeft.setVelocity(-velocity);
-    }
-
-
-
-    public void setTargetRPM(int RPM){
-        targetRPM = RPM;
-    }
-
-
-    // Stop both wheels
     public void stop() {
-
-        shooterLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);//coast if power is 0
+        shooterLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
         shooterRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
-
-        shooterLeft.setRunMode(Motor.RunMode.RawPower);
-        shooterRight.setRunMode(Motor.RunMode.RawPower);
-
         shooterLeft.set(0);
         shooterRight.set(0);
-
-
     }
 
-    //make sure they are close to right speed
     public boolean atSpeed() {
-        double velocity = rpmToTicksPerSecond(targetRPM);
         double avgVelocity = (shooterRight.getVelocity() + shooterLeft.getVelocity()) / 2.0;
-        return Math.abs(avgVelocity - velocity) < 100;
+        double targetVelocity = rpmToTicksPerSecond(targetRPM);
+        return Math.abs(avgVelocity - targetVelocity) < 100;
     }
 
-    public void printTelemetry(ColorfulTelemetry t) {
+    //============== UTIL ==============\\
 
-        t.reset(); // reset any previous styles
+    private double rpmToTicksPerSecond(double rpm) {
+        return (rpm * TICKS_PER_REV) / 60.0;
+    }
 
-
-        t.setColor(ColorfulTelemetry.Black).bold();
-        t.addLine("SHOOTER SUBSYSTEM");  // header
-        t.reset();
-
-
-        // Display both motors
-        t.addData("Target RPM",targetRPM);
-        t.addData("Right RPM", tpsToRPM(shooterRight.getVelocity()));
-        t.addData("Left RPM", tpsToRPM(shooterLeft.getVelocity()));
-
-
-
-        //set green if at speed
-        if (atSpeed()) {
-            t.setColor(ColorfulTelemetry.Green);
-        } else {
-            t.setColor(ColorfulTelemetry.Red);
-        }
-        t.addData("At Speed?", atSpeed());
-
-
-        t.update();
-
+    private double tpsToRPM(double tps) {
+        return (tps * 60.0) / TICKS_PER_REV;
     }
 
     @Override
     public void periodic() {
 
-        double output = shooterPID.calculate();
-
-
     }
 
-    // convert rpm to tps
-    private static final double TICKS_PER_REV = 28; //TODO: Tune
-    private double rpmToTicksPerSecond(double rpm) {
-        return (rpm * TICKS_PER_REV) / 60.0;
-    }
-    private double tpsToRPM(double tps){
-        return (tps * 60) / TICKS_PER_REV;
-    }
-
-
-    public int getCurrentRPM() {
-        return targetRPM;
-
+    public void printTelemetry(ColorfulTelemetry t) {
+        t.reset();
+        t.addLine("SHOOTER SUBSYSTEM");
+        t.addData("Target RPM", targetRPM);
+        t.addData("Current RPM", currentRPM);
+        t.addData("Right RPM", tpsToRPM(shooterRight.getVelocity()));
+        t.addData("Left RPM", tpsToRPM(shooterLeft.getVelocity()));
+        t.addData("At Speed?", atSpeed());
+        t.update();
     }
 }
