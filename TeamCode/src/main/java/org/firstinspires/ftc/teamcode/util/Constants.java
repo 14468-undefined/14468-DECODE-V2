@@ -24,7 +24,9 @@ public final class Constants{
     public static final class transferConstants{
         public static double SPIN_REVERSE_POWER = -1;
         public static double SPIN_POWER = 1;
-        public static int TRANSFER_TIME = 500; //in milliseconds
+        public static int CLOSE_TRANSFER_TIME = 500; //in milliseconds
+        public static int MID_TRANSFER_TIME = 500; //in milliseconds
+        public static int FAR_TRANSFER_TIME = 500; //in milliseconds
     }
     @Config
 

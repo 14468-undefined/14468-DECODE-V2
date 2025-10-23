@@ -18,24 +18,29 @@ public class ShootCommand extends SequentialCommandGroup {
     public ShootCommand(BaseRobot robot, int numShots, int pose) {
         DriveSubsystem drive = robot.drive;
 
+
+        int transferTime = Constants.transferConstants.CLOSE_TRANSFER_TIME;
         if (pose == 1){
             robot.shooter.setTargetRPM(Constants.shooterConstants.CLOSE_SHOT_RPM);
+            transferTime = Constants.transferConstants.CLOSE_TRANSFER_TIME;
         }
         if (pose == 2){
             robot.shooter.setTargetRPM(Constants.shooterConstants.MID_SHOT_RPM);
+            transferTime = Constants.transferConstants.MID_TRANSFER_TIME;
         }
         if (pose == 3){
             robot.shooter.setTargetRPM(Constants.shooterConstants.FAR_ZONE_SHOT_RPM);
+            transferTime = Constants.transferConstants.FAR_TRANSFER_TIME;
         }
         // Define commands
         CommandBase spinUpShooter = new RunCommand(robot.shooter::spinUp, robot.shooter);
         CommandBase stopShooter = new InstantCommand(robot.shooter::stop, robot.shooter);
         CommandBase waitTilAtSpeed = new WaitUntilCommand(() -> robot.shooter.atSpeed());
-        Command shoot1 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(Constants.transferConstants.TRANSFER_TIME);
+        Command shoot1 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(transferTime);
         CommandBase firstWait = new WaitCommand(1000);
-        Command shoot2 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(Constants.transferConstants.TRANSFER_TIME);
+        Command shoot2 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(transferTime);
         Command secondWait = new WaitCommand(1000);
-        Command shoot3 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(Constants.transferConstants.TRANSFER_TIME);
+        Command shoot3 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(transferTime);
 
 
 
