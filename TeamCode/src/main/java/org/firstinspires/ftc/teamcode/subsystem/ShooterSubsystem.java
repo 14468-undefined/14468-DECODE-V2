@@ -40,6 +40,9 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterRight = new MotorEx(hardwareMap, "shooterRight", Motor.GoBILDA.BARE);
         shooterLeft = new MotorEx(hardwareMap, "shooterLeft", Motor.GoBILDA.BARE);
 
+        shooterLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+        shooterRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+
         shooterRight.setInverted(false);
         shooterLeft.setInverted(true);
 
@@ -72,8 +75,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        shooterLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
-        shooterRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+
         shooterLeft.set(0);
         shooterRight.set(0);
     }
