@@ -1,24 +1,14 @@
 package org.firstinspires.ftc.teamcode.teleop.helper;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.arcrobotics.ftclib.command.RunCommand;
-import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
-import org.firstinspires.ftc.teamcode.subsystem.DriveSubsystem;
-import org.firstinspires.ftc.teamcode.subsystem.IntakeSubsystem;
-import org.firstinspires.ftc.teamcode.subsystem.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
-@TeleOp(name = "MotorDirectionDebugger" , group = "TeleOp")
-public class MotorDirectionDebugger extends SampleCommandTeleop {
+@TeleOp(name = "TestTeleop" , group = "TeleOp")
+public class TestTeleop extends SampleCommandTeleop {
 
     //BaseRobot robot;
     FtcDashboard dash;
@@ -34,7 +24,9 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
 
 
 
+        robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g1.getLeftX(),()->g1.getLeftY(), ()->-g1.getRightX(), .75));
 
+        robot.shooter.setTargetRPM(shooterRPM);
 
 
 
@@ -46,10 +38,13 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
 
 
 
+
+        g1.getGamepadButton(GamepadKeys.Button.A).whenActive(()->robot.drive.drive.resetHeadingRelative());
+
         //robot.drive.setDefaultCommand(new RunCommand(() -> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
 
-        robot.shooter.setTargetRPM(shooterRPM);
+
         //X = SPIN UP SHOOTER
 
 
@@ -58,6 +53,8 @@ public class MotorDirectionDebugger extends SampleCommandTeleop {
         g1.getGamepadButton(GamepadKeys.Button.A).whileHeld(robot.intake::intake);
         g1.getGamepadButton(GamepadKeys.Button.A).whenReleased(robot.intake::stop);
 
+        g1.getGamepadButton(GamepadKeys.Button.Y).whileHeld(robot.intake::intakeReverse);
+        g1.getGamepadButton(GamepadKeys.Button.Y).whenReleased(robot.intake::stop);
 
 
         //SHOOTER
