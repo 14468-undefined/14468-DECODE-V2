@@ -12,11 +12,10 @@ import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.subsystem.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.util.Constants;
-import org.firstinspires.ftc.teamcode.subsystem.ShooterSubsystem;
 
-public class Shoot3Command extends SequentialCommandGroup {
+public class ShootCommand extends SequentialCommandGroup {
 
-    public Shoot3Command(BaseRobot robot, int numShots, int pose) {
+    public ShootCommand(BaseRobot robot, int numShots, int pose) {
         DriveSubsystem drive = robot.drive;
 
         if (pose == 1){

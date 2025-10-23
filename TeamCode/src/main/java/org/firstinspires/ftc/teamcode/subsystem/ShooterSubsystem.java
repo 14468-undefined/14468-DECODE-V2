@@ -17,6 +17,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private final MotorEx shooterLeft;
 
 
+
+
+
     //============Servos===========\\
     //private final Servo hood;
 
@@ -135,6 +138,7 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
+        double output = shooterPID.calculate();
 
 
     }
@@ -151,5 +155,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public int getCurrentRPM() {
         return targetRPM;
+
     }
 }
