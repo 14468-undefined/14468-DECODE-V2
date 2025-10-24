@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleop.helper;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,8 +25,9 @@ public class TestTeleop extends SampleCommandTeleop {
 
 
 
+        robot.drive.setDefaultCommand(robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(gamepad1.left_stick_y, gamepad1.left_stick_x), -gamepad1.right_stick_x)));
 
-        robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g1.getLeftY(),()->-g1.getLeftX(), ()->-g1.getRightX(), .75));
+        //robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g1.getLeftY(),()->-g1.getLeftX(), ()->-g1.getRightX(), .75));
 
         robot.shooter.setTargetRPM(shooterRPM);
 
@@ -39,7 +42,7 @@ public class TestTeleop extends SampleCommandTeleop {
 
 
 
-        g1.getGamepadButton(GamepadKeys.Button.A).whenActive(()->robot.drive.drive.resetHeadingRelative());
+        g1.getGamepadButton(GamepadKeys.Button.Y).whenActive(()->robot.drive.drive.resetHeadingRelative());
 
         //robot.drive.setDefaultCommand(new RunCommand(() -> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
