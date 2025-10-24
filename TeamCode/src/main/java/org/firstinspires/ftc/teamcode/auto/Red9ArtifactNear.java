@@ -7,21 +7,22 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.command.IntakeCommand;
+import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
-import org.firstinspires.ftc.teamcode.command.Shoot3Command;
+
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
 @Autonomous(name="R_9+0 near")
 public class Red9ArtifactNear extends SampleAuto {
     private BaseRobot robot;
-    private Shoot3Command shoot3;
+    private ShootCommand shoot3;
     private IntakeCommand intake;
 
 
     @Override
     public void onInit() {
         robot = new BaseRobot(hardwareMap, new Pose2d(-48.5, 48.8, Math.toRadians(135)));
-        shoot3 = new Shoot3Command(robot, 3, 2);//3 artifacts mid range shot
+        shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
         intake = new IntakeCommand(robot);
         //set pos of hood and transfer servo
 
@@ -41,7 +42,8 @@ public class Red9ArtifactNear extends SampleAuto {
         // ====================== Intake 1st Pile ====================== \\
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
                 // Start intake after 4 seconds
-                .afterTime(2.3, t -> {intake.schedule(); return true;})
+                //.afterTime(2.3, t -> {intake.schedule(); return true;}) //THIS IS COMMAND INSTEAD OF NORMAL
+                .afterTime(2.3, t -> {robot.intake.intake();  return true;})
                      //stop intake after 7 sec
                 .afterTime(3.5, t -> {robot.intake.stop();  return true;})
 

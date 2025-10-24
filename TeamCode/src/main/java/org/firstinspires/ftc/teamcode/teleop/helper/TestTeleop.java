@@ -24,7 +24,7 @@ public class TestTeleop extends SampleCommandTeleop {
 
 
 
-        robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g1.getLeftX(),()->g1.getLeftY(), ()->-g1.getRightX(), .75));
+        robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g1.getLeftY(),()->-g1.getLeftX(), ()->-g1.getRightX(), .75));
 
         robot.shooter.setTargetRPM(shooterRPM);
 
