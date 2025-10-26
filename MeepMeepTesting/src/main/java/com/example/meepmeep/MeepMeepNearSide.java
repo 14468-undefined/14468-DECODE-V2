@@ -99,9 +99,10 @@ public class MeepMeepNearSide {
 
                 // ==============Motif 1============== \\
                 .strafeToSplineHeading(new Vector2d(-11.2, 22.4), Math.toRadians(90))
-                .strafeToConstantHeading(new Vector2d(-11.2, 52.5))
+                .strafeToConstantHeading(new Vector2d(-11.2, 57))
 
                 // ==============Gate Open============== \\
+                        .strafeToConstantHeading(new Vector2d(-11.2, 48))
                 .strafeToSplineHeading(new Vector2d(1.4, 57.5),Math.toRadians(180))
 
                 // ==============return============== \\
