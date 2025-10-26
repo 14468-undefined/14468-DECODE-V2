@@ -99,7 +99,7 @@ public class MeepMeepNearSide {
 
                 // ==============Motif 1============== \\
                 .strafeToSplineHeading(new Vector2d(-11.2, 22.4), Math.toRadians(90))
-                .strafeToConstantHeading(new Vector2d(-11.2, 57))
+                .strafeToConstantHeading(new Vector2d(-11.2, 54.5))
 
                 // ==============Gate Open============== \\
                         .strafeToConstantHeading(new Vector2d(-11.2, 48))
@@ -111,14 +111,16 @@ public class MeepMeepNearSide {
 
                 // ==============Motif 2============== \\
                 .strafeToSplineHeading(new Vector2d(12, 22.4), Math.toRadians(90))//go to motif
-                .strafeToConstantHeading(new Vector2d(12, 52.5))//intake
+                .strafeToConstantHeading(new Vector2d(12, 61))//intake
+                .strafeToConstantHeading(new Vector2d(12, 50))//move back
 
                 // ==============return============== \\
                 .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
 
                 // ==============Motif 3============== \\
                 .strafeToSplineHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
-                .strafeToConstantHeading(new Vector2d(35.8, 52.5))
+                .strafeToConstantHeading(new Vector2d(35.8, 61))
+                .strafeToConstantHeading(new Vector2d(35.8, 50))//move back
 
                 // ==============return============== \\
                 .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
