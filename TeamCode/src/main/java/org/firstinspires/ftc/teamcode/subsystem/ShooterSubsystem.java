@@ -24,10 +24,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private double currentRPM = 0;
 
     // PIDF constants (tune these)
-    private final double kP = 0.0008;
-    private final double kI = 0.0001;
-    private final double kD = 0.0001;
-    private final double kF = 0.0002;
+    public static double kP = 0.0008;
+    public static double kI = 0.0001;
+    public static double kD = 0.0001;
+    public static double kF = 0.0002;
 
     private final double TICKS_PER_REV = 28.0; //for 6k rpm
 
@@ -59,6 +59,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // called repeatedly to spin up and regulate shooter speed
     public void spinUp() {
+
+        shooterPID.setPIDF(kP, kI, kD, kF);
         //get current velocity
         currentRPM = ((shooterLeft.getVelocity() + shooterRight.getVelocity()) / 2.0) * (60.0 / TICKS_PER_REV);
 
