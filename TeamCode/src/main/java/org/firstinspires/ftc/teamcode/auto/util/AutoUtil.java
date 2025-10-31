@@ -14,11 +14,18 @@ public class AutoUtil {
     //Observation side start(farm from baskets)
     public static final int OBS = 1;
 
-    public static final Vector2d highBasketDeposit = new Vector2d(-60, -48);
+    public static final Vector2d goalScoring = new Vector2d(-48.5,48.8);
+    public static final int redGoalAngle = 126;
+    public static final int blueGoalAngle = 234;
 
-    //Starting Pose2d from the net side
-    public static final Pose2d NETSTART = new Pose2d(new Vector2d(-36, -63), Math.toRadians(90));
-    public static final Pose2d OBSSTART = new Pose2d(12, -63, Math.toRadians(90));
+
+    public static final Vector2d BLUEGATEDUMP = new Vector2d(1.4, -55);
+    public static final Vector2d REDGATEDUMP = new Vector2d(1.4, 55);
+
+
+    //Starting Pose2d from sides
+    public static final Pose2d BLUENEARSTART = new Pose2d(-61, -40, Math.toRadians(180));
+    public static final Pose2d REDNEARSTART = new Pose2d(-61, 40, Math.toRadians(180));
 
     //Base robot's drive subsystem
     private DriveSubsystem drive;
@@ -27,7 +34,7 @@ public class AutoUtil {
         this.drive=drive;
     }
 
-    public Action getStartToNetAction(int start) {
+    /*public Action getStartToNetAction(int start) {
         if(start==NET) {
             return drive.actionBuilder(NETSTART)
                     .strafeToLinearHeading(highBasketDeposit, Math.toRadians(45))
@@ -46,12 +53,8 @@ public class AutoUtil {
                 .build();
     }
 
+     */
 
-    public Action getNetToBoxThree(Pose2d pose) {
-        return drive.actionBuilder(pose)
-                .strafeToLinearHeading(new Vector2d(-55, -36), Math.toRadians(90))
-                .build();
-    }
 
 
 

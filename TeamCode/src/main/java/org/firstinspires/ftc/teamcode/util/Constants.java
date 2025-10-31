@@ -7,6 +7,11 @@ public final class Constants{
     public static final class DriveConstants{
 
     }
+
+    @Config
+    public static final class FieldConstants{
+
+    }
     @Config
     public static final class intakeConstants{
         public static double INTAKE_POWER = 1;
