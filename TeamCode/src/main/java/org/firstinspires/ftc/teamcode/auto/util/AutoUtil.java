@@ -23,9 +23,13 @@ public class AutoUtil {
     public static final Vector2d REDGATEDUMP = new Vector2d(1.4, 55);
 
 
+
     //Starting Pose2d from sides
     public static final Pose2d BLUENEARSTART = new Pose2d(-61, -40, Math.toRadians(180));
     public static final Pose2d REDNEARSTART = new Pose2d(-61, 40, Math.toRadians(180));
+
+    public static final Pose2d REDFARSTART = new Pose2d(61, 16, Math.toRadians(180));
+    public static final Pose2d BLUEFARSTART = new Pose2d(61, -16, Math.toRadians(180));
 
     //Base robot's drive subsystem
     private DriveSubsystem drive;

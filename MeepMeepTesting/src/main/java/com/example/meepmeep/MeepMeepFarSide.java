@@ -33,15 +33,30 @@ public class MeepMeepFarSide {
                 .strafeToLinearHeading(new Vector2d(56, -9), Math.toRadians(225))
                 .build());
 
-        redBot.runAction(redBot.getDrive().actionBuilder(new Pose2d(56, 9, Math.toRadians(145)))
+        redBot.runAction(redBot.getDrive().actionBuilder(new Pose2d(61, 16, Math.toRadians(180)))
 
 
-                //.strafeToLinearHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
-                //.strafeToConstantHeading(new Vector2d(35.8, 52.5))
-                        .strafeToLinearHeading(new Vector2d(38.5, 35), Math.toRadians(105))
-                        .strafeToLinearHeading(new Vector2d(35.8, 52.5), Math.toRadians(90))
+                //SMOOTHER pathing but less reliable intake prob
+                //.strafeToLinearHeading(new Vector2d(38.5, 35), Math.toRadians(105))
+                //.strafeToLinearHeading(new Vector2d(35.8, 52.5), Math.toRadians(90))
 
-                .strafeToLinearHeading(new Vector2d(56, 9), Math.toRadians(145))
+
+
+                .strafeToSplineHeading(new Vector2d(35.8, 29), Math.toRadians(90))//go to motif 1
+                .strafeToConstantHeading(new Vector2d(35.8, 61))//intake
+
+                .strafeToLinearHeading(new Vector2d(56, 10), Math.toRadians(150))//go to shoot pose
+
+                //get HP zone balls
+                .strafeToSplineHeading(new Vector2d(44, 65), Math.toRadians(0))//line up for HP zone balls
+                .strafeToConstantHeading(new Vector2d(61, 65))//line up for HP zone balls
+                .strafeToLinearHeading(new Vector2d(56, 10), Math.toRadians(150))//go to shoot pose
+
+
+                .strafeToSplineHeading(new Vector2d(12, 29), Math.toRadians(90))//go to motif 2
+                .strafeToConstantHeading(new Vector2d(12, 61))//intake
+
+                .strafeToLinearHeading(new Vector2d(56, 10), Math.toRadians(150))//go to shoot pose
                 .build());
 
 
