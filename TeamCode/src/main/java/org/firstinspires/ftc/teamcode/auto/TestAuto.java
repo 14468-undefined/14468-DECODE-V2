@@ -17,7 +17,7 @@ public class TestAuto extends SampleAuto {
 
     @Override
     public void onInit() {
-        robot = new BaseRobot(hardwareMap, new Pose2d(-48.5, 48.8, Math.toRadians(135)));
+        robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
 
 
 
@@ -27,7 +27,7 @@ public class TestAuto extends SampleAuto {
     @Override
     public void onStart() {
 
-        Actions.runBlocking(robot.drive.actionBuilder(new Pose2d(-61, 40, Math.toRadians(180)))
+        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
                         .strafeToSplineHeading(new Vector2d(-24,24),Math.toRadians(135))//go shoot
                         //go to pile
