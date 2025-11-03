@@ -13,7 +13,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 
 @Config
-public class ShooterSubsystem extends SubsystemBase {
+public class ShooterSubsystem extends UndefinedSubsystemBase {
     //=========== MOTORS ===========\\
     private final MotorEx shooterRight;
     private final MotorEx shooterLeft;

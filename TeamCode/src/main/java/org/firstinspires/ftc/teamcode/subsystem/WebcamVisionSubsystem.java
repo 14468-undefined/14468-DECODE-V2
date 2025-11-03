@@ -18,7 +18,7 @@ import java.util.List;
 
 public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
 
-    private Servo rotation;
+   // private Servo rotation;
     private VisionPortal webcam;
     private final HardwareMap hardwareMap;
 
@@ -62,9 +62,11 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
 
         buildVisionPortal();
 
-        rotation = hardwareMap.get(Servo.class, "hood");
+        /*rotation = hardwareMap.get(Servo.class, "hood");
         rotation.scaleRange(Constants.WebcamConstants.ROTATION_MIN, Constants.WebcamConstants.ROTATION_MAX);
         rotation.setPosition(Constants.WebcamConstants.ROTATION_GOAL);
+
+         */
     }
 
     private void buildVisionPortal() {
@@ -87,13 +89,13 @@ public class WebcamVisionSubsystem extends UndefinedSubsystemBase {
 
         switch (mode) {
             case APRILTAG:
-                rotation.setPosition(Constants.WebcamConstants.ROTATION_GOAL);
+                //rotation.setPosition(Constants.WebcamConstants.ROTATION_GOAL);
                 webcam.setProcessorEnabled(aprilTagProcessor, true);
                 webcam.setProcessorEnabled(artifactProcessor, false);
                 break;
 
             case ARTIFACT:
-                rotation.setPosition(Constants.WebcamConstants.ROTATION_GROUND);
+                //rotation.setPosition(Constants.WebcamConstants.ROTATION_GROUND);
                 webcam.setProcessorEnabled(aprilTagProcessor, false);
                 webcam.setProcessorEnabled(artifactProcessor, true);
                 break;
