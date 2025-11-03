@@ -90,7 +90,7 @@ public class Meet1Teleop extends SampleCommandTeleop {
 
         //spin reverse at power of .2 - really -.2 but reversed in subsystem
         g1.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
-            robot.shooter.spinSlowReverse(.2);
+            robot.shooter.spinSlowReverse();
         });
 
     }

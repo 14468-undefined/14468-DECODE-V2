@@ -37,6 +37,9 @@ public class ShootCommand extends SequentialCommandGroup {
         CommandBase stopShooter = new InstantCommand(robot.shooter::stop, robot.shooter);
         //TODO:: figure out how much i should make wait til at speed tolerance be - for now just time
         //TODO: re-add this CommandBase waitTilAtSpeed = new WaitUntilCommand(() -> robot.shooter.atSpeed());
+
+
+        //OLD
         CommandBase waitTilAtSpeed = new WaitCommand(2000);
         Command shoot1 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(transferTime);
         CommandBase firstWait = new WaitCommand(1000);
@@ -49,28 +52,41 @@ public class ShootCommand extends SequentialCommandGroup {
         addRequirements(robot.shooter, robot.transfer);
 
         //if 3 balls
-        if(numShots == 3) {
+        if(numShots > 0) {
 
             addCommands(
-                    // Wait until shooter reaches speed
-                    waitTilAtSpeed,
+                    new RunCommand(() -> robot.shooter.spinUp(), robot.shooter).alongWith(
 
+                            new SequentialCommandGroup(
+                                    new WaitCommand(2000),
+                                    new RunCommand(() -> robot.intake.intake(), robot.intake)
+                            )
+                    )
+            );
+
+
+                    /*
                     // Parallel group: shooter spins constantly while doing the transfer pulses
                     new ParallelCommandGroup(spinUpShooter,
                             // Sequential transfer pulses
                             new SequentialCommandGroup(
+
                                     shoot1,
                                     firstWait,
                                     shoot2,
                                     secondWait,
                                     shoot3,
                                     stopShooter
+
+
                             )
                     )
 
-            );
+                     */
+
+
         }
-        else if(numShots == 2){
+        /*else if(numShots == 2){
 
             addCommands(
                     // Wait until shooter reaches speed
@@ -104,7 +120,10 @@ public class ShootCommand extends SequentialCommandGroup {
                     )
 
             );
-        }
+
+            }
+         */
+
 
     }
 
