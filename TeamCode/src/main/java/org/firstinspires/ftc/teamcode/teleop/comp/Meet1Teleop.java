@@ -13,6 +13,7 @@ import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.command.IntakeCommand;
 
@@ -28,6 +29,7 @@ public class Meet1Teleop extends SampleCommandTeleop {
 
     int zone = 2; //mid default
     int numShots = 3;//number of shots
+    double driveSpeed = 1;
 
     Command Shoot = new ShootCommand(robot, zone, numShots);
     @Override
@@ -43,11 +45,23 @@ public class Meet1Teleop extends SampleCommandTeleop {
     public void onStart() {
 
 
+
         /*
         DRIVE - normal robot centric
+
+        g2 - DPAD controls = speed
          */
         robot.drive.setDefaultCommand(new RunCommand(()-> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
+            driveSpeed = 1;
+        });
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
+            driveSpeed = .5;
+        });
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
+            driveSpeed = .2;
+        });
 
         /*
         INTAKING:
