@@ -27,7 +27,7 @@ public class TestAuto extends SampleAuto {
     @Override
     public void onStart() {
 
-        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
+        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.drive.localizer.getPose())
 
                         .strafeToSplineHeading(new Vector2d(-24,24),Math.toRadians(135))//go shoot
                         //go to pile

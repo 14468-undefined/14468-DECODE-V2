@@ -25,6 +25,7 @@ public class MeepMeepFarSide {
         blueBot.runAction(blueBot.getDrive().actionBuilder(new Pose2d(56, -9, Math.toRadians(215)))
 
 
+
                 //.strafeToLinearHeading(new Vector2d(35.8, 22.4), Math.toRadians(90))
                 //.strafeToConstantHeading(new Vector2d(35.8, 52.5))
                 .strafeToLinearHeading(new Vector2d(38.5, -35), Math.toRadians(255))
@@ -33,7 +34,7 @@ public class MeepMeepFarSide {
                 .strafeToLinearHeading(new Vector2d(56, -9), Math.toRadians(225))
                 .build());
 
-        redBot.runAction(redBot.getDrive().actionBuilder(new Pose2d(61, 16, Math.toRadians(180)))
+        redBot.runAction(redBot.getDrive().actionBuilder(new Pose2d(61, 18, Math.toRadians(180)))
 
 
                 //SMOOTHER pathing but less reliable intake prob
@@ -55,6 +56,9 @@ public class MeepMeepFarSide {
 
                 .strafeToSplineHeading(new Vector2d(12, 29), Math.toRadians(90))//go to motif 2
                 .strafeToConstantHeading(new Vector2d(12, 61))//intake
+
+                //.strafeToSplineHeading(new Vector2d(50, 57), Math.toRadians(75))//alternate path to corner
+                //.strafeToSplineHeading(new Vector2d(60, 58), Math.toRadians(85))//alternate path to corner
 
                 .strafeToLinearHeading(new Vector2d(56, 10), Math.toRadians(150))//go to shoot pose
                 .build());
