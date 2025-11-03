@@ -82,6 +82,11 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterRight.set(0);
     }
 
+    public void spinSlowReverse(double power){
+        shooterLeft.set(-power);
+        shooterRight.set(-power);
+    }
+
     public boolean atSpeed() {
         double avgVelocity = (shooterRight.getVelocity() + shooterLeft.getVelocity()) / 2.0;
         double targetVelocity = rpmToTicksPerSecond(targetRPM);
