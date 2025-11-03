@@ -31,6 +31,8 @@ public class Meet1Teleop extends SampleCommandTeleop {
     int numShots = 3;//number of shots
     double driveSpeed = 1;
 
+    boolean shooterOn = false;
+
     Command Shoot = new ShootCommand(robot, zone, numShots);
     @Override
     public void onInit() {
@@ -53,13 +55,13 @@ public class Meet1Teleop extends SampleCommandTeleop {
          */
         robot.drive.setDefaultCommand(new RunCommand(()-> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
 
-        g2.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
+        g1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
             driveSpeed = 1;
         });
-        g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
+        g1.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
             driveSpeed = .5;
         });
-        g2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
+        g1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
             driveSpeed = .2;
         });
 
@@ -92,18 +94,31 @@ public class Meet1Teleop extends SampleCommandTeleop {
                     CommandScheduler.getInstance().cancel(robot.shooter.getCurrentCommand());
         });
 
-        g1.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
+
+        if(shooterOn){
+            robot.shooter.spinUp();
+        }
+        if(!shooterOn){
+            robot.shooter.stop();
+        }
+        g2.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> {shooterOn = true;});
+        g2.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> {shooterOn = false;});
+        g2.getGamepadButton(GamepadKeys.Button.Y).whenActive(new ShootCommand(robot, numShots, zone));
+
+
+
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
             zone = 2;
             numShots = 3;
 
         });
-        g1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
             zone = 3;
             numShots = 3;
         });
 
         //spin reverse at power of .2 - really -.2 but reversed in subsystem
-        g1.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
+        g2.getGamepadButton(GamepadKeys.Button.A).whenPressed(() -> {
             robot.shooter.spinSlowReverse();
         });
 
