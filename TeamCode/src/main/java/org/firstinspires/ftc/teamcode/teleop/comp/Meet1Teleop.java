@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.command.SpinUpShooterCommand;
 
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
+import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
 
@@ -33,6 +34,7 @@ public class Meet1Teleop extends SampleCommandTeleop {
 
     boolean shooterOn = false;
 
+    int shooterRPM = 580;
     Command Shoot = new ShootCommand(robot, zone, numShots);
     @Override
     public void onInit() {
@@ -45,8 +47,7 @@ public class Meet1Teleop extends SampleCommandTeleop {
 
     @Override
     public void onStart() {
-
-
+        robot.shooter.setTargetRPM(shooterRPM);
 
         /*
         DRIVE - normal robot centric
@@ -85,42 +86,48 @@ public class Meet1Teleop extends SampleCommandTeleop {
         DPAD Right = mid zone
         DPAD Down = close zone (ur never in close zone)
          */
-        g1.getGamepadButton(GamepadKeys.Button.X).whenPressed(() -> {
-                    ShootCommand shootCommand = new ShootCommand(robot, numShots, zone);
-                    shootCommand.schedule();
+        g2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(() -> {
+                    robot.shooter.spinUp();
         });
-        g1.getGamepadButton(GamepadKeys.Button.B).whenPressed(() -> {
-                    // Cancel command
-                    CommandScheduler.getInstance().cancel(robot.shooter.getCurrentCommand());
+        g2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
+                  robot.shooter.spinSlowReverse();
         });
 
 
-        if(shooterOn){
-            robot.shooter.spinUp();
-        }
-        if(!shooterOn){
-            robot.shooter.stop();
-        }
-        g2.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> {shooterOn = true;});
-        g2.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> {shooterOn = false;});
-        g2.getGamepadButton(GamepadKeys.Button.Y).whenActive(new ShootCommand(robot, numShots, zone));
+
+        //right trigger = intake forwards, left trigger = intake reverse
+        new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intake())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
+
+        new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intakeReverse())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
 
 
 
-        g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
-            zone = 2;
-            numShots = 3;
 
-        });
-        g2.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
-            zone = 3;
-            numShots = 3;
-        });
 
-        //spin reverse at power of .2 - really -.2 but reversed in subsystem
         g2.getGamepadButton(GamepadKeys.Button.A).whenPressed(() -> {
-            robot.shooter.spinSlowReverse();
+            //zone = 2;
+            //numShots = 3;
+            shooterRPM = Constants.shooterConstants.MID_SHOT_RPM;
+
         });
+        g2.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
+            //zone = 3;
+            //numShots = 3;
+            shooterRPM = Constants.shooterConstants.FAR_ZONE_SHOT_RPM;
+        });
+
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
+            //zone = 3;
+            //numShots = 3;
+            shooterRPM += 50;
+        });
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
+            //zone = 3;
+            //numShots = 3;
+            shooterRPM -= 50;
+        });
+
+
 
     }
 
