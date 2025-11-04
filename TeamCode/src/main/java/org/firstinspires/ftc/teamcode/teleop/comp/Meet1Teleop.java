@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
 
-@TeleOp
+@TeleOp (name = "Meet1Teleop" , group = "TeleOp")
 public class Meet1Teleop extends SampleCommandTeleop {
 
     int zone = 2; //mid default

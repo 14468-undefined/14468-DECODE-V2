@@ -3,7 +3,10 @@ package org.firstinspires.ftc.teamcode.auto;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.command.IntakeCommand;
@@ -22,7 +25,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
     @Override
     public void onInit() {
         robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
-        shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
+        //shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
         robot.shooter.setTargetRPM(Constants.shooterConstants.MID_SHOT_RPM);
         //set pos of hood and transfer servo
 
@@ -35,18 +38,23 @@ public class RedNearAutoMeet1 extends SampleAuto {
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
                 .strafeToSplineHeading(new Vector2d(-24,24),Math.toRadians(135))//go to shooting pose
                 .build());
-        shoot3.schedule();
+        //shoot3.schedule();
 
-        while (!shoot3.isFinished() && opModeIsActive()) {
+        /*while (!shoot3.isFinished() && opModeIsActive()) {
             CommandScheduler.getInstance().run(); //run scheduler
             idle(); //
         }
+
+         */
         //wait til 3 are shot to move
 
-        // ====================== Intake 1st Pile ====================== \\
+        robot.intake.intake();
+        robot.delay(4);
+        robot.intake.stop();
+        // ====================== Intake 1st Pile ====================== \\jacob cant code an auto ts is why we dont make worlds now im gonna type out the alphabet abcdefghijk,lmnop
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
-                .afterTime(2.3, t -> {robot.intake.intake();  return true;})
+                .afterTime(2.3, t -> {robot.intake.intake();  return false;})
                 //stop intake after 4 sec
                 .afterTime(4, t -> {robot.intake.stop();  return true;})
 

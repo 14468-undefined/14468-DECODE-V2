@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
@@ -31,6 +32,16 @@ public class BaseRobot extends UndefinedSubsystemBase {
         //webcamVision = new WebcamVisionSubsystem(hwMap);
         //huskyLensVision = new HuskyLensSubsystem(hwMap, cTelemetry);
         transfer = new TransferSubsystem(hwMap, cTelemetry);
+
+
+    }
+    public void delay(double seconds){
+        ElapsedTime timer = new ElapsedTime();
+        timer.reset();
+        while(timer.seconds() < seconds){
+
+        }
+
     }
 
 

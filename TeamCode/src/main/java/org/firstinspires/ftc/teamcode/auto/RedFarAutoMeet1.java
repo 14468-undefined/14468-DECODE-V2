@@ -56,7 +56,7 @@ public class RedFarAutoMeet1 extends SampleAuto {
                 .afterTime(5, t-> {robot.shooter.spinUp(); return true;})
 
 
-                .strafeToSplineHeading(new Vector2d(35.8, 29), Math.toRadians(90))//go to motif 1
+                .strafeToSplineHeading(new Vector2d(32, 29), Math.toRadians(90))//go to motif 1
                 .strafeToConstantHeading(new Vector2d(35.8, 61))//intake
 
 
