@@ -26,17 +26,18 @@ public class RedNearAutoMeet1 extends SampleAuto {
     public void onInit() {
         robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
         //shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
-        robot.shooter.setTargetRPM(Constants.shooterConstants.MID_SHOT_RPM);
+        robot.shooter.setTargetRPM(1000);
         //set pos of hood and transfer servo
+
 
     }
 
     @Override
     public void onStart() {
 
-        robot.shooter.spinUp();
+        robot.shooter.spinUpChooseRPM(585);
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-                .strafeToSplineHeading(new Vector2d(-24,24),Math.toRadians(135))//go to shooting pose
+                .strafeToSplineHeading(new Vector2d(-25,24),Math.toRadians(130))//go to shooting pose
                 .build());
         //shoot3.schedule();
 
@@ -51,19 +52,20 @@ public class RedNearAutoMeet1 extends SampleAuto {
         robot.intake.intake();
         robot.delay(4);
         robot.intake.stop();
+        robot.shooter.stop();
         // ====================== Intake 1st Pile ====================== \\jacob cant code an auto ts is why we dont make worlds now im gonna type out the alphabet abcdefghijk,lmnop
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
-                .afterTime(2.3, t -> {robot.intake.intake();  return false;})
+                .afterTime(0, t -> {robot.intake.intake();  return true;})
                 //stop intake after 4 sec
-                .afterTime(4, t -> {robot.intake.stop();  return true;})
+                .afterTime(3, t -> {robot.intake.stop();  return  true;})
 
-                .afterTime(5, t-> {robot.shooter.spinUp(); return true;})
+                //.afterTime(5, t-> {robot.shooter.spinUpChooseRPM(600); return true;})
 
                 //go to pile
-                .strafeToSplineHeading(new Vector2d(-11.2, 25.4), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(-16.5, 25.4), Math.toRadians(90))
                 //pick up
-                .strafeToConstantHeading(new Vector2d(-11.2, 54.5))
+                .strafeToConstantHeading(new Vector2d(-19, 58))
 
                 /*gate dump
                 .strafeToConstantHeading(new Vector2d(-11.2, 48))
@@ -71,17 +73,20 @@ public class RedNearAutoMeet1 extends SampleAuto {
                  */
 
                 //return
-                .strafeToSplineHeading(new Vector2d(-48.5,48.8),Math.toRadians(135))
+                .strafeToSplineHeading(new Vector2d(-25,24),Math.toRadians(130))
                 .build());
-        robot.drive.updatePoseEstimate();
 
 
+        //robot.intake.intakeReverse();
+        //robot.delay(.1);
+        //robot.intake.stop();
         //shoot 3 artifacts
-        shoot3.schedule();
-        while (!shoot3.isFinished() && opModeIsActive()) {
-            CommandScheduler.getInstance().run(); //run scheduler
-            idle(); //
-        }
+        robot.shooter.spinUpChooseRPM(580);
+        robot.delay(1);
+        robot.intake.intake();
+        robot.delay(4);
+        robot.intake.stop();
+        robot.shooter.stop();
         //wait til shoot 3 is done to move
 
 

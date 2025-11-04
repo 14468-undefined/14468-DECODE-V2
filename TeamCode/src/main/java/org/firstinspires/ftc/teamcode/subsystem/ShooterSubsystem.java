@@ -58,6 +58,23 @@ public class ShooterSubsystem extends UndefinedSubsystemBase {
     }
 
     // called repeatedly to spin up and regulate shooter speed
+
+    public void spinUpChooseRPM(int rpm){
+        shooterPID.setPIDF(kP, kI, kD, kF);
+        //get current velocity
+        currentRPM = ((shooterLeft.getVelocity() + shooterRight.getVelocity()) / 2.0) * (60.0 / TICKS_PER_REV);
+
+        //compute feedforward
+        double ff = kF * rpm;
+        double pidOutput = shooterPID.calculate(currentRPM, rpm);
+
+        // 0<power<1
+        double totalOutput = Range.clip(ff + pidOutput, 0, 1);
+
+        //set power
+        shooterLeft.set(totalOutput);
+        shooterRight.set(totalOutput);
+    }
     public void spinUp() {
 
         shooterPID.setPIDF(kP, kI, kD, kF);
