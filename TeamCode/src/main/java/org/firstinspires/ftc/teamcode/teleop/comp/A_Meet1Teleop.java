@@ -1,32 +1,24 @@
 package org.firstinspires.ftc.teamcode.teleop.comp;
 
-import static com.arcrobotics.ftclib.kotlin.extensions.gamepad.GamepadExExtKt.whenActive;
-
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
-import org.firstinspires.ftc.teamcode.command.IntakeCommand;
 
 import org.firstinspires.ftc.teamcode.command.ShootCommand;
-import org.firstinspires.ftc.teamcode.command.SpinUpShooterCommand;
 
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
 
-@TeleOp (name = "Meet1Teleop" , group = "TeleOp")
-public class Meet1Teleop extends SampleCommandTeleop {
+@TeleOp (name = "A_Meet1Teleop" , group = "TeleOp")
+public class A_Meet1Teleop extends SampleCommandTeleop {
 
     int zone = 2; //mid default
     int numShots = 3;//number of shots
