@@ -21,6 +21,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
     private BaseRobot robot;
     private ShootCommand shoot3;
 
+    private int shooterRPMClose = 585;
 
     @Override
     public void onInit() {
@@ -35,7 +36,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
     @Override
     public void onStart() {
 
-        robot.shooter.spinUpChooseRPM(585);
+        robot.shooter.spinUpChooseRPM(shooterRPMClose);
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
                 .strafeToSplineHeading(new Vector2d(-25,24),Math.toRadians(130))//go to shooting pose
                 .build());
@@ -50,15 +51,15 @@ public class RedNearAutoMeet1 extends SampleAuto {
         //wait til 3 are shot to move
 
         robot.intake.intake();
-        robot.delay(4);
+        robot.delay(3);
         robot.intake.stop();
         robot.shooter.stop();
-        // ====================== Intake 1st Pile ====================== \\jacob cant code an auto ts is why we dont make worlds now im gonna type out the alphabet abcdefghijk,lmnop
+        // ====================== Intake 1st Pile ====================== \\
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
                 .afterTime(0, t -> {robot.intake.intake();  return true;})
                 //stop intake after 4 sec
-                .afterTime(3, t -> {robot.intake.stop();  return  true;})
+                .afterTime(2, t -> {robot.intake.stop();  return  true;})
 
                 //.afterTime(5, t-> {robot.shooter.spinUpChooseRPM(600); return true;})
 
@@ -73,7 +74,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
                  */
 
                 //return
-                .strafeToSplineHeading(new Vector2d(-25,24),Math.toRadians(130))
+                .strafeToSplineHeading(new Vector2d(-26,24),Math.toRadians(135))
                 .build());
 
 
@@ -81,7 +82,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
         //robot.delay(.1);
         //robot.intake.stop();
         //shoot 3 artifacts
-        robot.shooter.spinUpChooseRPM(580);
+        robot.shooter.spinUpChooseRPM(shooterRPMClose);
         robot.delay(1);
         robot.intake.intake();
         robot.delay(4);
@@ -106,21 +107,21 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
                 // ==============return============== \\
                 .strafeToConstantHeading(new Vector2d(12, 50))//back up
-                .strafeToSplineHeading(new Vector2d(-24,24),Math.toRadians(135))//shooting pose
+                .strafeToSplineHeading(new Vector2d(-24,24),Math.toRadians(140))//shooting pose
 
 
 
                 .build());
-        robot.drive.updatePoseEstimate();
+
+        robot.shooter.spinUpChooseRPM(shooterRPMClose);
+        robot.delay(1);
+        robot.intake.intake();
+        robot.delay(4);
+        robot.intake.stop();
+        robot.shooter.stop();
 
 
-        //shoot 3 artifacts
-        shoot3.schedule();
-        while (!shoot3.isFinished() && opModeIsActive()) {
-            CommandScheduler.getInstance().run(); //run scheduler
-            idle(); //
-        }
-        //wait til shoot 3 is done to move
+
 
     }
 

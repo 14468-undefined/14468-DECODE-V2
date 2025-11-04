@@ -136,6 +136,6 @@ public class Meet1Teleop extends SampleCommandTeleop {
 
     @Override
     public void onStop() {
-
+        robot.stopAll();
     }
 }
