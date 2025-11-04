@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
+import org.firstinspires.ftc.teamcode.util.Constants;
 
 public class IntakeSubsystem extends UndefinedSubsystemBase {
 
@@ -13,8 +14,8 @@ public class IntakeSubsystem extends UndefinedSubsystemBase {
     private HardwareMap hardwareMap;
 
     //power - adjusted in teleop but this is default
-    private double intakePower = 1;
-    private double reverseIntakePower = 1;
+    private double intakePower = Constants.intakeConstants.INTAKE_POWER;//1
+    private double reverseIntakePower = Constants.intakeConstants.REVERSE_INTAKE_POWER;//.5
 
     public IntakeSubsystem(HardwareMap hardwareMap, ColorfulTelemetry telemetry) {
         this.cTelemetry = telemetry;

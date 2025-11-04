@@ -82,8 +82,8 @@ public class TestTeleop extends SampleCommandTeleop {
         g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(robot.shooter::stop);
 
 
-        g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(robot.transfer::spin);
-        g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(robot.transfer::stop);
+        g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(robot.shooter::spinSlowReverse);
+        g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(robot.shooter::spinSlowReverse);
 
 
         pen.addLine("CONTROLS");

@@ -15,7 +15,7 @@ public final class Constants{
     @Config
     public static final class intakeConstants{
         public static double INTAKE_POWER = 1;
-        public static double REVERSE_INTAKE_POWER = 1;
+        public static double REVERSE_INTAKE_POWER = .5;
     }
 
     @Config
