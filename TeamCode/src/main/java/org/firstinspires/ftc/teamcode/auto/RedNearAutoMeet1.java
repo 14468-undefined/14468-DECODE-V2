@@ -51,43 +51,61 @@ public class RedNearAutoMeet1 extends SampleAuto {
         //wait til 3 are shot to move
 
         robot.intake.intake();
-        robot.delay(3);
-        robot.intake.stop();
-        robot.shooter.stop();
-        // ====================== Intake 1st Pile ====================== \\
-        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-
-                .afterTime(0, t -> {robot.intake.intake();  return true;})
-                //stop intake after 4 sec
-                .afterTime(2, t -> {robot.intake.stop();  return  true;})
-
-                //.afterTime(5, t-> {robot.shooter.spinUpChooseRPM(600); return true;})
-
-                //go to pile
-                .strafeToSplineHeading(new Vector2d(-16.5, 25.4), Math.toRadians(90))
-                //pick up
-                .strafeToConstantHeading(new Vector2d(-19, 58))
-
-                /*gate dump
-                .strafeToConstantHeading(new Vector2d(-11.2, 48))
-                .strafeToSplineHeading(new Vector2d(1.4, 55), Math.toRadians(90))//gate dump
-                 */
-
-                //return
-                .strafeToSplineHeading(new Vector2d(-26,24),Math.toRadians(135))
-                .build());
-
-
-        //robot.intake.intakeReverse();
-        //robot.delay(.1);
-        //robot.intake.stop();
-        //shoot 3 artifacts
-        robot.shooter.spinUpChooseRPM(shooterRPMClose);
-        robot.delay(1);
-        robot.intake.intake();
         robot.delay(4);
         robot.intake.stop();
         robot.shooter.stop();
+        // ====================== Intake 1st Pile ====================== \\
+        boolean[] intakeStarted = {false};
+        boolean[] intakeStopped = {false};
+        boolean[] shooterReverseStart = {false};
+        boolean[] shooterReverseStop = {false};
+
+        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
+
+                .afterTime(0, t -> {
+                    if (!intakeStarted[0]) {
+                        robot.intake.intake();
+                        intakeStarted[0] = true;
+                    }
+                    return !intakeStarted[0]; // becomes false after first trigger = DISABLE marker
+                })
+
+                .afterTime(3.5, t -> {
+                    if (!intakeStopped[0]) {
+                        robot.intake.stop();
+                        intakeStopped[0] = true;
+                    }
+                    return !intakeStopped[0]; // disables marker after stop fires
+                })
+
+                .afterTime(2, t -> {
+                    if (!shooterReverseStart[0]) {
+                        robot.shooter.spinSlowReverse();
+                        shooterReverseStart[0] = true;
+                    }
+                    return !shooterReverseStart[0]; // disables marker after stop fires
+                })
+
+                .afterTime(3, t -> {
+                    if (!shooterReverseStop[0]) {
+                        robot.shooter.stop();
+                        shooterReverseStop[0] = true;
+                    }
+                    return !shooterReverseStop[0]; // disables marker after stop fires
+                })
+
+
+                .strafeToSplineHeading(new Vector2d(-16.5, 25.4), Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(-19, 60))
+                .strafeToSplineHeading(new Vector2d(-28, 24), Math.toRadians(138))
+                .build());
+
+        robot.shooter.spinUpChooseRPM(shooterRPMClose);
+        robot.delay(2);
+        robot.intake.intake();
+        robot.delay(4);
+        //robot.intake.stop();
+        //robot.shooter.stop();
         //wait til shoot 3 is done to move
 
 
