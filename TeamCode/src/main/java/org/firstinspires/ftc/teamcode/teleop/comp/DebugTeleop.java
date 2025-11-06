@@ -49,7 +49,7 @@ public class DebugTeleop extends SampleCommandTeleop {
     public void onStart() {
 
 
-        robot.shooter.setTargetRPM(shooterRPM);
+
 
         /*
         DRIVE - normal robot centric
@@ -94,7 +94,7 @@ public class DebugTeleop extends SampleCommandTeleop {
 
 
         g2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenActive(() -> {
-            robot.shooter.spinUp();
+            robot.shooter.spinUpChooseRPM(shooterRPM);
         });
 
         g2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenInactive(() -> {
@@ -151,23 +151,27 @@ public class DebugTeleop extends SampleCommandTeleop {
             //zone = 2;
             //numShots = 3;
             shooterRPM = Constants.shooterConstants.MID_SHOT_RPM;
+            robot.shooter.setTargetRPM(shooterRPM);
 
         });
         g2.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
             shooterRPM = Constants.shooterConstants.FAR_ZONE_SHOT_RPM;
+            robot.shooter.setTargetRPM(shooterRPM);
         });
 
         g2.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
             shooterRPM += 50;
+            robot.shooter.setTargetRPM(shooterRPM);
         });
         g2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
             shooterRPM -= 50;
+            robot.shooter.setTargetRPM(shooterRPM);
         });
 
 

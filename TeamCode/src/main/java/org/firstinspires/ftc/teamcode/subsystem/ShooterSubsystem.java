@@ -43,12 +43,17 @@ public class ShooterSubsystem extends UndefinedSubsystemBase {
         shooterLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
         shooterRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
 
+
+        //shooterLeft.setRunMode(Motor.RunMode.VelocityControl);
+        //shooterRight.setRunMode(Motor.RunMode.VelocityControl);
+
         shooterRight.setInverted(false);
         shooterLeft.setInverted(true);
 
         // Initialize PIDF
         shooterPID = new PIDFController(kP, kI, kD, kF);
         shooterPID.setTolerance(50);
+
     }
 
     //============== CONTROL METHODS ==============\\
