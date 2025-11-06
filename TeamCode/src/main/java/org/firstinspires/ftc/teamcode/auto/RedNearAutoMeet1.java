@@ -44,9 +44,9 @@ public class RedNearAutoMeet1 extends SampleAuto {
     @Override
     public void onStart() {
 
-        robot.shooter.spinUpChooseRPM(shooterRPMClose+30);
+        robot.shooter.spinUpChooseRPM(shooterRPMClose+25);
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-                .strafeToSplineHeading(new Vector2d(-25,24),Math.toRadians(130))//go to shooting pose
+                .strafeToSplineHeading(new Vector2d(-25,24),Math.toRadians(135))//go to shooting pose
                 .build());
         //shoot3.schedule();
 
@@ -97,7 +97,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
                     return !shooterReverseStart[0]; // disables marker after stop fires
                 })
 
-                .afterTime(4.5, t -> {
+                .afterTime(3.8, t -> {
                     if (!shooterReverseStop[0]) {
                         robot.shooter.stop();
                         shooterReverseStop[0] = true;
@@ -117,10 +117,10 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
                 //.strafeToConstantHeading(new Vector2d(-19, 63.5))//get last 2
                 .strafeToConstantHeading(new Vector2d(-24, 57))
-                .strafeToSplineHeading(new Vector2d(-29, 24), Math.toRadians(138))
+                .strafeToSplineHeading(new Vector2d(-29, 24), Math.toRadians(140))
                 .build());
 
-        robot.shooter.spinUpChooseRPM(shooterRPMClose+20);
+        robot.shooter.spinUpChooseRPM(shooterRPMClose+10);
         robot.delay(2);
         robot.intake.setIntakePower(1);
         robot.intake.intake();
@@ -146,7 +146,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
                     return !intakeStarted[0]; // becomes false after first trigger
                 })
 
-                .afterTime(4.4 , t -> {
+                .afterTime(4.1 , t -> {
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
                         intakeStopped[0] = true;
@@ -173,17 +173,17 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
                 //MOTIF 2
                 .strafeToSplineHeading(new Vector2d(8, 22), Math.toRadians(90))//go to motif
-                .strafeToConstantHeading(new Vector2d(8, 66))//intake
+                .strafeToConstantHeading(new Vector2d(8, 67.67 ))//intake
 
                 // ==============return============== \\
                 .strafeToConstantHeading(new Vector2d(9, 50))//back up
-                .strafeToSplineHeading(new Vector2d(-27,24),Math.toRadians(140))//shooting pose
+                .strafeToSplineHeading(new Vector2d(-27,24),Math.toRadians(145))//shooting pose
 
 
 
                 .build());
 
-        robot.shooter.spinUpChooseRPM(shooterRPMClose+30);
+        robot.shooter.spinUpChooseRPM(shooterRPMClose+15);
         robot.delay(2);
         robot.intake.intake();
         robot.delay(2);
