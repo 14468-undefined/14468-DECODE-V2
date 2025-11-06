@@ -100,8 +100,8 @@ public class ShooterSubsystem extends UndefinedSubsystemBase {
     }
 
     public void spinSlowReverse(){
-        shooterLeft.set(-1);
-        shooterRight.set(-1);
+        shooterLeft.set(-.6);
+        shooterRight.set(-.6);
     }
 
     public boolean atSpeed() {
