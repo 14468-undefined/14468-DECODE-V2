@@ -33,8 +33,10 @@ public class ShootCommand extends SequentialCommandGroup {
             transferTime = Constants.transferConstants.FAR_TRANSFER_TIME;
         }
         // Define commands
-        CommandBase spinUpShooter = new RunCommand(robot.shooter::spinUp, robot.shooter);
-        CommandBase stopShooter = new InstantCommand(robot.shooter::stop, robot.shooter);
+        //CommandBase spinUpShooter = new RunCommand(robot.shooter::spinUp, robot.shooter);
+        //CommandBase stopShooter = new InstantCommand(robot.shooter::stop, robot.shooter);
+
+
         //TODO:: figure out how much i should make wait til at speed tolerance be - for now just time
         //TODO: re-add this CommandBase waitTilAtSpeed = new WaitUntilCommand(() -> robot.shooter.atSpeed());
 
@@ -55,13 +57,13 @@ public class ShootCommand extends SequentialCommandGroup {
         if(numShots > 0) {
 
             addCommands(
-                    new RunCommand(() -> robot.shooter.spinUp(), robot.shooter).alongWith(
+                    //new RunCommand(() -> robot.shooter.spinUp(), robot.shooter).alongWith(
 
                             new SequentialCommandGroup(
                                     new WaitCommand(2000),
                                     new RunCommand(() -> robot.intake.intake(), robot.intake)
                             )
-                    )
+                    //)
             );
 
 

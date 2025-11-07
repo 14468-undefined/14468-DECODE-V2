@@ -68,22 +68,22 @@ public class TestTeleop extends SampleCommandTeleop {
         //DPAD_UP = power + 100; DPAD_DOWN = power - 100;
         g1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
             shooterRPM += 100;
-            shooterRPM = Math.max(0, Math.min(6000, shooterRPM));
+
             robot.shooter.setTargetRPM(shooterRPM);
         });
 
         g1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
             shooterRPM -= 100;
-            shooterRPM = Math.max(0, Math.min(6000, shooterRPM));
+
             robot.shooter.setTargetRPM(shooterRPM);
         });
 
-        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(robot.shooter::spinUp);
-        g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(robot.shooter::stop);
+        g1.getGamepadButton(GamepadKeys.Button.X).whileHeld(robot.shooter::spin);
+        g1.getGamepadButton(GamepadKeys.Button.X).whenReleased(robot.shooter::eStop);
 
 
-        g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(robot.shooter::spinSlowReverse);
-        g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(robot.shooter::spinSlowReverse);
+        //g1.getGamepadButton(GamepadKeys.Button.B).whileHeld(robot.shooter::spinSlowReverse);
+        //g1.getGamepadButton(GamepadKeys.Button.B).whenReleased(robot.shooter::spinSlowReverse);
 
 
         pen.addLine("CONTROLS");
@@ -100,7 +100,7 @@ public class TestTeleop extends SampleCommandTeleop {
     @Override
     public void onLoop() {
         // Print intake telemetry every loop
-        robot.shooter.printTelemetry(pen);
+
         //pen.addLine("shooter RPM set:", shooterRPM);
     }
 

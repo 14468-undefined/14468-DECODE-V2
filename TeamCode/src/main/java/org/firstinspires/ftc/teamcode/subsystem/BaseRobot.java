@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 
@@ -20,13 +21,15 @@ public class BaseRobot extends UndefinedSubsystemBase {
     public DriveSubsystem drive;
     public IntakeSubsystem intake;
     public ColorfulTelemetry cTelemetry;
+
+    public Telemetry telemetry;
     public HuskyLensSubsystem huskyLensVision;
     public TransferSubsystem transfer;
 
 
     public BaseRobot(HardwareMap hwMap, Pose2d startPos){
         drive = new DriveSubsystem(hwMap, startPos);
-        shooter = new ShooterSubsystem(hwMap, cTelemetry);
+        shooter = new ShooterSubsystem(hwMap);
         intake = new IntakeSubsystem(hwMap, cTelemetry);
         autoGenerator = new AutoUtil(drive);
         //webcamVision = new WebcamVisionSubsystem(hwMap);
@@ -49,7 +52,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
     public void printTelemetry(ColorfulTelemetry t) {
         drive.printTelemetry(t);
         intake.printTelemetry(t);
-        shooter.printTelemetry(t);
+        //shooter.printTelemetry(telemetry);
         //webcamVision.printTelemetry(t);
         //huskyLensVision.printTelemetry(t);
         transfer.printTelemetry(t);
@@ -69,7 +72,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
 
     public void stopAll(){
         intake.stop();
-        shooter.stop();
+        shooter.eStop();
         //webcamVision.stopVision();
         transfer.stop();
     }

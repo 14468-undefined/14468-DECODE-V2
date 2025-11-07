@@ -1,36 +1,29 @@
 package org.firstinspires.ftc.teamcode.teleop.comp;
 
-import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
-import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.command.ShootCommand;
-
-import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
+@TeleOp(name = "MeetOneTeleop" , group = "TeleOp")
+public class MeetOneTeleop extends SampleCommandTeleop {
 
-@TeleOp (name = "A_Meet1Teleop" , group = "TeleOp")
-public class A_Meet1Teleop extends SampleCommandTeleop {
 
-    int zone = 2; //mid default
-    int numShots = 3;//number of shots
     double driveSpeed = 1;
 
     boolean shooterOn = false;
 
-    int shooterRPM = 580;
-    Command Shoot = new ShootCommand(robot, zone, numShots);
+    int shooterRPM = 2135;
+
+
+
+
     @Override
     public void onInit() {
-
 
 
 
@@ -39,16 +32,19 @@ public class A_Meet1Teleop extends SampleCommandTeleop {
 
 
 
-        //robot.drive.setDefaultCommand(robot.drive.getDriveFieldcentric(()->g1.getLeftY(),()->-g1.getLeftX(), ()->-g1.getRightX(), .75));
 
         robot.shooter.setTargetRPM(shooterRPM);
+
+        double shooterRealRPM = robot.shooter.getShooterVelocity();
 
 
     }
 
     @Override
     public void onStart() {
-        robot.shooter.setTargetRPM(shooterRPM);
+
+
+
 
         /*
         DRIVE - normal robot centric
@@ -72,8 +68,10 @@ public class A_Meet1Teleop extends SampleCommandTeleop {
         LeftBumper = Outtake
         RightBumper = Intake
          */
-        g2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenActive(robot.intake::intakeReverse);
+        /*g2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenActive(robot.intake::intakeReverse);
         g2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenActive(robot.intake::intake);
+
+         */
 
 
 
@@ -87,19 +85,60 @@ public class A_Meet1Teleop extends SampleCommandTeleop {
         DPAD Right = mid zone
         DPAD Down = close zone (ur never in close zone)
          */
-        g2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(() -> {
-                    robot.shooter.spinUp();
+
+
+
+        g2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenActive(() -> {
+            robot.shooter.setTargetRPM(shooterRPM);
+            robot.shooter.spin();
         });
-        g2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
-                  robot.shooter.spinSlowReverse();
+
+        g2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenInactive(() -> {
+            robot.shooter.eStop();
+        });
+
+
+
+        g2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenActive(() -> {
+            robot.shooter.setTargetRPM(-1000);
+            robot.shooter.spin();
+        });
+        g2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenInactive(() -> {
+            robot.shooter.eStop();
         });
 
 
 
         //right trigger = intake forwards, left trigger = intake reverse
-        new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intake())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
+        //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intake())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
 
-        new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intakeReverse())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
+        //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intakeReverse())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
+
+        g2.getGamepadButton(GamepadKeys.Button.X).whenPressed(() -> {
+            //zone = 2;
+            //numShots = 3;
+            robot.intake.intake();
+
+        });
+        g2.getGamepadButton(GamepadKeys.Button.B).whenPressed(() -> {
+            //zone = 3;
+            //numShots = 3;
+            robot.intake.intakeReverse();
+        });
+
+        g2.getGamepadButton(GamepadKeys.Button.X).whenInactive(() -> {
+            //zone = 2;
+            //numShots = 3;
+            robot.intake.stop();
+
+        });
+        g2.getGamepadButton(GamepadKeys.Button.B).whenInactive(() -> {
+            //zone = 3;
+            //numShots = 3;
+            robot.intake.stop();
+        });
+
+
 
 
 
@@ -108,25 +147,30 @@ public class A_Meet1Teleop extends SampleCommandTeleop {
         g2.getGamepadButton(GamepadKeys.Button.A).whenPressed(() -> {
             //zone = 2;
             //numShots = 3;
-            shooterRPM = Constants.shooterConstants.MID_SHOT_RPM;
+            shooterRPM = 2135;
+            robot.shooter.setTargetRPM(shooterRPM);
 
         });
         g2.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
-            shooterRPM = Constants.shooterConstants.FAR_ZONE_SHOT_RPM;
+            shooterRPM = 2435;
+            robot.shooter.setTargetRPM(shooterRPM);
         });
 
         g2.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
             shooterRPM += 50;
+            robot.shooter.setTargetRPM(shooterRPM);
         });
         g2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
             shooterRPM -= 50;
+            robot.shooter.setTargetRPM(shooterRPM);
         });
+
 
 
 
@@ -136,7 +180,11 @@ public class A_Meet1Teleop extends SampleCommandTeleop {
     public void onLoop() {
 
 
+        // Print intake telemetry every loopq
+        pen.addData("Shooter RPM: ", robot.shooter.getShooterVelocity());
+        pen.addData("Set RPM: ", robot.shooter.getTargetRPM());
 
+        //pen.addLine("shooter RPM set:", shooterRPM);
     }
 
     @Override

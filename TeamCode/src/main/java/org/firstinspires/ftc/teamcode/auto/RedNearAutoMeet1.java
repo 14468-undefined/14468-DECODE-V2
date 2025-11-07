@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Arclength;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Pose2dDual;
@@ -29,41 +30,42 @@ public class RedNearAutoMeet1 extends SampleAuto {
     private BaseRobot robot;
     private ShootCommand shoot3;
 
-    private int shooterRPMClose = 575;
+    private int shooterRPMClose = 2135;
+
+    TelemetryPacket packet = new TelemetryPacket();
 
     @Override
     public void onInit() {
         robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
         //shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
-        robot.shooter.setTargetRPM(570);
+        robot.shooter.setTargetRPM(shooterRPMClose);
         //set pos of hood and transfer servo
-        robot.intake.setIntakePower(1);
+        robot.intake.setIntakePower(.8);
+
+        packet.put("target_shooter_rpm", robot.shooter.getTargetRPM());
+        packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
+
 
     }
 
     @Override
     public void onStart() {
 
-        robot.shooter.spinUpChooseRPM(shooterRPMClose+25);
+        robot.shooter.spin();
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-                .strafeToSplineHeading(new Vector2d(-25,24),Math.toRadians(135))//go to shooting pose
+                .strafeToSplineHeading(new Vector2d(-27,24),Math.toRadians(133))//go to shooting pose
                 .build());
-        //shoot3.schedule();
 
-        /*while (!shoot3.isFinished() && opModeIsActive()) {
-            CommandScheduler.getInstance().run(); //run scheduler
-            idle(); //
-        }
 
-         */
-        //wait til 3 are shot to move
+
 
         robot.intake.intake();
         robot.delay(2.9);
         //robot.shooter.spinUpChooseRPM(shooterRPMClose+55);
         //robot.delay(1);
         robot.intake.stop();
-        robot.shooter.stop();
+        robot.intake.setIntakePower(1);
+        robot.shooter.eStop();
         // ====================== Intake 1st Pile ====================== \\
         boolean[] intakeStarted = {false};
         boolean[] intakeStopped = {false};
@@ -74,6 +76,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
                 .afterTime(0, t -> {
+                    if (!opModeIsActive()) return false;
                     if (!intakeStarted[0]) {
                         robot.intake.intake();
                         intakeStarted[0] = true;
@@ -82,6 +85,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
                 })
 
                 .afterTime(2.8, t -> {//was 3.7
+                    if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
                         intakeStopped[0] = true;
@@ -90,43 +94,41 @@ public class RedNearAutoMeet1 extends SampleAuto {
                 })
 
                 .afterTime(2, t -> {
+                    if (!opModeIsActive()) return false;
                     if (!shooterReverseStart[0]) {
-                        robot.shooter.spinSlowReverse();
+                        robot.shooter.setTargetRPM(-1000);
+                        robot.shooter.spin();
                         shooterReverseStart[0] = true;
                     }
                     return !shooterReverseStart[0]; // disables marker after stop fires
                 })
 
                 .afterTime(3.8, t -> {
+                    if (!opModeIsActive()) return false;
                     if (!shooterReverseStop[0]) {
-                        robot.shooter.stop();
+                        robot.shooter.eStop();
+                        robot.shooter.setTargetRPM(shooterRPMClose);
                         shooterReverseStop[0] = true;
                     }
                     return !shooterReverseStop[0]; // disables marker after stop fires
                 })
 
 
-                //NEW - SLOWER MOVEMENT
-
-                //.strafeToConstantHeading(new Vector2d(54, -60), new TranslationalVelConstraint(100), new ProfileAccelConstraint(-100 , 100))
-                .strafeToSplineHeading(new Vector2d(-16.5, 25.4), Math.toRadians(90))
-                .strafeToConstantHeading(new Vector2d(-19, 63.5), new TranslationalVelConstraint(30))
+                .strafeToSplineHeading(new Vector2d(-17, 25.4), Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(-19, 64.3), new TranslationalVelConstraint(30))
 
 
-                //.strafeToSplineHeading(new Vector2d(-16.5, 25.4), Math.toRadians(90))
-
-                //.strafeToConstantHeading(new Vector2d(-19, 63.5))//get last 2
                 .strafeToConstantHeading(new Vector2d(-24, 57))
-                .strafeToSplineHeading(new Vector2d(-29, 24), Math.toRadians(140))
+                .strafeToSplineHeading(new Vector2d(-30, 24), Math.toRadians(145))
                 .build());
 
-        robot.shooter.spinUpChooseRPM(shooterRPMClose+10);
+        robot.shooter.spin();
         robot.delay(2);
         robot.intake.setIntakePower(1);
         robot.intake.intake();
         robot.delay(3);
         robot.intake.stop();
-        robot.shooter.stop();
+        robot.shooter.eStop();
         //wait til shoot 3 is done to move
 
 
@@ -139,6 +141,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
                 .afterTime(1.6, t -> {
+                    if (!opModeIsActive()) return false;
                     if (!intakeStarted[0]) {
                         robot.intake.intake();
                         intakeStarted[0] = true;
@@ -146,7 +149,8 @@ public class RedNearAutoMeet1 extends SampleAuto {
                     return !intakeStarted[0]; // becomes false after first trigger
                 })
 
-                .afterTime(4.1 , t -> {
+                .afterTime(3.7 , t -> {
+                    if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
                         intakeStopped[0] = true;
@@ -155,16 +159,20 @@ public class RedNearAutoMeet1 extends SampleAuto {
                 })
 
                 .afterTime(2, t -> {
+                    if (!opModeIsActive()) return false;
                     if (!shooterReverseStart[0]) {
-                        robot.shooter.spinSlowReverse();
+                        robot.shooter.setTargetRPM(-1500);
+                        robot.shooter.spin();
                         shooterReverseStart[0] = true;
                     }
                     return !shooterReverseStart[0]; // disables marker after stop fires
                 })
 
                 .afterTime(4.6, t -> {
+                    if (!opModeIsActive()) return false;
                     if (!shooterReverseStop[0]) {
-                        robot.shooter.stop();
+                        robot.shooter.setTargetRPM(shooterRPMClose);
+                        robot.shooter.eStop();
                         shooterReverseStop[0] = true;
                     }
                     return !shooterReverseStop[0]; // disables marker after stop fires
@@ -172,25 +180,25 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
 
                 //MOTIF 2
-                .strafeToSplineHeading(new Vector2d(8, 22), Math.toRadians(90))//go to motif
-                .strafeToConstantHeading(new Vector2d(8, 67.67 ))//intake
+                .strafeToSplineHeading(new Vector2d(3, 22), Math.toRadians(90))//go to motif
+                .strafeToConstantHeading(new Vector2d(3, 69))//intake
 
                 // ==============return============== \\
                 .strafeToConstantHeading(new Vector2d(9, 50))//back up
-                .strafeToSplineHeading(new Vector2d(-27,24),Math.toRadians(145))//shooting pose
+                .strafeToSplineHeading(new Vector2d(-31,24),Math.toRadians(147))//shooting pose
 
 
 
                 .build());
 
-        robot.shooter.spinUpChooseRPM(shooterRPMClose+15);
+        robot.shooter.spin();
         robot.delay(2);
         robot.intake.intake();
         robot.delay(2);
-        robot.shooter.spinUpChooseRPM(shooterRPMClose+30);
+        robot.shooter.eStop();
         robot.delay(2);
         robot.intake.stop();
-        robot.shooter.stop();
+        robot.shooter.eStop();
 
 
 

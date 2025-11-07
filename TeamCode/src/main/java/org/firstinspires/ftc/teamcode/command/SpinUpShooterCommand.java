@@ -12,10 +12,10 @@ public class SpinUpShooterCommand extends SequentialCommandGroup {
 
         addCommands(
                 // Start spinning
-                new InstantCommand(shooter::spinUp),
+                new InstantCommand(shooter::spin)
 
                 //wait til at speed
-                new WaitUntilCommand(shooter::atSpeed)
+                //new WaitUntilCommand(shooter::atSpeed)
         );
 
 
