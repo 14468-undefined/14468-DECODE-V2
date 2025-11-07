@@ -185,7 +185,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
                 // ==============return============== \\
                 .strafeToConstantHeading(new Vector2d(9, 50))//back up
-                .strafeToSplineHeading(new Vector2d(-31,24),Math.toRadians(147))//shooting pose
+                .strafeToSplineHeading(new Vector2d(-36,24),Math.toRadians(143))//shooting pose
 
 
 
@@ -201,6 +201,11 @@ public class RedNearAutoMeet1 extends SampleAuto {
         robot.shooter.eStop();
 
 
+        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
+
+                        .strafeToConstantHeading(new Vector2d(-43,24))
+
+                .build());
 
 
     }
