@@ -28,11 +28,11 @@ public class ShooterSubsystem extends SubsystemBase {
     private boolean active;
 
     // --- PIDF Coefficients ---
-    //working value 35 on October 9th, 2025
-/*    public double kP = 35.0;
+    //working values on November 7th, 2025
+/*    public double kP = 20.0;
     public double kI = 0.0;
-    public double kD = 10.0;
-    public double kF = 13.0;*/
+    public double kD = 5.0;
+    public double kF = 24.0;*/
     public static double kP = 20;
     public static double kI = 0.0;
     public static double kD = 5.0;

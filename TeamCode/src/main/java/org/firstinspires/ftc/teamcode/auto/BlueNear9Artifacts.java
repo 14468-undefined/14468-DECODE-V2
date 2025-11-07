@@ -1,34 +1,20 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Arclength;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Pose2dDual;
-import com.acmerobotics.roadrunner.PosePath;
-import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
-import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.RunCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.command.IntakeCommand;
-import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
-import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="RedNearAutoMeet1")
-public class RedNearAutoMeet1 extends SampleAuto {
+@Autonomous(name="BlueNear9Artifacts")
+public class BlueNear9Artifacts extends SampleAuto {
     private BaseRobot robot;
-    private ShootCommand shoot3;
+
 
     private int shooterRPMClose = 2135;
 
@@ -36,8 +22,8 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
     @Override
     public void onInit() {
-        robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
-        //shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
+        robot = new BaseRobot(hardwareMap, new Pose2d(-61, -40, Math.toRadians(180)));
+
         robot.shooter.setTargetRPM(shooterRPMClose);
         //set pos of hood and transfer servo
         robot.intake.setIntakePower(.8);
@@ -53,7 +39,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
         robot.shooter.spin();
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-                .strafeToSplineHeading(new Vector2d(-27,24),Math.toRadians(133))//go to shooting pose
+                .strafeToSplineHeading(new Vector2d(-27,-24),Math.toRadians(227))//go to shooting pose
                 .build());
 
 
@@ -84,7 +70,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
                     return !intakeStarted[0]; // becomes false after first trigger = DISABLE marker
                 })
 
-                .afterTime(2.8, t -> {//was 3.7
+                .afterTime(3, t -> {//was 3.7
                     if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
@@ -114,12 +100,12 @@ public class RedNearAutoMeet1 extends SampleAuto {
                 })
 
 
-                .strafeToSplineHeading(new Vector2d(-17, 25.4), Math.toRadians(90))
-                .strafeToConstantHeading(new Vector2d(-19, 64.3), new TranslationalVelConstraint(30))
+                .strafeToSplineHeading(new Vector2d(-3, -23), Math.toRadians(270))
+                .strafeToConstantHeading(new Vector2d(-3, -63), new TranslationalVelConstraint(30))
 
 
-                .strafeToConstantHeading(new Vector2d(-24, 57))
-                .strafeToSplineHeading(new Vector2d(-30, 24), Math.toRadians(145))
+                .strafeToConstantHeading(new Vector2d(-3, -57))
+                .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(218))
                 .build());
 
         robot.shooter.spin();
@@ -149,7 +135,7 @@ public class RedNearAutoMeet1 extends SampleAuto {
                     return !intakeStarted[0]; // becomes false after first trigger
                 })
 
-                .afterTime(3.7 , t -> {
+                .afterTime(3.87 , t -> {
                     if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
@@ -180,12 +166,12 @@ public class RedNearAutoMeet1 extends SampleAuto {
 
 
                 //MOTIF 2
-                .strafeToSplineHeading(new Vector2d(3, 22), Math.toRadians(90))//go to motif
-                .strafeToConstantHeading(new Vector2d(3, 69))//intake
+                .strafeToSplineHeading(new Vector2d(22, -18), Math.toRadians(270))//go to motif
+                .strafeToConstantHeading(new Vector2d(22, -69))//intake
 
                 // ==============return============== \\
-                .strafeToConstantHeading(new Vector2d(9, 50))//back up
-                .strafeToSplineHeading(new Vector2d(-36,24),Math.toRadians(143))//shooting pose
+                .strafeToConstantHeading(new Vector2d(22, -45))//back up
+                .strafeToSplineHeading(new Vector2d(-38,-24),Math.toRadians(230))//shooting pose
 
 
 
@@ -201,11 +187,6 @@ public class RedNearAutoMeet1 extends SampleAuto {
         robot.shooter.eStop();
 
 
-        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-
-                        .strafeToConstantHeading(new Vector2d(-43,24))
-
-                .build());
 
 
     }

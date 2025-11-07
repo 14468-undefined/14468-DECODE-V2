@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-@TeleOp(name = "Shooter Max RPM Test", group = "Test")
+//@TeleOp(name = "Shooter Max RPM Test", group = "Test")
 public class ShooterMaxRPMTest extends LinearOpMode {
 
     @Override

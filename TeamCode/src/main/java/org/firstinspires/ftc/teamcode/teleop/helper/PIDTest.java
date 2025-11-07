@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystem.ShooterSubsystem;
 
 
-@TeleOp(name = "PIDTest" , group = "TeleOp")
+//@TeleOp(name = "PIDTest" , group = "TeleOp")
 public class PIDTest extends CommandOpMode {
     ShooterSubsystem shooter;
     private FtcDashboard dash;

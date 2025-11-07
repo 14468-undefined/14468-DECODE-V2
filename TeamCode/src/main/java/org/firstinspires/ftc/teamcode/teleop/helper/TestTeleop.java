@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
-@TeleOp(name = "TestTeleop" , group = "TeleOp")
+//@TeleOp(name = "TestTeleop" , group = "TeleOp")
 public class TestTeleop extends SampleCommandTeleop {
 
     //BaseRobot robot;

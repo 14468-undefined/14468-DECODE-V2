@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="RedFarAutoMeet1")
+//@Autonomous(name="RedFarAutoMeet1")
 public class RedFarAutoMeet1 extends SampleAuto {
     private BaseRobot robot;
     private ShootCommand shoot3;

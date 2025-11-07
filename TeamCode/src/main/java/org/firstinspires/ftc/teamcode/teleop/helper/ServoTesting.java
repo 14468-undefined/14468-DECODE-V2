@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import java.util.List;
 
 
-@TeleOp(name = "Servo Tester", group = "helper")
+//@TeleOp(name = "Servo Tester", group = "helper")
 public class ServoTesting extends LinearOpMode {
     int curServo = 0;
     Servo cur = null;

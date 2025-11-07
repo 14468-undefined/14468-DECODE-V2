@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.util.ColorfulTelemetry;
 // Java
 import java.util.function.DoubleSupplier;
 
-@TeleOp
+//@TeleOp
 public class AprilTagTestTeleop extends LinearOpMode {
 
     BaseRobot robot;

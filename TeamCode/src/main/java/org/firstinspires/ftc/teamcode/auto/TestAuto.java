@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="Test near")
+//@Autonomous(name="Test near")
 public class TestAuto extends SampleAuto {
     private BaseRobot robot;
 
