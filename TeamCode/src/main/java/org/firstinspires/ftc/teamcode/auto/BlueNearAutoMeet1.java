@@ -36,7 +36,7 @@ public class BlueNearAutoMeet1 extends SampleAuto {
 
     @Override
     public void onInit() {
-        robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
+        robot = new BaseRobot(hardwareMap, new Pose2d(-61, -40, Math.toRadians(180)));
 
         robot.shooter.setTargetRPM(shooterRPMClose);
         //set pos of hood and transfer servo
@@ -84,7 +84,7 @@ public class BlueNearAutoMeet1 extends SampleAuto {
                     return !intakeStarted[0]; // becomes false after first trigger = DISABLE marker
                 })
 
-                .afterTime(2.8, t -> {//was 3.7
+                .afterTime(3, t -> {//was 3.7
                     if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
@@ -114,12 +114,12 @@ public class BlueNearAutoMeet1 extends SampleAuto {
                 })
 
 
-                .strafeToSplineHeading(new Vector2d(-17, -25.4), Math.toRadians(270))
-                .strafeToConstantHeading(new Vector2d(-19, -64.3), new TranslationalVelConstraint(30))
+                .strafeToSplineHeading(new Vector2d(-3, -23), Math.toRadians(270))
+                .strafeToConstantHeading(new Vector2d(-3, -63), new TranslationalVelConstraint(30))
 
 
-                .strafeToConstantHeading(new Vector2d(-24, -57))
-                .strafeToSplineHeading(new Vector2d(-30, -24), Math.toRadians(215))
+                .strafeToConstantHeading(new Vector2d(-3, -57))
+                .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(218))
                 .build());
 
         robot.shooter.spin();
@@ -149,7 +149,7 @@ public class BlueNearAutoMeet1 extends SampleAuto {
                     return !intakeStarted[0]; // becomes false after first trigger
                 })
 
-                .afterTime(3.7 , t -> {
+                .afterTime(3.87 , t -> {
                     if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
@@ -180,12 +180,12 @@ public class BlueNearAutoMeet1 extends SampleAuto {
 
 
                 //MOTIF 2
-                .strafeToSplineHeading(new Vector2d(3, -22), Math.toRadians(270))//go to motif
-                .strafeToConstantHeading(new Vector2d(3, -69))//intake
+                .strafeToSplineHeading(new Vector2d(22, -18), Math.toRadians(270))//go to motif
+                .strafeToConstantHeading(new Vector2d(22, -69))//intake
 
                 // ==============return============== \\
-                .strafeToConstantHeading(new Vector2d(9, -50))//back up
-                .strafeToSplineHeading(new Vector2d(-31,-24),Math.toRadians(213))//shooting pose
+                .strafeToConstantHeading(new Vector2d(22, -45))//back up
+                .strafeToSplineHeading(new Vector2d(-38,-24),Math.toRadians(230))//shooting pose
 
 
 
