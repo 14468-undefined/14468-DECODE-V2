@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="RedNearAutoMeet1")
+@Autonomous(name="RedNear9Artifacts")
 public class RedNear9Artifacts extends SampleAuto {
     private BaseRobot robot;
     private ShootCommand shoot3;

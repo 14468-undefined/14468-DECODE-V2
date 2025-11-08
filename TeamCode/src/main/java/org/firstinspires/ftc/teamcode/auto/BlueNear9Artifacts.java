@@ -100,7 +100,7 @@ public class BlueNear9Artifacts extends SampleAuto {
                 })
 
 
-                .strafeToSplineHeading(new Vector2d(-3, -23), Math.toRadians(270))
+                .strafeToSplineHeading(new Vector2d(-3, -20), Math.toRadians(270))
                 .strafeToConstantHeading(new Vector2d(-3, -63), new TranslationalVelConstraint(30))
 
 
@@ -166,11 +166,11 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
                 //MOTIF 2
-                .strafeToSplineHeading(new Vector2d(22, -18), Math.toRadians(270))//go to motif
+                .strafeToSplineHeading(new Vector2d(22, -15), Math.toRadians(270))//go to motif
                 .strafeToConstantHeading(new Vector2d(22, -69))//intake
 
                 // ==============return============== \\
-                .strafeToConstantHeading(new Vector2d(22, -45))//back up
+                .strafeToConstantHeading(new Vector2d(22, -32))//back up
                 .strafeToSplineHeading(new Vector2d(-38,-24),Math.toRadians(230))//shooting pose
 
 
