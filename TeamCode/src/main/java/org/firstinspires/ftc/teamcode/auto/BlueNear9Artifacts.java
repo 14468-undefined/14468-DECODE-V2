@@ -105,7 +105,7 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
                 .strafeToConstantHeading(new Vector2d(-3, -57))
-                .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(218))
+                .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(221))
                 .build());
 
         robot.shooter.spin();
@@ -171,7 +171,7 @@ public class BlueNear9Artifacts extends SampleAuto {
 
                 // ==============return============== \\
                 .strafeToConstantHeading(new Vector2d(22, -32))//back up
-                .strafeToSplineHeading(new Vector2d(-38,-24),Math.toRadians(230))//shooting pose
+                .strafeToSplineHeading(new Vector2d(-40,-24),Math.toRadians(230))//shooting pose
 
 
 

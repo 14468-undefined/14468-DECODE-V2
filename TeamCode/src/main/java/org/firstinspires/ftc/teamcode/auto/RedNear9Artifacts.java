@@ -22,7 +22,7 @@ public class RedNear9Artifacts extends SampleAuto {
     TelemetryPacket packet = new TelemetryPacket();
 
     @Override
-    public void onInit() {
+    public void onInit(){
         robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
         //shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
         robot.shooter.setTargetRPM(shooterRPMClose);
