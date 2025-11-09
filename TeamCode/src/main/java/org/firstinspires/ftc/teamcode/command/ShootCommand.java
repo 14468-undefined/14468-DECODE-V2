@@ -41,17 +41,18 @@ public class ShootCommand extends SequentialCommandGroup {
         //TODO: re-add this CommandBase waitTilAtSpeed = new WaitUntilCommand(() -> robot.shooter.atSpeed());
 
 
+        CommandBase spinUpShooter = new RunCommand(() -> robot.shooter.spin());
         //OLD
-        CommandBase waitTilAtSpeed = new WaitCommand(2000);
+        CommandBase waitTilAtSpeed = new WaitUntilCommand(() -> robot.shooter.isAtTargetSpeed());
         Command shoot1 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(transferTime);
         CommandBase firstWait = new WaitCommand(1000);
         Command shoot2 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(transferTime);
         Command secondWait = new WaitCommand(1000);
         Command shoot3 = new RunCommand(() -> robot.transfer.spin(), robot.transfer).withTimeout(transferTime);
+        Command intake = new RunCommand(() -> robot.intake.intake(), robot.intake);
 
 
-
-        addRequirements(robot.shooter, robot.transfer);
+        addRequirements(robot.shooter, robot.transfer, robot.intake);
 
         //if 3 balls
         if(numShots > 0) {
@@ -60,8 +61,13 @@ public class ShootCommand extends SequentialCommandGroup {
                     //new RunCommand(() -> robot.shooter.spinUp(), robot.shooter).alongWith(
 
                             new SequentialCommandGroup(
-                                    new WaitCommand(2000),
-                                    new RunCommand(() -> robot.intake.intake(), robot.intake)
+                                    spinUpShooter,
+                                    waitTilAtSpeed,
+
+                                    new ParallelCommandGroup(
+                                            intake,
+                                            shoot1
+                                    )
                             )
                     //)
             );

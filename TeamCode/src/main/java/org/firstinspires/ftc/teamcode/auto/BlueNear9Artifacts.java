@@ -65,6 +65,7 @@ public class BlueNear9Artifacts extends SampleAuto {
                     if (!opModeIsActive()) return false;
                     if (!intakeStarted[0]) {
                         robot.intake.intake();
+                        robot.transfer.spinReverse();
                         intakeStarted[0] = true;
                     }
                     return !intakeStarted[0]; // becomes false after first trigger = DISABLE marker
@@ -74,12 +75,13 @@ public class BlueNear9Artifacts extends SampleAuto {
                     if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
+                        robot.transfer.stop();
                         intakeStopped[0] = true;
                     }
                     return !intakeStopped[0]; // disables marker after stop fires
                 })
 
-                .afterTime(2, t -> {
+                /*.afterTime(2, t -> {
                     if (!opModeIsActive()) return false;
                     if (!shooterReverseStart[0]) {
                         robot.shooter.setTargetRPM(-1000);
@@ -88,6 +90,8 @@ public class BlueNear9Artifacts extends SampleAuto {
                     }
                     return !shooterReverseStart[0]; // disables marker after stop fires
                 })
+
+
 
                 .afterTime(3.8, t -> {
                     if (!opModeIsActive()) return false;
@@ -98,6 +102,8 @@ public class BlueNear9Artifacts extends SampleAuto {
                     }
                     return !shooterReverseStop[0]; // disables marker after stop fires
                 })
+
+                 */
 
 
                 .strafeToSplineHeading(new Vector2d(-3, -20), Math.toRadians(270))
@@ -112,17 +118,29 @@ public class BlueNear9Artifacts extends SampleAuto {
         robot.delay(2);
         robot.intake.setIntakePower(1);
         robot.intake.intake();
+        robot.transfer.spin();
         robot.delay(3);
-        robot.intake.stop();
-        robot.shooter.eStop();
+        robot.stopAll();
         //wait til shoot 3 is done to move
 
 
+
+        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
+                .afterTime(0, (t) -> {
+                    robot.intake.intake();
+                    return false;
+                })
+                .strafeToConstantHeading(new Vector2d(0, -35.5))
+
+//
+                .build());
+        robot.drive.updatePoseEstimate();
 
         intakeStarted[0] = false;
         intakeStopped[0] = false;
         shooterReverseStart[0] = false;
         shooterReverseStop[0] = false;
+
 
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
@@ -130,6 +148,7 @@ public class BlueNear9Artifacts extends SampleAuto {
                     if (!opModeIsActive()) return false;
                     if (!intakeStarted[0]) {
                         robot.intake.intake();
+                        robot.transfer.spinReverse();
                         intakeStarted[0] = true;
                     }
                     return !intakeStarted[0]; // becomes false after first trigger
@@ -139,12 +158,13 @@ public class BlueNear9Artifacts extends SampleAuto {
                     if (!opModeIsActive()) return false;
                     if (!intakeStopped[0]) {
                         robot.intake.stop();
+                        robot.transfer.stop();
                         intakeStopped[0] = true;
                     }
                     return !intakeStopped[0];
                 })
 
-                .afterTime(2, t -> {
+                /*.afterTime(2, t -> {
                     if (!opModeIsActive()) return false;
                     if (!shooterReverseStart[0]) {
                         robot.shooter.setTargetRPM(-1500);
@@ -163,6 +183,8 @@ public class BlueNear9Artifacts extends SampleAuto {
                     }
                     return !shooterReverseStop[0]; // disables marker after stop fires
                 })
+
+                 */
 
 
                 //MOTIF 2

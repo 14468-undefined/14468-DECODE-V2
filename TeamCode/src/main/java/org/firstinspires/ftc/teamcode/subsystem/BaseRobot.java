@@ -38,6 +38,8 @@ public class BaseRobot extends UndefinedSubsystemBase {
 
 
     }
+
+
     public void delay(double seconds){
         ElapsedTime timer = new ElapsedTime();
         timer.reset();
@@ -75,6 +77,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         shooter.eStop();
         //webcamVision.stopVision();
         transfer.stop();
+
     }
 
     class ExampleAction implements Action {
