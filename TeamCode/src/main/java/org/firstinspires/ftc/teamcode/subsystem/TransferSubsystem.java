@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode.subsystem;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -19,8 +20,9 @@ public class TransferSubsystem extends SubsystemBase {
 
 
 
-    private final CRServo transfer;
-    double transferPower = 0;
+    private final MotorEx transfer;
+    double transferPower = 1;
+    double reverseTransferPower = 1;
 
     private ColorfulTelemetry cTelemetry;
     private HardwareMap hardwareMap;
@@ -29,22 +31,44 @@ public class TransferSubsystem extends SubsystemBase {
         // ================== MOTORS ================== \\
         this.cTelemetry = telemetry;
 
-        transfer = hardwareMap.get(CRServo.class, "transfer");
+        transfer = new MotorEx(hardwareMap, "intake");
 
+        transfer.setRunMode(MotorEx.RunMode.RawPower);
+        transfer.setInverted(false);//run forwards
 
+        transfer.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.FLOAT);
 
     }
 
 
-    public void spin(){
-        transfer.setPower(Constants.transferConstants.SPIN_POWER);
-    }
-    public void spinReverse(){
-        transfer.setPower(Constants.transferConstants.SPIN_REVERSE_POWER);
+
+    public void setIntakePower(double p) {
+        transferPower = p;
     }
 
-    public void stop(){
-        transfer.setPower(0);
+    public void setReverseIntakePower(double p) {
+        reverseTransferPower = p;
+    }
+
+    public double getTransferPower() {
+        return transferPower;
+    }
+
+    public double getReverseTransferPower() {
+        return reverseTransferPower;
+    }
+
+    public void spin() {
+        transfer.set(transferPower);
+    }
+
+    //send balls out through intake
+    public void spinReverse() {
+        transfer.set(-reverseTransferPower);
+    }
+
+    public void stop() {
+        transfer.set(0);
     }
     public void printTelemetry(ColorfulTelemetry t) {
 
@@ -70,12 +94,5 @@ public class TransferSubsystem extends SubsystemBase {
 
     }
 
-    // convert rpm to tps
-    private static final double TICKS_PER_REV = 28; //TODO: Tune
-    private double rpmToTicksPerSecond(double rpm) {
-        return (rpm * TICKS_PER_REV) / 60.0;
-    }
-    private double tpstoRPM(double tps){
-        return (tps * 60) / TICKS_PER_REV;
-    }
+
 }

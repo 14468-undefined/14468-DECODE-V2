@@ -237,7 +237,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return active;
     }
 
-    public boolean isAtTargetThreshold() {
+    public boolean isAtTargetSpeed() {
         return ((getShooterVelocity() > (getTargetRPM() - 200)) && (getShooterVelocity() < (getTargetRPM() + 100)) && getShooterVelocity() != 0);
     }
 }
