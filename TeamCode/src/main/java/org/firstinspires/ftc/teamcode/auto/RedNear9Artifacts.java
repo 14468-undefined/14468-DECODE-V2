@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
@@ -38,7 +39,10 @@ public class RedNear9Artifacts extends SampleAuto {
     @Override
     public void onStart() {
 
-        robot.shooter.spin();
+        Actions.runBlocking((t) -> {
+            robot.shooter.spin();
+            return false;
+        });
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
                 .strafeToSplineHeading(new Vector2d(-27,24),Math.toRadians(133))//go to shooting pose
                 .build());
@@ -46,58 +50,60 @@ public class RedNear9Artifacts extends SampleAuto {
 
 
 
-        robot.intake.intake();
-        robot.delay(2.9);
-        //robot.shooter.spinUpChooseRPM(shooterRPMClose+55);
-        //robot.delay(1);
-        robot.intake.stop();
-        robot.intake.setIntakePower(1);
-        robot.shooter.eStop();
+
+        Actions.runBlocking((t) -> {
+            robot.intake.intake();
+            return false;
+        });
+        Actions.runBlocking((t) -> {
+            robot.transfer.spin();
+            return false;
+        });
+
+        AutoUtil.delay(2.9);
+        Actions.runBlocking((t) -> {
+            robot.intake.stop();
+            return false;
+        });
+        Actions.runBlocking((t) -> {
+            robot.intake.setIntakePower(1);
+            return false;
+        });
+        Actions.runBlocking((t) -> {
+            robot.shooter.eStop();
+            return false;
+        });
+
         // ====================== Intake 1st Pile ====================== \\
-        boolean[] intakeStarted = {false};
-        boolean[] intakeStopped = {false};
-        boolean[] shooterReverseStart = {false};
-        boolean[] shooterReverseStop = {false};
 
         robot.intake.setIntakePower(1);
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
                 .afterTime(0, t -> {
-                    if (!opModeIsActive()) return false;
-                    if (!intakeStarted[0]) {
                         robot.intake.intake();
-                        intakeStarted[0] = true;
-                    }
-                    return !intakeStarted[0]; // becomes false after first trigger = DISABLE marker
+                        return false;
                 })
 
-                .afterTime(2.8, t -> {//was 3.7
-                    if (!opModeIsActive()) return false;
-                    if (!intakeStopped[0]) {
+                .afterTime(3, t -> {//was 3.7
+
                         robot.intake.stop();
-                        intakeStopped[0] = true;
-                    }
-                    return !intakeStopped[0]; // disables marker after stop fires
+                        return false;
                 })
 
-                .afterTime(2, t -> {
-                    if (!opModeIsActive()) return false;
-                    if (!shooterReverseStart[0]) {
-                        robot.shooter.setTargetRPM(-1000);
-                        robot.shooter.spin();
-                        shooterReverseStart[0] = true;
-                    }
-                    return !shooterReverseStart[0]; // disables marker after stop fires
+                .afterTime(3.1, (t) -> {
+                    robot.transfer.spinReverse();
+                    //robot.transfer.stop();
+                    return false;
+                })
+                .afterTime(3.19, (t) -> {
+                    robot.transfer.stop();
+                    //robot.transfer.stop();
+                    return false;
                 })
 
-                .afterTime(3.8, t -> {
-                    if (!opModeIsActive()) return false;
-                    if (!shooterReverseStop[0]) {
-                        robot.shooter.eStop();
-                        robot.shooter.setTargetRPM(shooterRPMClose);
-                        shooterReverseStop[0] = true;
-                    }
-                    return !shooterReverseStop[0]; // disables marker after stop fires
+                .afterTime(3.3, (t) -> {
+                    robot.shooter.spin();
+                    return false;
                 })
 
 
@@ -109,60 +115,48 @@ public class RedNear9Artifacts extends SampleAuto {
                 .strafeToSplineHeading(new Vector2d(-30, 24), Math.toRadians(145))
                 .build());
 
-        robot.shooter.spin();
-        robot.delay(2);
-        robot.intake.setIntakePower(1);
-        robot.intake.intake();
-        robot.delay(3);
-        robot.intake.stop();
-        robot.shooter.eStop();
+        Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
+        //AutoUtil.delay(2);
+        Actions.runBlocking((t) -> {robot.intake.setIntakePower(1); return false;});
+        Actions.runBlocking((t) -> {robot.intake.intake(); return false;});
+        Actions.runBlocking((t) -> {robot.transfer.spin(); return false;});
+        AutoUtil.delay(3);
+        Actions.runBlocking((t) -> {robot.stopAll(); return false;});
         //wait til shoot 3 is done to move
 
 
 
-        intakeStarted[0] = false;
-        intakeStopped[0] = false;
-        shooterReverseStart[0] = false;
-        shooterReverseStop[0] = false;
 
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
                 .afterTime(1.6, t -> {
-                    if (!opModeIsActive()) return false;
-                    if (!intakeStarted[0]) {
+
                         robot.intake.intake();
-                        intakeStarted[0] = true;
-                    }
-                    return !intakeStarted[0]; // becomes false after first trigger
+                    return false; // becomes false after first trigger
                 })
 
                 .afterTime(3.7 , t -> {
-                    if (!opModeIsActive()) return false;
-                    if (!intakeStopped[0]) {
+
                         robot.intake.stop();
-                        intakeStopped[0] = true;
-                    }
-                    return !intakeStopped[0];
+                       return false;
                 })
 
-                .afterTime(2, t -> {
-                    if (!opModeIsActive()) return false;
-                    if (!shooterReverseStart[0]) {
-                        robot.shooter.setTargetRPM(-1500);
-                        robot.shooter.spin();
-                        shooterReverseStart[0] = true;
-                    }
-                    return !shooterReverseStart[0]; // disables marker after stop fires
+
+                .afterTime(3.8, (t) -> {
+                    robot.transfer.spinReverse();
+                    //robot.transfer.stop();
+                    return false;
+                })
+                .afterTime(3.89, (t) -> {
+                    robot.transfer.stop();
+                    //robot.transfer.stop();
+                    return false;
                 })
 
-                .afterTime(4.6, t -> {
-                    if (!opModeIsActive()) return false;
-                    if (!shooterReverseStop[0]) {
-                        robot.shooter.setTargetRPM(shooterRPMClose);
-                        robot.shooter.eStop();
-                        shooterReverseStop[0] = true;
-                    }
-                    return !shooterReverseStop[0]; // disables marker after stop fires
+                .afterTime(4, (t) -> {
+                    robot.shooter.spin();
+                    //robot.transfer.stop();
+                    return false;
                 })
 
 
@@ -178,23 +172,17 @@ public class RedNear9Artifacts extends SampleAuto {
 
                 .build());
 
-        robot.shooter.spin();
-        robot.delay(2);
-        robot.intake.intake();
-        robot.delay(2);
-        robot.shooter.eStop();
-        robot.delay(2);
-        robot.intake.stop();
-        robot.shooter.eStop();
 
-
-        Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-
-                        .strafeToConstantHeading(new Vector2d(-43,24))
-
-                .build());
-
-
+        Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
+        //AutoUtil.delay(2);
+        Actions.runBlocking((t) -> {robot.intake.intake(); return false; });
+        Actions.runBlocking((t) -> {robot.transfer.spin(); return false; });
+        AutoUtil.delay(2);
+        Actions.runBlocking((t) -> {robot.shooter.eStop(); return false; });
+        AutoUtil.delay(2);
+        Actions.runBlocking((t) -> {robot.intake.stop(); return false; });
+        Actions.runBlocking((t) -> {robot.shooter.eStop(); return false; });
+        break;
     }
 
     @Override

@@ -111,12 +111,12 @@ public class BlueNear9Artifacts extends SampleAuto {
                         return false;
                     })
 
-                    .strafeToSplineHeading(new Vector2d(-3, -20), Math.toRadians(270))
+                    .strafeToSplineHeading(new Vector2d(-3, -20), Math.toRadians(270), new TranslationalVelConstraint(100))
                     .strafeToConstantHeading(new Vector2d(-3, -63), new TranslationalVelConstraint(30))
 
 
                     .strafeToConstantHeading(new Vector2d(-3, -57))
-                    .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(221))
+                    .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(221), new TranslationalVelConstraint(100))
                     .build());
 
             Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
@@ -166,12 +166,12 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
                     //MOTIF 2
-                    .strafeToSplineHeading(new Vector2d(22, -15), Math.toRadians(270))//go to motif
+                    .strafeToSplineHeading(new Vector2d(22, -15), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
                     .strafeToConstantHeading(new Vector2d(22, -65))//intake
 
                     // ==============return============== \\
                     .strafeToConstantHeading(new Vector2d(22, -32))//back up
-                    .strafeToSplineHeading(new Vector2d(-40, -24), Math.toRadians(230))//shooting pose
+                    .strafeToSplineHeading(new Vector2d(-45, -22), Math.toRadians(228), new TranslationalVelConstraint(100))//shooting pose
 
 
                     .build());
