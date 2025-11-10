@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
@@ -37,7 +38,7 @@ public class ONLY3BlueNear extends SampleAuto {
     @Override
     public void onStart() {
 
-        robot.shooter.spin();
+        Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
                 .strafeToSplineHeading(new Vector2d(-27,-24),Math.toRadians(227))//go to shooting pose
                 .build());
@@ -45,18 +46,19 @@ public class ONLY3BlueNear extends SampleAuto {
 
 
 
-        robot.intake.intake();
-        robot.delay(2.9);
+        Actions.runBlocking((t) -> {robot.intake.intake(); return false; });
+        Actions.runBlocking((t) -> {robot.transfer.spin(); return false; });
+        AutoUtil.delay(2.9);
 
-        robot.intake.stop();
-        robot.intake.setIntakePower(1);
-        robot.shooter.eStop();
+        Actions.runBlocking((t) -> {robot.stopAll(); return false; });
+        Actions.runBlocking((t) -> {robot.intake.setIntakePower(1); return false; });
+
 
 
         //PARK
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
-                //MOTIF 2
+                //go park
                 .strafeToSplineHeading(new Vector2d(-50, -24), Math.toRadians(180))//go park
 
 

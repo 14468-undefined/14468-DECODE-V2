@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
@@ -37,25 +38,24 @@ public class ONLY3RedNear extends SampleAuto {
     @Override
     public void onStart() {
 
-        robot.shooter.spin();
+        Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
                 .strafeToSplineHeading(new Vector2d(-27,24),Math.toRadians(133))//go to shooting pose
                 .build());
 
 
 
+        Actions.runBlocking((t) -> {robot.intake.intake(); return false; });
+        Actions.runBlocking((t) -> {robot.transfer.spin(); return false; });
+        AutoUtil.delay(2.9);
 
-        robot.intake.intake();
-        robot.delay(2.9);
+        Actions.runBlocking((t) -> {robot.stopAll(); return false; });
 
-        robot.intake.stop();
-        robot.intake.setIntakePower(1);
-        robot.shooter.eStop();
         //PARK
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
 
-
+//park
                 .strafeToSplineHeading(new Vector2d(-55, 24), Math.toRadians(180))
                 .build());
 
