@@ -84,13 +84,30 @@ public class BlueNear9Artifacts extends SampleAuto {
 
                     .afterTime(0, (t) -> {
                         robot.intake.intake();
-                        robot.transfer.spinReverse();
+                        //robot.transfer.spinReverse();
                         return false;
                     })
 
                     .afterTime(3, (t) -> {
                         robot.intake.stop();
+                        //robot.transfer.stop();
+                        return false;
+                    })
+
+                    .afterTime(3, (t) -> {
+                        robot.transfer.spinReverse();
+                        //robot.transfer.stop();
+                        return false;
+                    })
+                    .afterTime(3.09, (t) -> {
                         robot.transfer.stop();
+                        //robot.transfer.stop();
+                        return false;
+                    })
+
+                    .afterTime(3.3, (t) -> {
+                        robot.shooter.spin();
+                        //robot.transfer.stop();
                         return false;
                     })
 
@@ -103,7 +120,7 @@ public class BlueNear9Artifacts extends SampleAuto {
                     .build());
 
             Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
-            AutoUtil.delay(2);
+            //AutoUtil.delay(2);
             Actions.runBlocking((t) -> {robot.intake.setIntakePower(1); return false;});
             Actions.runBlocking((t) -> {robot.intake.intake(); return false;});
             Actions.runBlocking((t) -> {robot.transfer.spin(); return false;});
@@ -129,11 +146,28 @@ public class BlueNear9Artifacts extends SampleAuto {
                         return false;
                     })
 
+                    .afterTime(3.9, (t) -> {
+                        robot.transfer.spinReverse();
+                        //robot.transfer.stop();
+                        return false;
+                    })
+                    .afterTime(3.99, (t) -> {
+                        robot.transfer.stop();
+                        //robot.transfer.stop();
+                        return false;
+                    })
+
+                    .afterTime(4.2, (t) -> {
+                        robot.shooter.spin();
+                        //robot.transfer.stop();
+                        return false;
+                    })
+
 
 
                     //MOTIF 2
                     .strafeToSplineHeading(new Vector2d(22, -15), Math.toRadians(270))//go to motif
-                    .strafeToConstantHeading(new Vector2d(22, -69))//intake
+                    .strafeToConstantHeading(new Vector2d(22, -65))//intake
 
                     // ==============return============== \\
                     .strafeToConstantHeading(new Vector2d(22, -32))//back up
@@ -143,8 +177,9 @@ public class BlueNear9Artifacts extends SampleAuto {
                     .build());
 
             Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
-            AutoUtil.delay(2);
+            //AutoUtil.delay(2);
             Actions.runBlocking((t) -> {robot.intake.intake(); return false; });
+            Actions.runBlocking((t) -> {robot.transfer.spin(); return false; });
             AutoUtil.delay(2);
             Actions.runBlocking((t) -> {robot.shooter.eStop(); return false; });
             AutoUtil.delay(2);

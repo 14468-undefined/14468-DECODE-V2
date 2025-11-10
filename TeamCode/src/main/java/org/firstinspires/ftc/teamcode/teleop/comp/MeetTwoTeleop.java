@@ -123,7 +123,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
             //zone = 2;
             //numShots = 3;
             robot.intake.intake();
-            robot.transfer.spinReverse();
+            //robot.transfer.spinReverse();
 
         });
         g2.getGamepadButton(GamepadKeys.Button.B).whenPressed(() -> {
@@ -147,6 +147,18 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
             robot.transfer.stop();
         });
 
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenReleased(() -> {
+            //zone = 3;
+            //numShots = 3;
+
+            robot.transfer.stop();
+        });
+        g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
+            //zone = 3;
+            //numShots = 3;
+
+            robot.transfer.spinReverse();
+        });
 
 
 

@@ -21,7 +21,7 @@ public class TransferSubsystem extends SubsystemBase {
 
 
     private final MotorEx transfer;
-    double transferPower = 1;
+    double transferPower = .6;
     double reverseTransferPower = 1;
 
     private ColorfulTelemetry cTelemetry;
@@ -31,10 +31,10 @@ public class TransferSubsystem extends SubsystemBase {
         // ================== MOTORS ================== \\
         this.cTelemetry = telemetry;
 
-        transfer = new MotorEx(hardwareMap, "intake");
+        transfer = new MotorEx(hardwareMap, "transfer");
 
         transfer.setRunMode(MotorEx.RunMode.RawPower);
-        transfer.setInverted(false);//run forwards
+        transfer.setInverted(true);//run forwards
 
         transfer.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.FLOAT);
 
