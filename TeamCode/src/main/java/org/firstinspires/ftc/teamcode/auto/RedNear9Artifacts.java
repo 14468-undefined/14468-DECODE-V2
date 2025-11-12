@@ -148,25 +148,25 @@ public class RedNear9Artifacts extends SampleAuto {
                         return false; // becomes false after first trigger
                     })
 
-                    .afterTime(3.7, t -> {
+                    .afterTime(3.9, t -> {
 
                         robot.intake.stop();
                         return false;
                     })
 
 
-                    .afterTime(3.8, (t) -> {
+                    .afterTime(4, (t) -> {
                         robot.transfer.spinReverse();
                         //robot.transfer.stop();
                         return false;
                     })
-                    .afterTime(3.89, (t) -> {
+                    .afterTime(4.09, (t) -> {
                         robot.transfer.stop();
                         //robot.transfer.stop();
                         return false;
                     })
 
-                    .afterTime(4, (t) -> {
+                    .afterTime(4.2, (t) -> {
                         robot.shooter.spin();
                         //robot.transfer.stop();
                         return false;
@@ -179,7 +179,7 @@ public class RedNear9Artifacts extends SampleAuto {
 
                     // ==============return============== \\
                     .strafeToConstantHeading(new Vector2d(9, 50))//back up
-                    .strafeToSplineHeading(new Vector2d(-36, 24), Math.toRadians(143))//shooting pose
+                    .strafeToSplineHeading(new Vector2d(-43, 24), Math.toRadians(139))//shooting pose
 
 
                     .build());

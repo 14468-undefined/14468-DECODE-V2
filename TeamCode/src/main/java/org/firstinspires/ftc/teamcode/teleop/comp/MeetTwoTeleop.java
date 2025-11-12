@@ -29,7 +29,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
 
 
 
-        robot.drive.setDefaultCommand(new RunCommand(()-> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY(), -g1.getLeftX()), -g1.getRightX())), robot.drive));
+        robot.drive.setDefaultCommand(new RunCommand(()-> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY() * driveSpeed, -g1.getLeftX() * driveSpeed), -g1.getRightX() * driveSpeed)), robot.drive));
 
 
 
