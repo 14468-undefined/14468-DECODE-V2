@@ -171,7 +171,7 @@ public class BlueNear9Artifacts extends SampleAuto {
 
                     // ==============return============== \\
                     .strafeToConstantHeading(new Vector2d(22, -32))//back up
-                    .strafeToSplineHeading(new Vector2d(-45, -13), Math.toRadians(240), new TranslationalVelConstraint(100))//shooting pose
+                    .strafeToSplineHeading(new Vector2d(-45, -13), Math.toRadians(244), new TranslationalVelConstraint(100))//shooting pose
 
 
                     .build());
