@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="BlueNear9Artifacts")
-public class BlueNear9Artifacts extends SampleAuto {
+@Autonomous(name="BlueNearForLater")
+public class BlueNearForLater extends SampleAuto {
     private BaseRobot robot;
 
 
@@ -112,7 +112,7 @@ public class BlueNear9Artifacts extends SampleAuto {
                     })
 
                     .strafeToSplineHeading(new Vector2d(-3, -20), Math.toRadians(270), new TranslationalVelConstraint(100))
-                    .strafeToConstantHeading(new Vector2d(-3, -63), new TranslationalVelConstraint(30))
+                    .strafeToConstantHeading(new Vector2d(-3, -59), new TranslationalVelConstraint(30))
 
 
                     .strafeToConstantHeading(new Vector2d(-3, -57))
@@ -167,7 +167,7 @@ public class BlueNear9Artifacts extends SampleAuto {
 
                     //MOTIF 2
                     .strafeToSplineHeading(new Vector2d(22, -15), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
-                    .strafeToConstantHeading(new Vector2d(22, -65))//intake
+                    .strafeToConstantHeading(new Vector2d(22, -60))//intake
 
                     // ==============return============== \\
                     .strafeToConstantHeading(new Vector2d(22, -32))//back up
