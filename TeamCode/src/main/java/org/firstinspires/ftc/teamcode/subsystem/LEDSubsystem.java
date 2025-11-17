@@ -75,6 +75,10 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
+    public double getPose(){
+        return LED1.getPosition();
+    }
+
 
     public void printTelemetry(ColorfulTelemetry t) {
 

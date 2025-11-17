@@ -6,8 +6,11 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
 @TeleOp(name = "LEDTest" , group = "TeleOp")
@@ -18,7 +21,13 @@ public class LEDTest extends SampleCommandTeleop {
 
     int shooterRPM = 6000;
 
-    double LEDPose = .5;
+double curPose = 0;
+
+    ElapsedTime time = new ElapsedTime();
+
+    double LEDColor = 0;
+
+    boolean goingUp = true;    // whether we're going 0→1 or 1→0
 
     @Override
     public void onInit() {
@@ -35,21 +44,16 @@ public class LEDTest extends SampleCommandTeleop {
     @Override
     public void onStart() {
 
-
-        g1.getGamepadButton(GamepadKeys.Button.A).whileHeld(() -> {
-            robot.LED.setPoseTest(LEDPose);
+        g1.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
+            LEDColor += .01;
+        });
+        g1.getGamepadButton(GamepadKeys.Button.A).whenPressed(() -> {
+            LEDColor -= .01;
         });
 
 
-        g1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
-            LEDPose -= .02;
-        });
-        g1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
-            LEDPose += .02;
-        });
 
 
-        LEDPose+=.01;
 
 
 
@@ -63,6 +67,10 @@ public class LEDTest extends SampleCommandTeleop {
         // Print intake telemetry every loop
 
         //pen.addLine("shooter RPM set:", shooterRPM);
+        robot.LED.setPoseTest(LEDColor);
+        curPose = robot.LED.getPose();
+
+        pen.addData("LED Color: ", robot.LED.getPose());
     }
 
     @Override

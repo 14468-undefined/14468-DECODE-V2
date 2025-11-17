@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.comp;
+package org.firstinspires.ftc.teamcode.teleop.helper;
 
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -8,15 +8,15 @@ import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
-@TeleOp(name = "MeetTwoTeleop" , group = "AA - COMP")
-public class MeetTwoTeleop extends SampleCommandTeleop {
+@TeleOp(name = "PresentationTeleop" , group = "helper")
+public class PresentationTeleop extends SampleCommandTeleop {
 
 
-    double driveSpeed = 1;
 
     boolean shooterOn = false;
 
@@ -24,22 +24,29 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
 
 
 
+    ElapsedTime time = new ElapsedTime();
+
+    double startPos = 0.0;
+    double endPos   = 1.0;
+    double duration = 10;     // seconds for each sweep
+
+    boolean goingUp = true;    // whether we're going 0→1 or 1→0
 
     @Override
     public void onInit() {
 
 
 
-        robot.drive.setDefaultCommand(new RunCommand(()-> robot.drive.drive.setDrivePowers(new PoseVelocity2d(new Vector2d(g1.getLeftY() * driveSpeed, -g1.getLeftX() * driveSpeed), -g1.getRightX() * driveSpeed)), robot.drive));
 
 
 
 
-
-        robot.shooter.setTargetRPM(shooterRPM);
+        robot.shooter.setTargetRPM(shooterRPM);//setlower
 
         double shooterRealRPM = robot.shooter.getShooterVelocity();
 
+
+        robot.intake.setIntakePower(.4);//low
 
     }
 
@@ -51,29 +58,6 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
 
 
 
-        g1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
-            driveSpeed = 1;
-        });
-        g1.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
-            driveSpeed = .5;
-        });
-        g1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {
-            driveSpeed = .2;
-        });
-
-
-
-
-
-        /*
-        SHOOTING:
-        g1 X - shoot 3;
-        g1 B - cancel;
-
-        DPAD UP = far zone
-        DPAD Right = mid zone
-        DPAD Down = close zone (ur never in close zone)
-         */
 
 
 
@@ -108,18 +92,10 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
             robot.intake.intake();
         });
         g2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenInactive(() -> {
-                    robot.intake.stop();
-                    robot.transfer.stop();
+            robot.intake.stop();
+            robot.transfer.stop();
         });
 
-        //right trigger = intake forwards, left trigger = intake reverse
-        //g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intake())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
-
-
-        new Trigger(() -> gamepad1.right_trigger > .1).whenActive(new InstantCommand(() -> robot.intake.intake())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
-        new Trigger(() -> gamepad1.left_trigger > .1).whenActive(new InstantCommand(() -> robot.intake.intakeReverse())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
-
-        //new Trigger(() -> g1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intakeReverse())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
 
         g2.getGamepadButton(GamepadKeys.Button.X).whenPressed(() -> {
             //zone = 2;
@@ -199,26 +175,30 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
 
     }
 
+
     @Override
     public void onLoop() {
+        double t = time.seconds();
+        double sweepTime = duration; // time for 0->1
+        double cycleTime = sweepTime * 2;
+        double cyclePos = (t % cycleTime) / sweepTime; // 0→2
 
-
-        // Print intake telemetry every loopq
-        pen.addData("Shooter RPM: ", robot.shooter.getShooterVelocity());
-        pen.addData("Set RPM: ", robot.shooter.getTargetRPM());
-
-
-        if(robot.shooter.isAtTargetSpeed()){
-            robot.LED.setColor(LEDSubsystem.LEDColor.GREEN);
+        double servoPos;
+        if (cyclePos <= 1.0) {
+            servoPos = cyclePos;  // 0 -> 1
+        } else {
+            servoPos = 2 - cyclePos; // 1 -> 0
         }
-        if(!robot.shooter.isAtTargetSpeed()){
-            robot.LED.setPoseTest(.28);
-        }
-        if(!robot.shooter.isActive()){
-            robot.LED.setColor(LEDSubsystem.LEDColor.OFF);
-        }
-        //pen.addLine("shooter RPM set:", shooterRPM);
+
+        robot.LED.setPoseTest(servoPos);
+
+        // Telemetry
+        pen.addData("Servo Pos", servoPos);
+        pen.addData("Shooter RPM", robot.shooter.getShooterVelocity());
     }
+
+
+
 
     @Override
     public void onStop() {

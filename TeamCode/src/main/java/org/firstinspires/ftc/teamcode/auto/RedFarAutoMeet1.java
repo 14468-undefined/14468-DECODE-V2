@@ -35,7 +35,7 @@ public class RedFarAutoMeet1 extends SampleAuto {
     public void onStart() {
 
 
-        while (opModeIsActive()) {
+
             Actions.runBlocking((t) -> {
                 robot.shooter.spin();
                 return false;
@@ -197,51 +197,38 @@ public class RedFarAutoMeet1 extends SampleAuto {
                     .strafeToLinearHeading(new Vector2d(56, 10), Math.toRadians(152.5))//go to shoot pose
 
                     .build());
-                /*
+
+
             Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-                    .afterTime(0, t -> {
-                        if (!intakeStarted[0]) {
-                            robot.intake.intake();
-                            intakeStarted[0] = true;
-                        }
-                        return !intakeStarted[0]; // becomes false after first trigger = DISABLE marker
+
+                    .afterTime(0, (t) -> {
+                        robot.intake.intake();
+                        return false;
                     })
 
-                    .afterTime(4.5, t -> {//was 3.7
-                        if (!intakeStopped[0]) {
-                            robot.intake.stop();
-                            intakeStopped[0] = true;
-                        }
-                        return !intakeStopped[0]; // disables marker after stop fires
+                    .afterTime(6, (t) -> {
+                        robot.intake.stop();
+                        return false;
                     })
 
-                    .afterTime(2, t -> {
-                        if (!shooterReverseStart[0]) {
-                            robot.shooter.setTargetRPM(-1000);
-                            robot.shooter.spin();
-                            shooterReverseStart[0] = true;
-                        }
-                        return !shooterReverseStart[0]; // disables marker after stop fires
+                    .afterTime(6.1, (t) -> {
+                        robot.transfer.spinReverse();
+                        return false;
                     })
-
-                    .afterTime(5, t -> {
-                        if (!shooterReverseStop[0]) {
-                            robot.shooter.eStop();
-                            robot.shooter.setTargetRPM(shooterRPM);
-                            shooterReverseStop[0] = true;
-                        }
-                        return !shooterReverseStop[0]; // disables marker after stop fires
+                    .afterTime(6.2, (t) -> {
+                        robot.transfer.stop();
+                        return false;
                     })
-                    .strafeToSplineHeading(new Vector2d(12, 29), Math.toRadians(90))//go to motif 2
-                    .strafeToConstantHeading(new Vector2d(12, 61))//intake
+                    .afterTime(7, (t) -> {
+                        robot.shooter.spin();
+                        return false;
+                    })
+                    .strafeToLinearHeading(new Vector2d(40, 67), Math.toRadians(0))
 
+                    .strafeToConstantHeading(new Vector2d(74, 67))
 
-                    .strafeToLinearHeading(new Vector2d(56, 10), Math.toRadians(150))//go to shoot pose
                     .build());
 
-
-                 */
-        }
 
     }
 

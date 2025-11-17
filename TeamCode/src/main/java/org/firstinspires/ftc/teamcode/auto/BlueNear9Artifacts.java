@@ -39,6 +39,7 @@ public class BlueNear9Artifacts extends SampleAuto {
     public void onStart() {
 
 
+        robot.LED.setPoseTest(.56);
         while (opModeIsActive()) {
             Actions.runBlocking((t) -> {
                 robot.shooter.spin();
