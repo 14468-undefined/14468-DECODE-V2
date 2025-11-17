@@ -21,6 +21,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
     public DriveSubsystem drive;
     public IntakeSubsystem intake;
     public ColorfulTelemetry cTelemetry;
+    public LEDSubsystem LED;
 
     public Telemetry telemetry;
     public HuskyLensSubsystem huskyLensVision;
@@ -35,6 +36,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         //webcamVision = new WebcamVisionSubsystem(hwMap);
         //huskyLensVision = new HuskyLensSubsystem(hwMap, cTelemetry);
         transfer = new TransferSubsystem(hwMap, cTelemetry);
+        LED = new LEDSubsystem(hwMap, cTelemetry);
 
 
     }
@@ -59,6 +61,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         //huskyLensVision.printTelemetry(t);
         transfer.printTelemetry(t);
 
+
     }
 
     @Override
@@ -69,6 +72,7 @@ public class BaseRobot extends UndefinedSubsystemBase {
         //webcamVision.periodic();
         //huskyLensVision.periodic();
         transfer.periodic();
+        LED.periodic();
 
     }
 

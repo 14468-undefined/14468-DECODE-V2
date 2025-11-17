@@ -38,12 +38,18 @@ public class LEDSubsystem extends SubsystemBase {
         LED1 = hardwareMap.get(Servo.class, "hood");
 
 
+        double currentPose = LED1.getPosition();
+
 
     }
 
     public void setColor(LEDColor color){
 
         LED1.setPosition(color.position);
+    }
+
+    public void setPoseTest(double pose){
+        LED1.setPosition(pose);
     }
 
     public enum LEDColor {

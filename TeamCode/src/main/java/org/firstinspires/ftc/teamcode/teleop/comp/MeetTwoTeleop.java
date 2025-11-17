@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
@@ -48,6 +49,16 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
 
 
 
+
+        g1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenActive(() -> {
+
+            if(robot.shooter.isAtTargetSpeed()){
+                robot.LED.setColor(LEDSubsystem.LEDColor.GREEN);
+            }
+            else{
+                robot.LED.setColor(LEDSubsystem.LEDColor.RED);
+            }
+        });
 
         g1.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {
             driveSpeed = 1;
