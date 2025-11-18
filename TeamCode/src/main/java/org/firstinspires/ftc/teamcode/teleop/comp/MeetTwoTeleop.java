@@ -208,7 +208,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         pen.addData("Set RPM: ", robot.shooter.getTargetRPM());
 
 
-        if(robot.shooter.isAtTargetSpeed()){
+        /*if(robot.shooter.isAtTargetSpeed()){
             robot.LED.setColor(LEDSubsystem.LEDColor.GREEN);
         }
         if(!robot.shooter.isAtTargetSpeed() && robot.shooter.isActive() && robot.shooter.getShooterVelocity() > 100){
@@ -217,6 +217,38 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         if(robot.shooter.getShooterVelocity() < 300){
             robot.LED.setColor(LEDSubsystem.LEDColor.WHITE);
         }
+
+        */
+         // === LED OSCILLATION SETUP ===
+    double time = getRuntime();       // seconds since start
+        double min = 0.28;
+        double max = 0.72;
+
+        double mid = (min + max) / 2.0;
+        double range = (max - min) / 2.0;
+
+
+    // Sine oscillation smoothly between min ↔ max
+        double osc = mid + range * Math.sin(time * (2.0 * Math.PI / 5.0));
+    // full wave every 5 sec
+
+
+    // === LED LOGIC ===
+    if (robot.shooter.isAtTargetSpeed()) {
+        // Solid green when at speed
+        robot.LED.setColor(LEDSubsystem.LEDColor.GREEN);
+
+    } else if (robot.shooter.isActive() && robot.shooter.getShooterVelocity() > 100) {
+        // Spooling up → use oscillation instead of fixed .28
+        robot.LED.setColor(LEDSubsystem.LEDColor.RED);
+
+    } else if (robot.shooter.getShooterVelocity() < 300) {
+        // Idle → solid white
+        robot.LED.setPoseTest(osc);
+    }
+
+
+
         //pen.addLine("shooter RPM set:", shooterRPM);
     }
 

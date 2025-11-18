@@ -25,6 +25,8 @@ public class LEDSubsystem extends SubsystemBase {
 
     private final Servo LED1;
 
+    private volatile boolean oscillating = false; // flag to control breathing
+    private Thread oscillateThread;
 
     private ColorfulTelemetry cTelemetry;
     private HardwareMap hardwareMap;
@@ -76,7 +78,51 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    public double getPose(){
+    // --- Start rainbowing LED ---
+    public void startOscillating() {
+        if (oscillating) return; // already running
+
+        oscillating = true;
+        oscillateThread = new Thread(() -> {
+            double current = getPose();          // start from current position
+            boolean increasing = true;           // direction
+            double speed = 0.0048;               // ~6 sec full cycle
+
+            while (oscillating) {
+                if (increasing) {
+                    current += speed;
+                    if (current >= 1.0) {
+                        current = 1.0;
+                        increasing = false;
+                    }
+                } else {
+                    current -= speed;
+                    if (current <= 0.28) {
+                        current = 0.28;
+                        increasing = true;
+                    }
+                }
+
+                setPoseTest(current);
+
+                try { Thread.sleep(20); } catch (InterruptedException e) {} // ~50 Hz update
+            }
+        });
+        oscillateThread.start();
+    }
+
+    // --- Stop rainbowing LED ---
+    public void stopOscillating() {
+        oscillating = false;
+        if (oscillateThread != null) {
+            oscillateThread.interrupt();
+            oscillateThread = null;
+        }
+    }
+
+
+
+public double getPose(){
         return LED1.getPosition();
     }
 

@@ -26,13 +26,32 @@ public class BlueFarMeet3 extends SampleAuto {
         robot.shooter.setTargetRPM(shooterRPM);
 
 
-        robot.LED.setColor(LEDSubsystem.LEDColor.BLUE);
+        robot.LED.startOscillating();
 
     }
 
     @Override
     public void onStart() {
 
+
+        new Thread(() -> {
+            double min = 0.28;
+            double max = 0.72;
+            double mid = (min + max) / 2.0;
+            double range = (max - min) / 2.0;
+
+            while (opModeIsActive()) {
+                double time = getRuntime();   // safe to use inside thread
+
+                // 6-second breathing cycle
+                double osc = mid + range * Math.sin(time * (2.0 * Math.PI / 6.0));
+
+                robot.LED.setPoseTest(osc);
+
+                // update ~25 times per second
+                try { Thread.sleep(40); } catch (InterruptedException e) {}
+            }
+        }).start();
 
 
             Actions.runBlocking((t) -> {
