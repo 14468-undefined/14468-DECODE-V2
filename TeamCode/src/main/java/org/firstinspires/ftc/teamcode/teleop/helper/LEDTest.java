@@ -21,22 +21,16 @@ public class LEDTest extends SampleCommandTeleop {
 
     int shooterRPM = 6000;
 
-double curPose = 0;
+    double curPose = 0;
 
     ElapsedTime time = new ElapsedTime();
 
-    double LEDColor = 0;
+    double LEDColor = .5;
 
     boolean goingUp = true;    // whether we're going 0→1 or 1→0
 
     @Override
     public void onInit() {
-
-
-
-
-
-
 
 
     }
@@ -52,6 +46,9 @@ double curPose = 0;
         });
 
 
+        g1.getGamepadButton(GamepadKeys.Button.B).whenPressed(() ->{
+            robot.LED.setPoseTest(LEDColor);
+        });
 
 
 
@@ -67,7 +64,7 @@ double curPose = 0;
         // Print intake telemetry every loop
 
         //pen.addLine("shooter RPM set:", shooterRPM);
-        robot.LED.setPoseTest(LEDColor);
+
         curPose = robot.LED.getPose();
 
         pen.addData("LED Color: ", robot.LED.getPose());

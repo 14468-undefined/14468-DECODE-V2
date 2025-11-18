@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto;
 
+import android.icu.text.RelativeDateTimeFormatter;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
+import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
 @Autonomous(name="RedNear9Artifacts")
@@ -26,14 +28,15 @@ public class RedNear9Artifacts extends SampleAuto {
     public void onInit(){
         
         robot = new BaseRobot(hardwareMap, new Pose2d(-61, 40, Math.toRadians(180)));
-        //shoot3 = new ShootCommand(robot, 3, 2);//3 artifacts mid range shot
+
         robot.shooter.setTargetRPM(shooterRPMClose);
-        //set pos of hood and transfer servo
+
         robot.intake.setIntakePower(.8);
 
         packet.put("target_shooter_rpm", robot.shooter.getTargetRPM());
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
+        robot.LED.setColor(LEDSubsystem.LEDColor.RED);
 
     }
 

@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
+import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
 @Autonomous(name="BlueNear9Artifacts")
@@ -33,6 +34,7 @@ public class BlueNear9Artifacts extends SampleAuto {
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
 
+        robot.LED.setColor(LEDSubsystem.LEDColor.BLUE);
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
+import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
 @Autonomous(name="ONLY3RedNear")
@@ -31,6 +32,9 @@ public class ONLY3RedNear extends SampleAuto {
 
         packet.put("target_shooter_rpm", robot.shooter.getTargetRPM());
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
+
+
+        robot.LED.setColor(LEDSubsystem.LEDColor.RED);
 
 
     }

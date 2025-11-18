@@ -88,6 +88,16 @@ public class ShooterSubsystem extends SubsystemBase {
         applyPIDF();
 
         //telemetry.addLine("shooter Init Done");
+
+        if(isAtTargetSpeed()){
+            active = true;
+        }
+        else if(!isAtTargetSpeed() && getShooterVelocity() > 5){
+            active = true;
+        }
+        else if(getShooterVelocity() < 5){
+            active = false;
+        }
     }
 
     /// Only use if the constants in this file are correct
@@ -205,6 +215,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         shooterRight.setPower(0);
         shooterRight.setVelocity(0);
+
+
     }
 
     /**

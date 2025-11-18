@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
+import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
 @Autonomous(name="BlueFarMeet3")
@@ -17,13 +18,15 @@ public class BlueFarMeet3 extends SampleAuto {
     private ShootCommand shoot3;
 
 
+
     int shooterRPM = 2800;
     @Override
     public void onInit() {
         robot = new BaseRobot(hardwareMap, new Pose2d(61, -18, Math.toRadians(180)));
-        shoot3 = new ShootCommand(robot, 3, 3);//3 artifacts far shot range
         robot.shooter.setTargetRPM(shooterRPM);
-        //set pos of hood and transfer servo
+
+
+        robot.LED.setColor(LEDSubsystem.LEDColor.BLUE);
 
     }
 
@@ -120,7 +123,7 @@ public class BlueFarMeet3 extends SampleAuto {
                     .build());
 
 
-            AutoUtil.delay(2);
+            AutoUtil.delay(.5);
 
             Actions.runBlocking((t) -> {
                 robot.transfer.spin();
@@ -186,7 +189,7 @@ public class BlueFarMeet3 extends SampleAuto {
                     robot.shooter.spin();
                     return false;
                 })
-                .strafeToLinearHeading(new Vector2d(40, -64), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(45, -64), Math.toRadians(0))
 
                 .strafeToConstantHeading(new Vector2d(74, -64))
 

@@ -54,12 +54,12 @@ public class BaseRobot extends UndefinedSubsystemBase {
 
     @Override
     public void printTelemetry(ColorfulTelemetry t) {
-        drive.printTelemetry(t);
-        intake.printTelemetry(t);
+        //drive.printTelemetry(t);
+        //intake.printTelemetry(t);
         //shooter.printTelemetry(telemetry);
         //webcamVision.printTelemetry(t);
         //huskyLensVision.printTelemetry(t);
-        transfer.printTelemetry(t);
+        //transfer.printTelemetry(t);
 
 
     }

@@ -211,11 +211,11 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         if(robot.shooter.isAtTargetSpeed()){
             robot.LED.setColor(LEDSubsystem.LEDColor.GREEN);
         }
-        if(!robot.shooter.isAtTargetSpeed()){
+        if(!robot.shooter.isAtTargetSpeed() && robot.shooter.isActive() && robot.shooter.getShooterVelocity() > 100){
             robot.LED.setPoseTest(.28);
         }
-        if(!robot.shooter.isActive()){
-            robot.LED.setColor(LEDSubsystem.LEDColor.OFF);
+        if(robot.shooter.getShooterVelocity() < 300){
+            robot.LED.setColor(LEDSubsystem.LEDColor.WHITE);
         }
         //pen.addLine("shooter RPM set:", shooterRPM);
     }

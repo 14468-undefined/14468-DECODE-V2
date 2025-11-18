@@ -1,22 +1,19 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
-import org.firstinspires.ftc.teamcode.command.IntakeCommand;
 import org.firstinspires.ftc.teamcode.command.ShootCommand;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
-import org.firstinspires.ftc.teamcode.util.Constants;
+import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="RedFarAutoMeet1")
-public class RedFarAutoMeet1 extends SampleAuto {
+@Autonomous(name="RedFarMeet3")
+public class RedFarMeet3 extends SampleAuto {
     private BaseRobot robot;
     private ShootCommand shoot3;
 
@@ -25,9 +22,10 @@ public class RedFarAutoMeet1 extends SampleAuto {
     @Override
     public void onInit() {
         robot = new BaseRobot(hardwareMap, new Pose2d(61, 18, Math.toRadians(180)));
-        shoot3 = new ShootCommand(robot, 3, 3);//3 artifacts far shot range
+
         robot.shooter.setTargetRPM(shooterRPM);
-        //set pos of hood and transfer servo
+
+        robot.LED.setColor(LEDSubsystem.LEDColor.RED);
 
     }
 

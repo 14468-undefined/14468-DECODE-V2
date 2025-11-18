@@ -55,12 +55,13 @@ public class LEDSubsystem extends SubsystemBase {
     public enum LEDColor {
         OFF(0.0),
 
-        RED(0.277),
+        RED(0.28),
 
         ORANGE(0.333),
         YELLOW(0.388),
         SAGE(0.444),//light green
         GREEN(0.5),
+        UNDEFINEDBLUE(.57),
         AZURE(0.555),//blue green
         BLUE(0.611),
         INDIGO(0.666),
