@@ -34,7 +34,7 @@ public class ONLY3RedNear extends SampleAuto {
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
 
-        robot.LED.setColor(LEDSubsystem.LEDColor.RED);
+        robot.LED.startOscillating();
 
 
     }

@@ -34,7 +34,7 @@ public class BOTREDAUTO extends SampleAuto {
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
 
-        robot.LED.setColor(LEDSubsystem.LEDColor.BLUE);
+        robot.LED.startOscillating();
     }
 
     @Override

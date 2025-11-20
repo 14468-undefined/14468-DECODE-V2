@@ -32,6 +32,7 @@ public class BlueNearForLater extends SampleAuto {
         packet.put("target_shooter_rpm", robot.shooter.getTargetRPM());
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
+        robot.LED.startOscillating();
 
     }
 

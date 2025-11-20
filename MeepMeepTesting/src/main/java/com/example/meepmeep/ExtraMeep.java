@@ -58,29 +58,24 @@ public class ExtraMeep {
 
         BOTbot.runAction(BOTbot.getDrive().actionBuilder((new Pose2d(-41, 53, Math.toRadians(90))))
 
-                .strafeToSplineHeading(new Vector2d(-17,17),Math.toRadians(135))//go shoot
+                .strafeToSplineHeading(new Vector2d(-17,17),Math.toRadians(135))//go to shooting pose
                                 .waitSeconds(4)
 
-                .strafeToSplineHeading(new Vector2d(12, 29), Math.toRadians(90))//go to motif
+                .strafeToSplineHeading(new Vector2d(12, 29), Math.toRadians(90))//go to motif 1
                 .strafeToConstantHeading(new Vector2d(12, 61))//intake
+                .strafeToConstantHeading(new Vector2d(12, 20))//back up
 
-                // ==============return============== \\
-                .strafeToConstantHeading(new Vector2d(12, 20))
-                .strafeToSplineHeading(new Vector2d(-17,17),Math.toRadians(135))//shoot
+                .strafeToSplineHeading(new Vector2d(-17,17),Math.toRadians(135))//go to shooting pose
                         .waitSeconds(4)
 
-
-                //.strafeToSplineHeading(new Vector2d(46.4, 61.7), Math.toRadians(0))
-                //.strafeToConstantHeading(new Vector2d(58, 61.7))
-
-                .strafeToSplineHeading(new Vector2d(60, 29), Math.toRadians(90))//go to corner
-                .strafeToConstantHeading(new Vector2d(60, 59))
+                .strafeToSplineHeading(new Vector2d(60, 29), Math.toRadians(90))//go to corner to intake
+                .strafeToConstantHeading(new Vector2d(60, 59))//move forward
                         .waitSeconds(4)
 
-               // .strafeToSplineHeading(new Vector2d(-17,17),Math.toRadians(135))//shoot
+                .strafeToSplineHeading(new Vector2d(-17,17),Math.toRadians(135))//go to shooting pose
 
-                .strafeToLinearHeading(new Vector2d(56, 14), Math.toRadians(154))//go to shoot pose
-                        .waitSeconds(4)
+               // .strafeToLinearHeading(new Vector2d(56, 14), Math.toRadians(154))//go to FAR shoot pose
+                        //.waitSeconds(4)
 
 
                 .build());

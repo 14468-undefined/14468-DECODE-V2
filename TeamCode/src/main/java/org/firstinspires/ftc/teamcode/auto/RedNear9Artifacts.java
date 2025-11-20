@@ -37,8 +37,9 @@ public class RedNear9Artifacts extends SampleAuto {
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
 
-
-        robot.LED.setColor(LEDSubsystem.LEDColor.RED);
+        while(!opModeIsActive()){
+            robot.LED.startOscillating();
+        }
 
     }
 
@@ -48,8 +49,9 @@ public class RedNear9Artifacts extends SampleAuto {
 
         while (opModeIsActive()) {
 
-            while (opModeIsActive()) {
 
+
+                /*
                 new Thread(() -> {
                     double min = 0.28;
                     double max = 0.72;
@@ -71,6 +73,8 @@ public class RedNear9Artifacts extends SampleAuto {
                         }
                     }
                 }).start();
+
+             */
 
 
                 Actions.runBlocking((t) -> {
@@ -115,7 +119,7 @@ public class RedNear9Artifacts extends SampleAuto {
                             return false;
                         })
 
-                        .afterTime(2.6, t -> {//was 3.7
+                        .afterTime(2.4, t -> {//was 3.7
 
                             robot.intake.stop();
                             return false;
@@ -205,12 +209,16 @@ public class RedNear9Artifacts extends SampleAuto {
 
 
                         //MOTIF 2
-                        .strafeToSplineHeading(new Vector2d(3, 22), Math.toRadians(90))//go to motif
-                        .strafeToConstantHeading(new Vector2d(3, 69))//intake
+                        .strafeToSplineHeading(new Vector2d(4, 22), Math.toRadians(90))//go to motif
+                        .strafeToConstantHeading(new Vector2d(4, 69))//intake
 
                         // ==============return============== \\
                         .strafeToConstantHeading(new Vector2d(9, 50))//back up
-                        .strafeToSplineHeading(new Vector2d(-43, 24), Math.toRadians(139))//shooting pose
+
+
+                        //.strafeToSplineHeading(new Vector2d(-43, 24), Math.toRadians(139))//shooting pose
+                        .strafeToLinearHeading(new Vector2d(-43, 24), Math.toRadians(139))//shooting pose
+
 
 
                         .build());
@@ -244,7 +252,7 @@ public class RedNear9Artifacts extends SampleAuto {
                     return false;
                 });
                 break;
-            }
+
         }
     }
 

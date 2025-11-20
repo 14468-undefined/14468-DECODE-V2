@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
 
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
@@ -29,6 +30,7 @@ public class ParkBlueFar extends SampleAuto {
         packet.put("target_shooter_rpm", robot.shooter.getTargetRPM());
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
+        robot.LED.startOscillating();
 
     }
 
@@ -39,6 +41,7 @@ public class ParkBlueFar extends SampleAuto {
         Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
                 .strafeToConstantHeading(new Vector2d(60,-30))//go park off to the side
                 .build());
+
 
 
     }

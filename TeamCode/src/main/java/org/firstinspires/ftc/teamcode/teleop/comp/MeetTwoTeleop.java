@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
-@TeleOp(name = "MeetTwoTeleop" , group = "AA - COMP")
+@TeleOp(name = "MeetThreeTeleop" , group = "AA - COMP")
 public class MeetTwoTeleop extends SampleCommandTeleop {
 
 
@@ -112,6 +112,17 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
                     robot.transfer.stop();
         });
 
+
+        g2.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenActive(() -> {
+            robot.shooter.setTargetRPM(-6000);
+            robot.shooter.spin();
+        });
+        g2.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenReleased(() -> {
+            robot.shooter.setTargetRPM(shooterRPM);
+            robot.shooter.eStop();
+        });
+
+
         //right trigger = intake forwards, left trigger = intake reverse
         //g1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.05).whenActive(new InstantCommand(() -> robot.intake.intake())).whenInactive(new InstantCommand(() -> robot.intake.stop()));
 
@@ -207,18 +218,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         pen.addData("Shooter RPM: ", robot.shooter.getShooterVelocity());
         pen.addData("Set RPM: ", robot.shooter.getTargetRPM());
 
-
-        /*if(robot.shooter.isAtTargetSpeed()){
-            robot.LED.setColor(LEDSubsystem.LEDColor.GREEN);
-        }
-        if(!robot.shooter.isAtTargetSpeed() && robot.shooter.isActive() && robot.shooter.getShooterVelocity() > 100){
-            robot.LED.setPoseTest(.28);
-        }
-        if(robot.shooter.getShooterVelocity() < 300){
-            robot.LED.setColor(LEDSubsystem.LEDColor.WHITE);
-        }
-
-        */
+        /*
          // === LED OSCILLATION SETUP ===
     double time = getRuntime();       // seconds since start
         double min = 0.28;
@@ -247,6 +247,23 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         robot.LED.setPoseTest(osc);
     }
 
+
+         */
+
+        if (robot.shooter.isAtTargetSpeed()) {
+            // Solid green when at speed
+            robot.LED.setColor(LEDSubsystem.LEDColor.GREEN);
+            robot.LED.stopOscillating();
+
+        } else if (robot.shooter.isActive() && robot.shooter.getShooterVelocity() > 100) {
+            // Spooling up → use oscillation instead of fixed .28
+            robot.LED.setColor(LEDSubsystem.LEDColor.RED);
+            robot.LED.stopOscillating();
+
+        } else if (robot.shooter.getShooterVelocity() < 300) {
+            // Idle → solid white
+            robot.LED.startOscillating();
+        }
 
 
         //pen.addLine("shooter RPM set:", shooterRPM);

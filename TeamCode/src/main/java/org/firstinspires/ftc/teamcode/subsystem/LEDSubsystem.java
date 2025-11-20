@@ -91,8 +91,8 @@ public class LEDSubsystem extends SubsystemBase {
             while (oscillating) {
                 if (increasing) {
                     current += speed;
-                    if (current >= 1.0) {
-                        current = 1.0;
+                    if (current >= .72) {
+                        current = .72;
                         increasing = false;
                     }
                 } else {

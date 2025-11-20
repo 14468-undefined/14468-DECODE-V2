@@ -25,7 +25,7 @@ public class RedFarMeet3 extends SampleAuto {
 
         robot.shooter.setTargetRPM(shooterRPM);
 
-        robot.LED.setColor(LEDSubsystem.LEDColor.RED);
+        robot.LED.startOscillating();
 
     }
 

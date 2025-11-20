@@ -18,7 +18,7 @@ public class BlueNear9Artifacts extends SampleAuto {
     private BaseRobot robot;
 
 
-    private int shooterRPMClose = 2135;
+    private int shooterRPMClose = 2120;//2135
 
     TelemetryPacket packet = new TelemetryPacket();
 
@@ -34,7 +34,7 @@ public class BlueNear9Artifacts extends SampleAuto {
         packet.put("current_shooter_rpm", robot.shooter.getShooterVelocity());
 
 
-        robot.LED.setColor(LEDSubsystem.LEDColor.BLUE);
+        robot.LED.startOscillating();
     }
 
     @Override
@@ -46,24 +46,7 @@ public class BlueNear9Artifacts extends SampleAuto {
 
         while (opModeIsActive()) {
 
-            new Thread(() -> {
-                double min = 0.28;
-                double max = 0.72;
-                double mid = (min + max) / 2.0;
-                double range = (max - min) / 2.0;
 
-                while (opModeIsActive()) {
-                    double time = getRuntime();   // safe to use inside thread
-
-                    // 6-second breathing cycle
-                    double osc = mid + range * Math.sin(time * (2.0 * Math.PI / 6.0));
-
-                    robot.LED.setPoseTest(osc);
-
-                    // update ~25 times per second
-                    try { Thread.sleep(40); } catch (InterruptedException e) {}
-                }
-            }).start();
 
             Actions.runBlocking((t) -> {
                 robot.shooter.spin();
@@ -119,12 +102,12 @@ public class BlueNear9Artifacts extends SampleAuto {
                         return false;
                     })
 
-                    .afterTime(3, (t) -> {
+                    .afterTime(3.1, (t) -> {
                         robot.transfer.spinReverse();
                         //robot.transfer.stop();
                         return false;
                     })
-                    .afterTime(3.09, (t) -> {
+                    .afterTime(3.2, (t) -> {
                         robot.transfer.stop();
                         //robot.transfer.stop();
                         return false;
@@ -137,10 +120,10 @@ public class BlueNear9Artifacts extends SampleAuto {
                     })
 
                     .strafeToSplineHeading(new Vector2d(-3, -20), Math.toRadians(270), new TranslationalVelConstraint(100))
-                    .strafeToConstantHeading(new Vector2d(-3, -63), new TranslationalVelConstraint(30))
+                    .strafeToConstantHeading(new Vector2d(-3, -58), new TranslationalVelConstraint(30))
 
 
-                    .strafeToConstantHeading(new Vector2d(-3, -57))
+                    .strafeToConstantHeading(new Vector2d(-3, -56))
                     .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(221), new TranslationalVelConstraint(100))
                     .build());
 
@@ -191,13 +174,14 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
                     //MOTIF 2
-                    .strafeToSplineHeading(new Vector2d(22, -15), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
-                    .strafeToConstantHeading(new Vector2d(22, -65))//intake
+                    .strafeToSplineHeading(new Vector2d(21, -12), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
+                    .strafeToConstantHeading(new Vector2d(21, -65))//intake
 
                     // ==============return============== \\
-                    .strafeToConstantHeading(new Vector2d(22, -32))//back up
-                    .strafeToSplineHeading(new Vector2d(-45, -13), Math.toRadians(244), new TranslationalVelConstraint(100))//shooting pose
-                    //                      this was changed thursday 11/13 from 240->244 ^
+                    .strafeToConstantHeading(new Vector2d(21, -32))//back up
+
+                    .strafeToSplineHeading(new Vector2d(-27, -24), Math.toRadians(223))//go to shooting pose
+
 
                     .build());
 
@@ -210,6 +194,12 @@ public class BlueNear9Artifacts extends SampleAuto {
             AutoUtil.delay(2);
             Actions.runBlocking((t) -> {robot.intake.stop(); return false; });
             Actions.runBlocking((t) -> {robot.shooter.eStop(); return false; });
+
+            Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
+                    .strafeToSplineHeading(new Vector2d(-50, -13), Math.toRadians(244), new TranslationalVelConstraint(100))//shooting pose
+                            .build());
+            //                      this was changed thursday 11/13 from 240->244 ^
+
             break;
         }
     }
