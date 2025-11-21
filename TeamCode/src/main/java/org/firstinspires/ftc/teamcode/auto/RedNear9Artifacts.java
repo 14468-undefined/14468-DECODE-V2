@@ -20,7 +20,7 @@ public class RedNear9Artifacts extends SampleAuto {
     private BaseRobot robot;
     private ShootCommand shoot3;
 
-    private int shooterRPMClose = 2135;
+    private int shooterRPMClose = 2010;//2135 //2100
 
     TelemetryPacket packet = new TelemetryPacket();
 

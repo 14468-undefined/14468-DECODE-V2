@@ -18,7 +18,7 @@ public class BlueNear9Artifacts extends SampleAuto {
     private BaseRobot robot;
 
 
-    private int shooterRPMClose = 2120;//2135
+    private int shooterRPMClose = 1990;//2135 //2100 //2090
 
     TelemetryPacket packet = new TelemetryPacket();
 
@@ -48,12 +48,13 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
 
+            robot.shooter.setTargetRPM(shooterRPMClose+85);
             Actions.runBlocking((t) -> {
                 robot.shooter.spin();
                 return false;
             });
             Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
-                    .strafeToSplineHeading(new Vector2d(-27, -24), Math.toRadians(227))//go to shooting pose
+                    .strafeToSplineHeading(new Vector2d(-27, -24), Math.toRadians(232))//go to shooting pose
                     .build());
 
 
@@ -79,6 +80,7 @@ public class BlueNear9Artifacts extends SampleAuto {
                 robot.shooter.eStop();
                 return false;
             });
+            robot.shooter.setTargetRPM(shooterRPMClose);
 
 
             // ====================== Intake 1st Pile ====================== \\
@@ -174,13 +176,13 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
                     //MOTIF 2
-                    .strafeToSplineHeading(new Vector2d(21, -12), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
+                    .strafeToSplineHeading(new Vector2d(21, -9), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
                     .strafeToConstantHeading(new Vector2d(21, -65))//intake
 
                     // ==============return============== \\
                     .strafeToConstantHeading(new Vector2d(21, -32))//back up
 
-                    .strafeToSplineHeading(new Vector2d(-27, -24), Math.toRadians(223))//go to shooting pose
+                    .strafeToSplineHeading(new Vector2d(-27, -24), Math.toRadians(220))//go to shooting pose
 
 
                     .build());

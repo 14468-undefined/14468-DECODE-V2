@@ -178,6 +178,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
 
 
 
+
         g2.getGamepadButton(GamepadKeys.Button.A).whenPressed(() -> {
             //zone = 2;
             //numShots = 3;
@@ -188,7 +189,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         g2.getGamepadButton(GamepadKeys.Button.Y).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
-            shooterRPM = 2435;
+            shooterRPM = 2485;
             robot.shooter.setTargetRPM(shooterRPM);
         });
 

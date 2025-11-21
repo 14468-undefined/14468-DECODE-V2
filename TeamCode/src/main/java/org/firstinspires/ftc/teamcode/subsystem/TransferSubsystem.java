@@ -21,7 +21,7 @@ public class TransferSubsystem extends SubsystemBase {
 
 
     private final MotorEx transfer;
-    double transferPower = .6;
+    double transferPower = .6;//was .6
     double reverseTransferPower = 1;
 
     private ColorfulTelemetry cTelemetry;
