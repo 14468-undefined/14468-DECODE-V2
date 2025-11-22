@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
-@TeleOp(name = "LEDTest" , group = "TeleOp")
+//@TeleOp(name = "LEDTest" , group = "TeleOp")
 public class LEDTest extends SampleCommandTeleop {
 
     //BaseRobot robot;

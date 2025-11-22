@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.util.Constants;
 import org.firstinspires.ftc.teamcode.util.SampleCommandTeleop;
 
-@TeleOp(name = "MeetOneTeleop" , group = "AA - COMP")
+//@TeleOp(name = "MeetOneTeleop" , group = "AA - COMP")
 public class MeetOneTeleop extends SampleCommandTeleop {
 
 

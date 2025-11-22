@@ -20,7 +20,7 @@ public class RedNear9Artifacts extends SampleAuto {
     private BaseRobot robot;
     private ShootCommand shoot3;
 
-    private int shooterRPMClose = 2010;//2135 //2100
+    private int shooterRPMClose = 2025;//2135 //2100
 
     TelemetryPacket packet = new TelemetryPacket();
 
@@ -119,7 +119,7 @@ public class RedNear9Artifacts extends SampleAuto {
                             return false;
                         })
 
-                        .afterTime(2.4, t -> {//was 3.7
+                        .afterTime(2.1, t -> {//was 3.7
 
                             robot.intake.stop();
                             return false;
@@ -130,13 +130,13 @@ public class RedNear9Artifacts extends SampleAuto {
                             //robot.transfer.stop();
                             return false;
                         })
-                        .afterTime(3.19, (t) -> {
+                        .afterTime(3.2, (t) -> {
                             robot.transfer.stop();
                             //robot.transfer.stop();
                             return false;
                         })
 
-                        .afterTime(3.3, (t) -> {
+                        .afterTime(3.4, (t) -> {
                             robot.shooter.spin();
                             return false;
                         })
@@ -174,6 +174,10 @@ public class RedNear9Artifacts extends SampleAuto {
                 });
                 //wait til shoot 3 is done to move
 
+                Actions.runBlocking((t) -> {
+                   robot.shooter.setTargetRPM(shooterRPMClose-40);
+                   return false;
+                });
 
                 Actions.runBlocking(robot.drive.actionBuilder(robot.drive.getPose())
 
@@ -209,15 +213,15 @@ public class RedNear9Artifacts extends SampleAuto {
 
 
                         //MOTIF 2
-                        .strafeToSplineHeading(new Vector2d(4, 22), Math.toRadians(90))//go to motif
-                        .strafeToConstantHeading(new Vector2d(4, 69))//intake
+                        .strafeToSplineHeading(new Vector2d(6, 22), Math.toRadians(88))//go to motif
+                        .strafeToConstantHeading(new Vector2d(7, 69))//intake
 
                         // ==============return============== \\
                         .strafeToConstantHeading(new Vector2d(9, 50))//back up
 
 
                         //.strafeToSplineHeading(new Vector2d(-43, 24), Math.toRadians(139))//shooting pose
-                        .strafeToLinearHeading(new Vector2d(-43, 24), Math.toRadians(139))//shooting pose
+                        .strafeToLinearHeading(new Vector2d(-43, 24), Math.toRadians(132))//shooting pose
 
 
 

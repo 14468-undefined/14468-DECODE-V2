@@ -6,19 +6,16 @@ import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import org.firstinspires.ftc.teamcode.auto.util.AutoUtil;
 import org.firstinspires.ftc.teamcode.subsystem.BaseRobot;
-
-import org.firstinspires.ftc.teamcode.subsystem.LEDSubsystem;
 import org.firstinspires.ftc.teamcode.util.SampleAuto;
 
-@Autonomous(name="BlueNear9Artifacts")
-public class BlueNear9Artifacts extends SampleAuto {
+@Autonomous(name="BLUENEARLASTMATCH")
+public class BlueNearLASTMATCH extends SampleAuto {
     private BaseRobot robot;
 
 
-    private int shooterRPMClose = 1990;//2135 //2100 //2090
+    private int shooterRPMClose = 1985;//2135 //2100 //2090
 
     TelemetryPacket packet = new TelemetryPacket();
 
@@ -58,6 +55,7 @@ public class BlueNear9Artifacts extends SampleAuto {
                     .build());
 
 
+            AutoUtil.delay(.01);
             Actions.runBlocking((t) -> {
                 robot.intake.intake();
                 return false;
@@ -104,12 +102,12 @@ public class BlueNear9Artifacts extends SampleAuto {
                         return false;
                     })
 
-                    .afterTime(3.1, (t) -> {
+                    .afterTime(2.8, (t) -> {
                         robot.transfer.spinReverse();
                         //robot.transfer.stop();
                         return false;
                     })
-                    .afterTime(3.2, (t) -> {
+                    .afterTime(2.9, (t) -> {
                         robot.transfer.stop();
                         //robot.transfer.stop();
                         return false;
@@ -129,6 +127,8 @@ public class BlueNear9Artifacts extends SampleAuto {
                     .strafeToSplineHeading(new Vector2d(-28, -20), Math.toRadians(221), new TranslationalVelConstraint(100))
                     .build());
 
+            Actions.runBlocking((t) -> {robot.shooter.setTargetRPM(shooterRPMClose+20); return false; });
+
             Actions.runBlocking((t) -> {robot.shooter.spin(); return false; });
             //AutoUtil.delay(2);
             Actions.runBlocking((t) -> {robot.intake.setIntakePower(1); return false;});
@@ -137,6 +137,7 @@ public class BlueNear9Artifacts extends SampleAuto {
             AutoUtil.delay(3);
             Actions.runBlocking((t) -> {robot.stopAll(); return false;});
 
+            Actions.runBlocking((t) -> {robot.shooter.setTargetRPM(shooterRPMClose); return false; });
 
             //---------------------PILE GRAB 2--------------------------------\\
 
@@ -150,18 +151,18 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
                     //stop intaking
-                    .afterTime(3.9, (t) -> {
+                    .afterTime(4, (t) -> {
                         robot.intake.stop();
                         robot.transfer.stop();
                         return false;
                     })
 
-                    .afterTime(3.9, (t) -> {
+                    .afterTime(4, (t) -> {
                         robot.transfer.spinReverse();
                         //robot.transfer.stop();
                         return false;
                     })
-                    .afterTime(3.99, (t) -> {
+                    .afterTime(4.1, (t) -> {
                         robot.transfer.stop();
                         //robot.transfer.stop();
                         return false;
@@ -176,11 +177,11 @@ public class BlueNear9Artifacts extends SampleAuto {
 
 
                     //MOTIF 2
-                    .strafeToSplineHeading(new Vector2d(21, -9), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
-                    .strafeToConstantHeading(new Vector2d(21, -65))//intake
+                    .strafeToSplineHeading(new Vector2d(19.5, -9), Math.toRadians(270), new TranslationalVelConstraint(100))//go to motif
+                    .strafeToConstantHeading(new Vector2d(19.5, -65))//intake
 
                     // ==============return============== \\
-                    .strafeToConstantHeading(new Vector2d(21, -32))//back up
+                    .strafeToConstantHeading(new Vector2d(19.5, -32))//back up
 
                     .strafeToSplineHeading(new Vector2d(-27, -24), Math.toRadians(220))//go to shooting pose
 

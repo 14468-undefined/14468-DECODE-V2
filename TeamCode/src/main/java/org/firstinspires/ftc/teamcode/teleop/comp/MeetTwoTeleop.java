@@ -20,7 +20,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
 
     boolean shooterOn = false;
 
-    int shooterRPM = 2135;
+    int shooterRPM = 2035;
 
 
 
@@ -142,7 +142,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         g2.getGamepadButton(GamepadKeys.Button.B).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
-            robot.intake.intakeReverse();
+
             robot.transfer.spinReverse();
         });
 
@@ -156,20 +156,20 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         g2.getGamepadButton(GamepadKeys.Button.B).whenReleased(() -> {
             //zone = 3;
             //numShots = 3;
-            robot.intake.stop();
+
             robot.transfer.stop();
         });
 
         g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenReleased(() -> {
             //zone = 3;
             //numShots = 3;
-
+            robot.intake.intakeReverse();
             robot.transfer.stop();
         });
         g2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> {
             //zone = 3;
             //numShots = 3;
-
+            robot.intake.stop();
             robot.transfer.spinReverse();
         });
 
@@ -182,7 +182,7 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         g2.getGamepadButton(GamepadKeys.Button.A).whenPressed(() -> {
             //zone = 2;
             //numShots = 3;
-            shooterRPM = 2135;
+            shooterRPM = 2035;
             robot.shooter.setTargetRPM(shooterRPM);
 
         });
@@ -264,6 +264,10 @@ public class MeetTwoTeleop extends SampleCommandTeleop {
         } else if (robot.shooter.getShooterVelocity() < 300) {
             // Idle → solid white
             robot.LED.startOscillating();
+        }
+        else {
+            robot.LED.stopOscillating();
+            robot.LED.setPoseTest(1);
         }
 
 
